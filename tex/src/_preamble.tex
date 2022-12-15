@@ -1,0 +1,82 @@
+\documentclass[12pt,twoside]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{datetime}
+\usepackage{fontspec}
+\usepackage[T1]{fontenc}
+\usepackage{fancyhdr}
+\usepackage{mathtools} % For `bsmallmatrix`
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{physics}
+\usepackage[cache=false]{minted}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{siunitx}
+\usepackage[english]{babel}
+\usepackage{newpxtext} % See https://tex.stackexchange.com/a/504370/61591 and https://tex.stackexchange.com/a/572939/61591
+\usepackage{newpxmath} % Use Palatino font for text and math
+% \addbibresource{ref.bib}
+
+\newminted{julia}{
+  autogobble,
+  breaklines,
+  escapeinside=||,
+  fontsize=\footnotesize,
+  mathescape,
+}
+\makeatletter
+\renewcommand*{\ALG@name}{Snippet} % See https://tex.stackexchange.com/a/169119
+\makeatother
+\newcommand{\code}[1]{\mintinline[fontsize=\footnotesize]{julia}{#1}}
+\defaultfontfeatures{} % Fix font switching, see https://tex.stackexchange.com/a/638763/61591
+\setmonofont{JuliaMono}
+
+\pagestyle{fancy}
+\setlength\headheight{24pt}
+\fancyhf{}
+\fancyhead[LE,RO]{\textsc{\thetitle}}
+\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[LO,RE]{\footnotesize\textit{Last modified: \thedate}}
+
+% See https://tex.stackexchange.com/a/128349/61591
+\newcounter{question}[section]
+\newcommand{\Question}[1]{
+  \medskip
+  \refstepcounter{question} % See https://tex.stackexchange.com/a/388676/61591
+  \label{#1}
+  \addcontentsline{toc}{section}{  Question \thequestion} % See https://tex.stackexchange.com/a/512700/61591
+  \noindent\textbf{Question \thequestion:}
+}
+\newcommand\Answer{
+  \medskip
+  \noindent\textbf{Answer:}\\
+}
+\newcommand{\irow}[1]{ % Inline row vector, See https://tex.stackexchange.com/a/200511/61591
+  \begin{bsmallmatrix}#1\end{bsmallmatrix}
+}
+
+\makeatletter
+\newcommand\etc{etc\@ifnextchar.{}{.\@}}
+\makeatother
+
+\graphicspath{{../images/}{../plots/}}
+
+\newcommand{\institution}{Universitas Columbiae}
+
+
+\title{PHYS6080 Scientific Computing}
+\author{Qi Zhang}
+\date{\today}
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+\begin{document}
