@@ -12,6 +12,7 @@
 \usepackage{graphicx}
 \usepackage{algorithm}
 \usepackage{physics}
+\usepackage{bm}
 \usepackage[cache=false]{minted}
 \usepackage{booktabs}
 \usepackage{hyperref}
@@ -59,6 +60,7 @@
 \newcommand{\irow}[1]{ % Inline row vector, See https://tex.stackexchange.com/a/200511/61591
   \begin{bsmallmatrix}#1\end{bsmallmatrix}
 }
+\setcounter{MaxMatrixCols}{20} % See https://tex.stackexchange.com/a/436649/61591
 
 \makeatletter
 \newcommand\etc{etc\@ifnextchar.{}{.\@}}
