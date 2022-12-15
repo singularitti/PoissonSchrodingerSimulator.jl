@@ -82,7 +82,7 @@ uuid = "98e50ef6-434e-11e9-1051-2b60c6c9e899"
 version = "1.0.16"
 
 [[deps.LastHomework]]
-git-tree-sha1 = "3b73e7cd239c7d565949b600c4dcaea9246d7034"
+git-tree-sha1 = "d02aafb8e339d33b4241d9c0d1d302207977ae46"
 repo-rev = "main"
 repo-url = "https://github.com/singularitti/LastHomework.jl"
 uuid = "7c33b4bb-5f88-4700-8477-0120191a56c3"
