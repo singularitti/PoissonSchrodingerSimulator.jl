@@ -1,4 +1,5 @@
-Consider the two-dimensional region shown in Figure 1. Inside this region, you will first
+Consider the two-dimensional region shown in Figure~\ref{fig:region}.
+Inside this region, you will first
 solve an electrostatic problem and then a quantum mechanics eigenvalue problem. Let the
 region have length \(1\) in the \(x\) and \(y\) directions, given in dimensionless units.
 The solid square in the interior has length \(0.25\) and height \(0.25\) and its center is
@@ -9,6 +10,13 @@ the discretized Laplacian to a vector, i.e., to the potential \(\phi(x, y)\) or 
 wavefunction \(\psi(x, y)\) defined on this two-dimensional region. I recommend you choose a
 grid of size \((N + 1) \times (N + 1)\), with the points with values of \(0\) or \((N + 1)\)
 lying on the boundary. \(N = 128\) is a reasonable size to use.
+
+\begin{figure}[hb]
+    \centering
+    \includegraphics[width=0.5\textwidth]{region}
+    \caption{A picture of the regions mentioned in the problems.}
+    \label{fig:region}
+\end{figure}
 
 \section{Poisson's Equation}\label{sec:pe}
 
