@@ -1,14 +1,14 @@
 \Answer{}
-First, we want to discretize the laplacian operator \(\nabla^2\).
+First, we want to discretize the Laplacian operator \(\nabla^2\).
 With grid spacing \(a\), the standard discretization for a square grid is
 %
-\begin{equation}
+\begin{equation}\label{eq:del2phi}
     \nabla^2 \phi(x, y) =
     \frac{ 1 }{ a^2 } \bigl(\phi(x - a, y) - 2 \phi(x, y) + \phi(x + a, y)\bigr) +
     \frac{ 1 }{ a^2 } \bigl(\phi(x, y - a) - 2 \phi(x, y) + \phi(x, y + a)\bigr).
 \end{equation}
 %
-If we choose the basis as
+If we choose the naïve basis
 %
 \begin{equation}
     \begin{split}
@@ -22,10 +22,10 @@ If we choose the basis as
 \end{equation}
 %
 where \(N\) is the number of points on this grid.
-Then the matrix representing the laplacian can be written as (with \(a = 1\)):
+Then the matrix representing the Laplacian can be written as:
 %
-\begin{equation}
-    \nabla^2 \phi = \begin{bmatrix}
+\begin{equation}\label{eq:naive}
+    \nabla^2 \phi = \frac{1}{a^2} \begin{bmatrix}
         -2     & 0      & 1      & 0      & 0      & 0      & 0      & \cdots & 1      & 0      \\
         0      & -2     & 0      & 1      & 0      & 0      & 0      & \cdots & 0      & 1      \\
         1      & 0      & -2     & 0      & 1      & 0      & 0      & \cdots & 0      & 0      \\
@@ -35,14 +35,20 @@ Then the matrix representing the laplacian can be written as (with \(a = 1\)):
         0      & 1      & 0      & 0      & 0      & 0      & 0      & 1      & 0      & -2
     \end{bmatrix}
     \begin{bmatrix}
-        \phi(x, y)     \\
-        \phi(x, y)     \\
-        \phi(x - a, y) \\
-        \phi(x, y - a) \\
-        \phi(x + a, y) \\
-        \phi(x, y + a)
+        \phi(x, y)                           \\
+        \phi(x, y)                           \\
+        \phi(x + a, y)                       \\
+        \phi(x, y + a)                       \\
+        \vdots                               \\
+        \phi(x + (N-1)a, y) = \phi(x - a, y) \\
+        \phi(x, y + (N-1)a) = \phi(x, y - a)
     \end{bmatrix},
 \end{equation}
 %
-where we use the periodic boundary condition.
+where we apply the periodic boundary condition
+%
+\begin{align}
+    \phi(x + (N-1)a, y) & = \phi(x - a, y), \\
+    \phi(x, y + (N-1)a) & = \phi(x, y - a).
+\end{align}
 
