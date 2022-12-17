@@ -1,5 +1,5 @@
 \Answer{}
-\input{stencil}
+% \input{stencil}
 
 First, we want to discretize the Laplacian operator \(\nabla^2\).
 With grid spacing \(a\), the standard discretization for a square grid is
@@ -51,67 +51,65 @@ Here we apply the periodic boundary condition
 If we choose the lexicographical ordering basis,
 %
 \begin{equation}
-    \resizebox{0.85\hsize}{!}{$ % See https://tex.stackexchange.com/a/237051
-        \begin{split}
-            \nabla^2 \phi &= \frac{ 1 }{ a^2 } \begin{bmatrix}
-                -4     & 1      & 0      & \cdots & 0      & 1      & 1      & 0      & \cdots & 0      & 0      & \cdots & 1      & \cdots & 0      & 0      \\
-                1      & -4     & 1      & \cdots & 0      & 0      & 0      & 1      & \cdots & 1      & 0      & \cdots & 0      & \cdots & 0      & 0      \\
-                \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \ddots & \vdots & \vdots \\
-                1      & 0      & 0      & \cdots & 0      & 0      & -4     & 1      & \cdots & 1      & 1      & \cdots & 0      & \cdots & 0      & 0      \\
-                0      & 1      & 0      & \cdots & 0      & 0      & 1      & -4     & \cdots & 0      & 0      & \cdots & 0      & \cdots & 0      & 0      \\
-                \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \ddots & \vdots & \vdots \\
-                0      & 0      & 0      & \cdots & 1      & 0      & 0      & 0      & \cdots & 0      & 0      & \cdots & 0      & \cdots & -4     & 1      \\
-                0      & 0      & 0      & \cdots & 0      & 1      & 0      & 0      & \cdots & 0      & 0      & \cdots & 1      & \cdots & 1      & -4
-            \end{bmatrix}
-            \begin{bmatrix}
-                \phi_{i,j}          \\
-                \phi_{i, j+1}       \\
-                \phi_{i, j+2}       \\
-                \vdots              \\
-                \phi_{i, j+N-2}     \\
-                \phi_{i, j+N-1}     \\
-                \phi_{i+1, j}       \\
-                \phi_{i+1, j+1}     \\
-                \vdots              \\
-                \phi_{i+1, j+N-1}   \\
-                \phi_{i+2, j}       \\
-                \vdots              \\
-                \phi_{i+N-1, j}     \\
-                \vdots              \\
-                \phi_{i+N-1, j+N-2} \\
-                \phi_{i+N-1, j+N-1}
-            \end{bmatrix} \\
-            &= \frac{ 1 }{ a^2 } \begin{bmatrix}
-                -4     & 1      & 0      & \cdots & 0      & 1      & 1      & 0      & \cdots & 0      & 0      & \cdots & 1      & \cdots & 0      & 0      \\
-                1      & -4     & 1      & \cdots & 0      & 0      & 0      & 1      & \cdots & 1      & 0      & \cdots & 0      & \cdots & 0      & 0      \\
-                \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \ddots & \vdots & \vdots \\
-                1      & 0      & 0      & \cdots & 0      & 0      & -4     & 1      & \cdots & 1      & 1      & \cdots & 0      & \cdots & 0      & 0      \\
-                0      & 1      & 0      & \cdots & 0      & 0      & 1      & -4     & \cdots & 0      & 0      & \cdots & 0      & \cdots & 0      & 0      \\
-                \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \ddots & \vdots & \vdots \\
-                0      & 0      & 0      & \cdots & 1      & 0      & 0      & 0      & \cdots & 0      & 0      & \cdots & 0      & \cdots & -4     & 1      \\
-                0      & 0      & 0      & \cdots & 0      & 1      & 0      & 0      & \cdots & 0      & 0      & \cdots & 1      & \cdots & 1      & -4
-            \end{bmatrix}
-            \begin{bmatrix}
-                \phi_{i,j}      \\
-                \phi_{i, j+1}   \\
-                \phi_{i, j+2}   \\
-                \vdots          \\
-                \phi_{i, j-2}   \\
-                \phi_{i, j-1}   \\
-                \phi_{i+1, j}   \\
-                \phi_{i+1, j+1} \\
-                \vdots          \\
-                \phi_{i+1, j-1} \\
-                \phi_{i+2, j}   \\
-                \vdots          \\
-                \phi_{i-1, j}   \\
-                \vdots          \\
-                \phi_{i-1, j-2} \\
-                \phi_{i-1, j-1}
-            \end{bmatrix} \\
-            &= \mathrm{ A } \bm{x},
-        \end{split}
-    $}
+    \begin{split}
+        \nabla^2 \phi &= \frac{ 1 }{ a^2 } \begin{bsmallmatrix}
+            -4     & 1      & 0      & \cdots & 0      & 1      & 1      & 0      & \cdots & 0      & 0      & \cdots & 1      & \cdots & 0      & 0      \\
+            1      & -4     & 1      & \cdots & 0      & 0      & 0      & 1      & \cdots & 1      & 0      & \cdots & 0      & \cdots & 0      & 0      \\
+            \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \ddots & \vdots & \vdots \\
+            1      & 0      & 0      & \cdots & 0      & 0      & -4     & 1      & \cdots & 1      & 1      & \cdots & 0      & \cdots & 0      & 0      \\
+            0      & 1      & 0      & \cdots & 0      & 0      & 1      & -4     & \cdots & 0      & 0      & \cdots & 0      & \cdots & 0      & 0      \\
+            \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \ddots & \vdots & \vdots \\
+            0      & 0      & 0      & \cdots & 1      & 0      & 0      & 0      & \cdots & 0      & 0      & \cdots & 0      & \cdots & -4     & 1      \\
+            0      & 0      & 0      & \cdots & 0      & 1      & 0      & 0      & \cdots & 0      & 0      & \cdots & 1      & \cdots & 1      & -4
+        \end{bsmallmatrix}
+        \begin{bsmallmatrix}
+            \phi_{i,j}          \\
+            \phi_{i, j+1}       \\
+            \phi_{i, j+2}       \\
+            \vdots              \\
+            \phi_{i, j+N-2}     \\
+            \phi_{i, j+N-1}     \\
+            \phi_{i+1, j}       \\
+            \phi_{i+1, j+1}     \\
+            \vdots              \\
+            \phi_{i+1, j+N-1}   \\
+            \phi_{i+2, j}       \\
+            \vdots              \\
+            \phi_{i+N-1, j}     \\
+            \vdots              \\
+            \phi_{i+N-1, j+N-2} \\
+            \phi_{i+N-1, j+N-1}
+        \end{bsmallmatrix} \\
+        &= \frac{ 1 }{ a^2 } \begin{bsmallmatrix}
+            -4     & 1      & 0      & \cdots & 0      & 1      & 1      & 0      & \cdots & 0      & 0      & \cdots & 1      & \cdots & 0      & 0      \\
+            1      & -4     & 1      & \cdots & 0      & 0      & 0      & 1      & \cdots & 1      & 0      & \cdots & 0      & \cdots & 0      & 0      \\
+            \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \ddots & \vdots & \vdots \\
+            1      & 0      & 0      & \cdots & 0      & 0      & -4     & 1      & \cdots & 1      & 1      & \cdots & 0      & \cdots & 0      & 0      \\
+            0      & 1      & 0      & \cdots & 0      & 0      & 1      & -4     & \cdots & 0      & 0      & \cdots & 0      & \cdots & 0      & 0      \\
+            \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \ddots & \vdots & \vdots \\
+            0      & 0      & 0      & \cdots & 1      & 0      & 0      & 0      & \cdots & 0      & 0      & \cdots & 0      & \cdots & -4     & 1      \\
+            0      & 0      & 0      & \cdots & 0      & 1      & 0      & 0      & \cdots & 0      & 0      & \cdots & 1      & \cdots & 1      & -4
+        \end{bsmallmatrix}
+        \begin{bsmallmatrix}
+            \phi_{i,j}      \\
+            \phi_{i, j+1}   \\
+            \phi_{i, j+2}   \\
+            \vdots          \\
+            \phi_{i, j-2}   \\
+            \phi_{i, j-1}   \\
+            \phi_{i+1, j}   \\
+            \phi_{i+1, j+1} \\
+            \vdots          \\
+            \phi_{i+1, j-1} \\
+            \phi_{i+2, j}   \\
+            \vdots          \\
+            \phi_{i-1, j}   \\
+            \vdots          \\
+            \phi_{i-1, j-2} \\
+            \phi_{i-1, j-1}
+        \end{bsmallmatrix} \\
+        &= \mathrm{ A } \bm{x},
+    \end{split}
 \end{equation}
 %
 where \(\mathrm{ A }\) is a \(N^2 \times N^2\) matrix,
