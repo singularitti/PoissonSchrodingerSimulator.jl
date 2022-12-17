@@ -1,0 +1,22 @@
+\begin{figure}
+    \centering
+    \begin{adjustbox}{width=\textwidth} % Scale a `tikzpicture`, see https://tex.stackexchange.com/a/11536/61591
+        \begin{tikzpicture}
+            \draw[thick] (0,0) grid (32,32); % See https://tex.stackexchange.com/a/552215
+            \draw[thick,->] (0,0) -- (33,0) node[anchor=north west] {\(x\)}; % See https://www.overleaf.com/learn/latex/LaTeX_Graphics_using_TikZ%3A_A_Tutorial_for_Beginners_(Part_1)%E2%80%94Basic_Drawing
+            \draw[thick,->] (0,0) -- (0,33) node[anchor=south east] {\(y\)};
+            \foreach \x in {0,...,32}
+            \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north] {\(\x\)};
+            \foreach \y in {0,...,32}
+            \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {\(\y\)};
+            % See https://tex.stackexchange.com/a/21164/61591
+            \node[circle,fill,draw,minimum size=1.5cm,inner sep=0pt,text=white] (charge1) at (8,4) {\((8, 4)\)};
+            \node[circle,fill,draw,minimum size=1.5cm,inner sep=0pt,text=white] (charge2) at (24,4) {\((24, 4)\)};
+            \newcommand\Square[1]{+(-#1,-#1) rectangle +(#1,#1)} % See https://tex.stackexchange.com/a/58930/61591
+            \fill (20,24) \Square{4};
+            \node[text=white] at (20,24) {\Large \((20, 24)\), \(a = 8\)};
+        \end{tikzpicture}
+    \end{adjustbox}
+    \caption{A schematic plot of the two-dimensional region of size \(N = 32\).}
+    \label{fig:grid}
+\end{figure}
