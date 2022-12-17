@@ -1,4 +1,22 @@
 \Answer{}
+The problem to solve is
+%
+\begin{spreadlines}{2ex} % See https://tex.stackexchange.com/a/577172
+    \begin{equation}
+        \begin{dcases}
+            \begin{aligned}
+                \nabla^2 \phi(x, y) & = -\rho, \quad & (x, y) \in \square,         \\
+                \phi(x, y)          & = 0, \quad     & (x, y) \in \partial\square, \\
+                \phi(x, y)          & = 5, \quad     & (x, y) \in \blacksquare,
+            \end{aligned}
+        \end{dcases}
+    \end{equation}
+\end{spreadlines}
+%
+where \(\square\) denotes the two-dimensional simulation box,
+\(\partial\square\) denotes the boundary of the box,
+and \(\blacksquare\) denotes the solid internal square.
+
 % \input{stencil}
 
 First, we want to discretize the Laplacian operator \(\nabla^2\).
