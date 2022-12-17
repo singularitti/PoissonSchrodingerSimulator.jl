@@ -8,47 +8,83 @@ With grid spacing \(a\), the standard discretization for a square grid is
     \frac{ 1 }{ a^2 } \bigl(\phi(x, y - a) - 2 \phi(x, y) + \phi(x, y + a)\bigr).
 \end{equation}
 %
-If we choose the naïve basis
+We simplify Equation~\eqref{eq:del2phi} as
 %
 \begin{equation}
-    \begin{split}
-        \bm{x}_{0} &= \irow{1 & 0 & 0 & 0 & \ldots & 0 & 0 & 0}^\top, \\
-        \bm{y}_{0} &= \irow{0 & 1 & 0 & 0 & \ldots & 0 & 0 & 0}^\top, \\
-        \bm{x}_{1} &= \irow{0 & 0 & 1 & 0 & \ldots & 0 & 0 & 0}^\top, \\
-        \bm{y}_{1} &= \irow{0 & 0 & 0 & 1 & \ldots & 0 & 0 & 0}^\top, \\
-        \bm{x}_{N - 1} &= \irow{0 & 0 & 0 & 0 & \ldots & 1 & 0}^\top, \\
-        \bm{y}_{N - 1} &= \irow{0 & 0 & 0 & 0 & \ldots & 0 & 1}^\top,
-    \end{split}
+    \bigl(\nabla^2 \phi\bigr)_{i, j} = \frac{1}{a^2} \bigl(
+    -4 \phi_{i, j} + \phi_{i+1, j} + \phi_{i-1, j} + \phi_{i, j-1} + \phi_{i, j+1}
+    \bigr),
 \end{equation}
 %
-where \(N\) is the number of points on this grid.
-Then the matrix representing the Laplacian can be written as:
+where \(i\) and \(j\) label the \(x\) and \(y\) coordinates, respectively.
+With such notation, we can write more equations:
 %
-\begin{equation}\label{eq:naive}
-    \nabla^2 \phi = \frac{1}{a^2} \begin{bmatrix}
-        -2     & 0      & 1      & 0      & 0      & 0      & 0      & \cdots & 1      & 0      \\
-        0      & -2     & 0      & 1      & 0      & 0      & 0      & \cdots & 0      & 1      \\
-        1      & 0      & -2     & 0      & 1      & 0      & 0      & \cdots & 0      & 0      \\
-        0      & 1      & 0      & -2     & 0      & 1      & 0      & \cdots & 0      & 0      \\
-        \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
-        1      & 0      & 0      & 0      & 0      & 0      & 1      & 0      & -2     & 0      \\
-        0      & 1      & 0      & 0      & 0      & 0      & 0      & 1      & 0      & -2
-    \end{bmatrix}
-    \begin{bmatrix}
-        \phi(x, y)                           \\
-        \phi(x, y)                           \\
-        \phi(x + a, y)                       \\
-        \phi(x, y + a)                       \\
-        \vdots                               \\
-        \phi(x + (N-1)a, y) = \phi(x - a, y) \\
-        \phi(x, y + (N-1)a) = \phi(x, y - a)
-    \end{bmatrix},
-\end{equation}
+\begin{align}
+    \bigl(\nabla^2 \phi\bigr)_{i, j+1}   & = \frac{1}{a^2} (
+    \phi_{i, j} - 4\phi_{i, j+1} + \phi_{i, j+2} + \phi_{i+1, j+1} + \phi_{i-1, j+1}
+    ),                                                       \\
+    \bigl(\nabla^2 \phi\bigr)_{i+1, j}   & = \frac{1}{a^2} (
+    \phi_{i, j} - 4\phi_{i+1, j} + \phi_{i+1, j+1} + \phi_{i+1, j-1} + \phi_{i+2, j}
+    ),                                                       \\
+    \bigl(\nabla^2 \phi\bigr)_{i+1, j+1} & = \frac{1}{a^2} (
+    \phi_{i, j+1} + \phi_{i+1, j} - 4\phi_{i+1, j+1} + \phi_{i+1, j+2} + \phi_{i+2, j+1}
+    ),                                                       \\
+                                         & \vdots            \\
+    \bigl(\nabla^2 \phi\bigr)_{i-1, j-2} & = \frac{1}{a^2} (
+    \phi_{i-1, j-3} + \phi_{i, j-2} + \phi_{i-2, j-2} - 4\phi_{i-1, j-2} + \phi_{i-1, j-1}
+    ),                                                       \\
+    \bigl(\nabla^2 \phi\bigr)_{i-1, j-1} & = \frac{1}{a^2} (
+    \phi_{i-1, j} + \phi_{i-1, j-2} + \phi_{i, j-1} + \phi_{i-2, j-1} - 4\phi_{i-1, j-1}
+    ).
+\end{align}
 %
-where we apply the periodic boundary condition
+Here we apply the periodic boundary condition
 %
 \begin{align}
     \phi(x + (N-1)a, y) & = \phi(x - a, y), \\
     \phi(x, y + (N-1)a) & = \phi(x, y - a).
 \end{align}
+
+If we choose the lexicographical ordering basis:
+%
+\begin{equation}
+    \resizebox{0.9\hsize}{!}{$ % See https://tex.stackexchange.com/a/237051
+            \begin{bNiceMatrix}[first-row,first-col]
+                      & j      & j+1    & j+2    &        & j+N-2  & j+N-1  & j      & j+1    &        & j+N-1  & j      &        & j      &        & j+N-2  & j+N-1  \\
+                i     & -4     & 1      & 0      & \cdots & 0      & 1      & 1      & 0      & \cdots & 0      & 0      & \cdots & 1      & \cdots & 0      & 0      \\
+                i     & 1      & -4     & 1      & \cdots & 0      & 0      & 0      & 1      & \cdots & 1      & 0      & \cdots & 0      & \cdots & 0      & 0      \\
+                      & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \ddots & \vdots & \vdots \\
+                i+1   & 1      & 0      & 0      & \cdots & 0      & 0      & -4     & 1      & \cdots & 1      & 1      & \cdots & 0      & \cdots & 0      & 0      \\
+                i+1   & 0      & 1      & 0      & \cdots & 0      & 0      & 1      & -4     & \cdots & 0      & 0      & \cdots & 0      & \cdots & 0      & 0      \\
+                      & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \ddots & \vdots & \vdots \\
+                i+N-1 & 0      & 0      & 0      & \cdots & 1      & 0      & 0      & 0      & \cdots & 0      & 0      & \cdots & 0      & \cdots & -4     & 1      \\
+                i+N-1 & 0      & 0      & 0      & \cdots & 0      & 1      & 0      & 0      & \cdots & 0      & 0      & \cdots & 1      & \cdots & 1      & -4
+            \end{bNiceMatrix}
+            \begin{bmatrix}
+                \phi_{i,j}          \\
+                \phi_{i, j+1}       \\
+                \phi_{i, j+2}       \\
+                \vdots              \\
+                \phi_{i, j+N-2}     \\
+                \phi_{i, j+N-1}     \\
+                \phi_{i+1, j}       \\
+                \phi_{i+1, j+1}     \\
+                \vdots              \\
+                \phi_{i+1, j+N-1}   \\
+                \phi_{i+2, j}       \\
+                \vdots              \\
+                \phi_{i+N-1, j}     \\
+                \vdots              \\
+                \phi_{i+N-1, j+N-2} \\
+                \phi_{i+N-1, j+N-1}
+            \end{bmatrix}
+        $}
+\end{equation}
+%
+where \(\mathrm{ A }\) is a \(N^2 \times N^2\) matrix,
+and \(x\) is a \(N^2 \times 1\) vector.
+
+Obviously, the discrete Laplacian is a sparse matrix.
+We could use sparse matrix algorithms or just use~\eqref{eq:del2phi} in the actual
+implementation.
 
