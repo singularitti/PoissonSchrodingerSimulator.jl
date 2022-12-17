@@ -1,6 +1,7 @@
 \documentclass[12pt,twoside]{article}
 
 \usepackage[margin=1in]{geometry}
+\usepackage{tikz}
 \usepackage{datetime}
 \usepackage{fontspec}
 \usepackage[T1]{fontenc}
@@ -23,6 +24,10 @@
 \usepackage{newpxtext} % See https://tex.stackexchange.com/a/504370/61591 and https://tex.stackexchange.com/a/572939/61591
 \usepackage{newpxmath} % Use Palatino font for text and math
 % \addbibresource{ref.bib}
+
+% See https://tex.stackexchange.com/a/227247
+\tikzset{every label/.style={font=\footnotesize,inner sep=1pt}}
+\newcommand{\stencilpt}[4][]{\node[circle,fill,draw,inner sep=1.5pt,label={above left:#4},#1] at (#2) (#3) {}}
 
 \newminted{julia}{
   autogobble,

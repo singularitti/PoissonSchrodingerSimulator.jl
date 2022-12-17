@@ -1,0 +1,20 @@
+% See https://tex.stackexchange.com/a/227247
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \draw[thick] (0,0) grid (4,4); % See https://tex.stackexchange.com/a/552215
+        \stencilpt[red]{2,2}{i}  {$-4$};
+        \stencilpt{1,2}{i-1}{$1$};
+        \stencilpt{3,2}{i+1}{$1$};
+        \stencilpt{2,1}{j-1}{$1$};
+        \stencilpt{2,3}{j+1}{$1$};
+        \draw
+        (j-1) -- (i)
+        (i)   -- (j+1)
+        (i-1) -- (i)
+        (i)   -- (i+1);
+    \end{tikzpicture}
+    \caption{The \href{https://en.wikipedia.org/wiki/Five-point_stencil}{five-point stencil}
+        for the discretization of a Laplacian using central differences.}
+    \label{fig:stencil}
+\end{figure}
