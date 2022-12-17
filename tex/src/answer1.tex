@@ -12,7 +12,7 @@ With grid spacing \(a\), the standard discretization for a square grid is
 %
 We simplify Equation~\eqref{eq:del2phi} as
 %
-\begin{equation}
+\begin{equation}\label{eq:del2phisim}
     \bigl(\nabla^2 \phi\bigr)_{i, j} = \frac{1}{a^2} \bigl(
     -4 \phi_{i, j} + \phi_{i+1, j} + \phi_{i-1, j} + \phi_{i, j-1} + \phi_{i, j+1}
     \bigr),
@@ -20,7 +20,8 @@ We simplify Equation~\eqref{eq:del2phi} as
 %
 where \(i\) and \(j\) label the \(x\) and \(y\) coordinates, respectively.
 By starting at the lower left corner and traversing in the \(y\)-direction first, and
-subsequently in the \(x\)-direction we get the following system of equations:
+subsequently in the \(x\)-direction---the lexicographical ordering---we get the following
+system of equations:
 %
 \begin{align}
     \bigl(\nabla^2 \phi\bigr)_{i, j+1}   & = \frac{1}{a^2} (
@@ -38,7 +39,7 @@ subsequently in the \(x\)-direction we get the following system of equations:
     ),                                                       \\
     \bigl(\nabla^2 \phi\bigr)_{i-1, j-1} & = \frac{1}{a^2} (
     \phi_{i-1, j} + \phi_{i-1, j-2} + \phi_{i, j-1} + \phi_{i-2, j-1} - 4\phi_{i-1, j-1}
-    ).
+    ).\label{eq:delend}
 \end{align}
 %
 Here we apply the periodic boundary condition
@@ -48,11 +49,12 @@ Here we apply the periodic boundary condition
     \phi(x, y + (N-1)a) & = \phi(x, y - a).
 \end{align}
 
-If we choose the lexicographical ordering basis,
+We can simplify Equations~\eqref{eq:del2phisim} to~\eqref{eq:delend} into a matrix
+representation, i.e., the discrete Laplacian representation:
 %
 \begin{equation}
     \begin{split}
-        \nabla^2 \phi &= \frac{ 1 }{ a^2 } \begin{bsmallmatrix}
+        \bm{b} &= \frac{ 1 }{ a^2 } \begin{bsmallmatrix}
             -4     & 1      & 0      & \cdots & 0      & 1      & 1      & 0      & \cdots & 0      & 0      & \cdots & 1      & \cdots & 0      & 0      \\
             1      & -4     & 1      & \cdots & 0      & 0      & 0      & 1      & \cdots & 1      & 0      & \cdots & 0      & \cdots & 0      & 0      \\
             \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \ddots & \vdots & \vdots \\
@@ -112,7 +114,7 @@ If we choose the lexicographical ordering basis,
     \end{split}
 \end{equation}
 %
-where \(\mathrm{ A }\) is a \(N^2 \times N^2\) matrix,
+where \(\mathrm{ A }\) (the discrete Laplacian) is a \(N^2 \times N^2\) matrix,
 and \(\bm{x}\) is a \(N^2 \times 1\) vector.
 Notice that the structure of the coefficient matrix \(\mathrm{ A }\) is completely dictated
 by the way that the basis is ordered.
