@@ -5,9 +5,9 @@ The problem to solve is
     \begin{equation}
         \begin{dcases}
             \begin{aligned}
-                \nabla^2 \phi(x, y) & = -\rho, \quad & (x, y) \in \square,         \\
-                \phi(x, y)          & = 0, \quad     & (x, y) \in \partial\square, \\
-                \phi(x, y)          & = 5, \quad     & (x, y) \in \blacksquare,
+                \nabla^2 \phi(x, y) & = -\rho, & (x, y) \in \square;         \\
+                \phi(x, y)          & = 0,     & (x, y) \in \partial\square; \\
+                \phi(x, y)          & = 5,     & (x, y) \in \blacksquare;
             \end{aligned}
         \end{dcases}
     \end{equation}
@@ -36,6 +36,7 @@ We simplify Equation~\eqref{eq:del2phi} as
     \bigr),
 \end{equation}
 %
+for all \(i\) and \(j\),
 where \(i\) and \(j\) label the \(x\) and \(y\) coordinates, respectively.
 By starting at the lower left corner and traversing in the \(y\)-direction first, and
 subsequently in the \(x\)-direction---the lexicographical ordering---we get the following
@@ -72,7 +73,7 @@ representation, i.e., the discrete Laplacian representation:
 %
 \begin{equation}
     \begin{split}
-        \bm{b} &= \frac{ 1 }{ a^2 } \begin{bsmallmatrix}
+        -\bm{\rho} &= \frac{ 1 }{ a^2 } \begin{bsmallmatrix}
             -4     & 1      & 0      & \cdots & 0      & 1      & 1      & 0      & \cdots & 0      & 0      & \cdots & 1      & \cdots & 0      & 0      \\
             1      & -4     & 1      & \cdots & 0      & 0      & 0      & 1      & \cdots & 1      & 0      & \cdots & 0      & \cdots & 0      & 0      \\
             \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \ddots & \vdots & \vdots \\
@@ -83,65 +84,36 @@ representation, i.e., the discrete Laplacian representation:
             0      & 0      & 0      & \cdots & 0      & 1      & 0      & 0      & \cdots & 0      & 0      & \cdots & 1      & \cdots & 1      & -4
         \end{bsmallmatrix}
         \begin{bsmallmatrix}
-            \phi_{i,j}          \\
-            \phi_{i, j+1}       \\
-            \phi_{i, j+2}       \\
-            \vdots              \\
-            \phi_{i, j+N-2}     \\
-            \phi_{i, j+N-1}     \\
-            \phi_{i+1, j}       \\
-            \phi_{i+1, j+1}     \\
-            \vdots              \\
-            \phi_{i+1, j+N-1}   \\
-            \phi_{i+2, j}       \\
-            \vdots              \\
-            \phi_{i+N-1, j}     \\
-            \vdots              \\
-            \phi_{i+N-1, j+N-2} \\
-            \phi_{i+N-1, j+N-1}
+            \phi_{0, 0} \\
+            \phi_{0, 1} \\
+            \phi_{0, 2} \\
+            \vdots \\
+            \phi_{0, N-2} = \phi_{0, -2} \\
+            \phi_{0, N-1} = \phi_{0, -1} \\
+            \phi_{1, 0} \\
+            \phi_{1, 1} \\
+            \vdots \\
+            \phi_{1, N-1} = \phi_{1, -1} \\
+            \phi_{2, 0} \\
+            \vdots \\
+            \phi_{N-1, 0} = \phi_{-1, 0} \\
+            \vdots \\
+            \phi_{N-1, N-2} = \phi_{-1, -2} \\
+            \phi_{N-1, N-1} = \phi_{-1, -1}
         \end{bsmallmatrix} \\
-        &= \frac{ 1 }{ a^2 } \begin{bsmallmatrix}
-            -4     & 1      & 0      & \cdots & 0      & 1      & 1      & 0      & \cdots & 0      & 0      & \cdots & 1      & \cdots & 0      & 0      \\
-            1      & -4     & 1      & \cdots & 0      & 0      & 0      & 1      & \cdots & 1      & 0      & \cdots & 0      & \cdots & 0      & 0      \\
-            \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \ddots & \vdots & \vdots \\
-            1      & 0      & 0      & \cdots & 0      & 0      & -4     & 1      & \cdots & 1      & 1      & \cdots & 0      & \cdots & 0      & 0      \\
-            0      & 1      & 0      & \cdots & 0      & 0      & 1      & -4     & \cdots & 0      & 0      & \cdots & 0      & \cdots & 0      & 0      \\
-            \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \ddots & \vdots & \vdots \\
-            0      & 0      & 0      & \cdots & 1      & 0      & 0      & 0      & \cdots & 0      & 0      & \cdots & 0      & \cdots & -4     & 1      \\
-            0      & 0      & 0      & \cdots & 0      & 1      & 0      & 0      & \cdots & 0      & 0      & \cdots & 1      & \cdots & 1      & -4
-        \end{bsmallmatrix}
-        \begin{bsmallmatrix}
-            \phi_{i,j}      \\
-            \phi_{i, j+1}   \\
-            \phi_{i, j+2}   \\
-            \vdots          \\
-            \phi_{i, j-2}   \\
-            \phi_{i, j-1}   \\
-            \phi_{i+1, j}   \\
-            \phi_{i+1, j+1} \\
-            \vdots          \\
-            \phi_{i+1, j-1} \\
-            \phi_{i+2, j}   \\
-            \vdots          \\
-            \phi_{i-1, j}   \\
-            \vdots          \\
-            \phi_{i-1, j-2} \\
-            \phi_{i-1, j-1}
-        \end{bsmallmatrix} \\
-        &= \mathrm{ A } \bm{x},
+        &= \mathrm{ A } \bm{\phi},
     \end{split}
 \end{equation}
 %
 where \(\mathrm{ A }\) (the discrete Laplacian) is a \(N^2 \times N^2\) matrix,
-and \(\bm{x}\) is a \(N^2 \times 1\) vector.
+and \(\bm{\phi}\) and \(\bm{\rho}\) are \(N^2 \times 1\) vectors.
 Notice that the structure of the coefficient matrix \(\mathrm{ A }\) is completely dictated
 by the way that the basis is ordered.
 The non-zero elements in the coefficient matrix are markers for which \(\phi\) is coupled
 with each other.
-In \(\bm{x}\), we order the \(\phi\)'s in \(y\)-direction first and then \(x\)-direction,
-as stated above.
+In vector \(\bm{\phi}\), we order the \(\phi\)'s in \(y\)-direction first and then
+\(x\)-direction, as stated above.
 
 Obviously, the discrete Laplacian is a sparse matrix.
 We could use sparse matrix algorithms or just use~\eqref{eq:del2phi} in the actual
 implementation.
-
