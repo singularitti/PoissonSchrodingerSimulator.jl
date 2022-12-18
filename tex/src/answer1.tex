@@ -71,7 +71,7 @@ Here we apply the periodic boundary condition
 We can simplify Equations~\eqref{eq:del2phisim} to~\eqref{eq:delend} into a matrix
 representation, i.e., the discrete Laplacian representation:
 %
-\begin{equation}
+\begin{equation}\label{eq:Axb}
     \begin{split}
         -\bm{\rho} &= \frac{ 1 }{ a^2 } \begin{bsmallmatrix}
             -4     & 1      & 0      & \cdots & 0      & 1      & 1      & 0      & \cdots & 0      & 0      & \cdots & 1      & \cdots & 0      & 0      \\
@@ -118,9 +118,24 @@ Obviously, the discrete Laplacian is a sparse matrix.
 We could use sparse matrix algorithms or just use~\eqref{eq:del2phi} in the actual
 implementation.
 
+For a box of size \(N\), the linear index \(n\) of point \((x, y)\) is
+%
+\begin{equation}
+    n = N x + y
+\end{equation}
+%
+in the \(y\)-direction first indexing order, where \(n = 1\), \(\ldots\), \(N^2\).
+We draw a schematic plot of the system with \(N = 32\) for simplicity in
+Figure~\ref{fig:grid}, where you can observe this relation.
+In the iterative solver for Equation~\ref{eq:Axb},
+the initial vector \(\bm{\rho}(0)\) has \(\rho(0)_a = -20\) and \(\rho(0)_b = -20\),
+and zero everywhere else,
+where \(a\) and \(b\) are the linear indices of the two charges.
+And the initial vector \(\bm{\phi}(0)\) has \(5\) in the components corresponding to
+the points in the solid square, and has zero in the components corresponding to
+the boundary of the region while having non-zero values everywhere else.
 The solid square in the interior has length \(\frac{1}{4}\) and height \(\frac{1}{4}\) and
 its center is at \((x, y) = (\frac{5}{8}, \frac{3}{4})\).
 The point charges are at \((\frac{1}{4}, \frac{1}{8})\) and \((\frac{3}{4}, \frac{1}{8})\).
-For a box of size \(N = 128\),
 
 \input{grid}
