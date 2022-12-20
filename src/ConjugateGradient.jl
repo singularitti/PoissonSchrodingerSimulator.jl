@@ -70,3 +70,19 @@ Base.getindex(iter::EachStep, i) = getindex(iter.history.data, i)
 Base.firstindex(iter::EachStep) = firstindex(iter.history.data)
 
 Base.lastindex(iter::EachStep) = lastindex(iter.history.data)
+
+function Base.show(io::IO, step::IterationStep)
+    if get(io, :compact, false) || get(io, :typeinfo, nothing) == typeof(step)
+        Base.show_default(IOContext(io, :limit => true), step)  # From https://github.com/mauro3/Parameters.jl/blob/ecbf8df/src/Parameters.jl#L556
+    else
+        println(io, summary(step))
+        println(io, " n = ", Int(step.n))
+        println(io, " α = ", step.alpha)
+        println(io, " β = ", step.beta)
+        println(io, " 𝐱 = ", step.x)
+        println(io, " 𝐫 = ", step.r)
+        println(io, " 𝐩 = ", step.p)
+    end
+end
+
+end
