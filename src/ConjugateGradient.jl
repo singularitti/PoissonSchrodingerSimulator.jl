@@ -20,7 +20,7 @@ mutable struct ConvergenceHistory
     data::OffsetVector{IterationStep}
 end
 
-function solve(A, 𝐛, 𝐱₀, ε=eps(), maxiter=2000)
+function solve(A, 𝐛, 𝐱₀=zeros(length(𝐛)), ε=eps(), maxiter=2000)
     history = ConvergenceHistory(maxiter, false, OffsetVector([], Origin(0)))
     𝐱ₙ = 𝐱₀
     𝐫ₙ = 𝐛 - A * 𝐱ₙ  # Initial residual, 𝐫₀
