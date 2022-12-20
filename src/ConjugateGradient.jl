@@ -22,25 +22,24 @@ end
 
 function solve(A, 𝐛, 𝐱₀, ε=eps(), maxiter=2000)
     history = ConvergenceHistory(maxiter, false, OffsetVector([], Origin(0)))
-    𝐱 = 𝐱₀
-    𝐫 = 𝐛 - A * 𝐱  # Residual
-    𝐩 = 𝐫  # Momentum
-    α = compute_alpha(A, 𝐫, 𝐩)
-    β = compute_beta(A, 𝐫, 𝐩)
-    push!(history.data, IterationStep(0, α, β, 𝐱₀, 𝐫, 𝐩))
-    for n in 1:maxiter
-        𝐱 = 𝐱 + α * 𝐩  # Do not do in-place change!
-        𝐫′ = 𝐫 - α * A * 𝐩  # Trial move
-        if norm(𝐫′) < ε
+    𝐱ₙ = 𝐱₀
+    𝐫ₙ = 𝐛 - A * 𝐱ₙ  # Initial residual, 𝐫₀
+    𝐩ₙ = 𝐫ₙ  # Initial momentum, 𝐩₀
+    for n in 0:maxiter
+        if norm(𝐫ₙ) < ε
             history.isconverged = true
-        else
-            β = compute_beta(𝐫′, 𝐫)
-            𝐩 = 𝐫′ + β * 𝐩
-            𝐫 = 𝐫′  # Accept the trial move
-            push!(history.data, IterationStep(n, α, β, 𝐱, 𝐫, 𝐩))
+            break
         end
+        αₙ = compute_alpha(A, 𝐫ₙ, 𝐩ₙ)
+        𝐱ₙ₊₁ = 𝐱ₙ + αₙ * 𝐩ₙ
+        𝐫ₙ₊₁ = 𝐫ₙ - αₙ * A * 𝐩ₙ
+        βₙ = compute_beta(𝐫ₙ₊₁, 𝐫ₙ)
+        𝐩ₙ₊₁ = 𝐫ₙ₊₁ + βₙ * 𝐩ₙ
+        push!(history.data, IterationStep(n, αₙ, βₙ, 𝐱ₙ, 𝐫ₙ, 𝐩ₙ))
+        # Prepare for a new iteration
+        𝐱ₙ, 𝐫ₙ, 𝐩ₙ = 𝐱ₙ₊₁, 𝐫ₙ₊₁, 𝐩ₙ₊₁
     end
-    return 𝐱, history
+    return 𝐱ₙ, history
 end
 
 compute_alpha(A, 𝐫, 𝐩) = dot(𝐫, 𝐫) / dot(𝐩, A, 𝐩)
