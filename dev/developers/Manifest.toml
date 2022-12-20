@@ -88,8 +88,8 @@ uuid = "98e50ef6-434e-11e9-1051-2b60c6c9e899"
 version = "1.0.16"
 
 [[deps.LastHomework]]
-deps = ["LinearAlgebra", "OffsetArrays"]
-git-tree-sha1 = "ced54cbdbffaa0bc4d65d82eef23e7b9d29d16f4"
+deps = ["LinearAlgebra", "OffsetArrays", "RecipesBase"]
+git-tree-sha1 = "f7a43ee7311b9cc7f079d981d3a0ddf3e7cffc54"
 repo-rev = "main"
 repo-url = "https://github.com/singularitti/LastHomework.jl"
 uuid = "7c33b4bb-5f88-4700-8477-0120191a56c3"
@@ -182,6 +182,12 @@ uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 [[deps.Random]]
 deps = ["SHA", "Serialization"]
 uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+
+[[deps.RecipesBase]]
+deps = ["SnoopPrecompile"]
+git-tree-sha1 = "18c35ed630d7229c5584b945641a73ca83fb5213"
+uuid = "3cdcf5f2-1ef4-517c-9805-6587b60abb01"
+version = "1.3.2"
 
 [[deps.SHA]]
 uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
