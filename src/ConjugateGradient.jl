@@ -3,7 +3,7 @@ module ConjugateGradient
 using LinearAlgebra: dot, norm
 using OffsetArrays: OffsetVector, Origin
 
-export solve, isconverged
+export solve, isconverged, eachstep
 
 mutable struct IterationStep
     n::UInt64
@@ -50,4 +50,23 @@ compute_beta(𝐫ₙ₊₁, 𝐫ₙ) = dot(𝐫ₙ₊₁, 𝐫ₙ₊₁) / dot(�
 
 isconverged(ch::ConvergenceHistory) = ch.isconverged
 
+struct EachStep
+    history::ConvergenceHistory
 end
+
+eachstep(ch::ConvergenceHistory) = EachStep(ch)
+
+Base.iterate(iter::EachStep) = iterate(iter.history.data)
+Base.iterate(iter::EachStep, state) = iterate(iter.history.data, state)
+
+Base.eltype(::EachStep) = IterationStep
+
+Base.length(iter::EachStep) = length(iter.history.data)
+
+Base.size(iter::EachStep, dim...) = size(iter.history.data, dim...)
+
+Base.getindex(iter::EachStep, i) = getindex(iter.history.data, i)
+
+Base.firstindex(iter::EachStep) = firstindex(iter.history.data)
+
+Base.lastindex(iter::EachStep) = lastindex(iter.history.data)
