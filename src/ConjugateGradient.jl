@@ -2,6 +2,8 @@ module ConjugateGradient
 
 using LinearAlgebra: dot, norm
 
+export solve, isconverged
+
 struct IterationStep
     n::UInt64
     alpha::Float64
