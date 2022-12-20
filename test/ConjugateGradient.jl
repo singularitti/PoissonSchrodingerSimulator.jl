@@ -1,6 +1,6 @@
 module ConjugateGradient
 
-using LastHomework: solve, isconverged, eachstep
+using LastHomework.ConjugateGradient: solve, isconverged, eachstep
 using LinearAlgebra: norm
 using Test: @testset, @test
 
