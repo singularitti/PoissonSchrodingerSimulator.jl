@@ -16,7 +16,7 @@ mutable struct ConvergenceHistory
     history::Vector{IterationStep}
 end
 
-function solve(A, 𝐛, 𝐱₀, ε, maxiter)
+function solve(A, 𝐛, 𝐱₀, ε=eps(), maxiter=2000)
     history = ConvergenceHistory(false, [])
     𝐱 = 𝐱₀
     𝐫 = 𝐛 - A * 𝐱  # Residual
