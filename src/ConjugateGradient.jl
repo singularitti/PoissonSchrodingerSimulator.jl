@@ -20,13 +20,13 @@ mutable struct ConvergenceHistory
     data::OffsetVector{IterationStep}
 end
 
-function solve(A, 𝐛, 𝐱₀=zeros(length(𝐛)), ε=eps(), maxiter=2000)
+function solve(A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxiter=2000)
     history = ConvergenceHistory(maxiter, false, OffsetVector([], Origin(0)))
     𝐱ₙ = 𝐱₀
     𝐫ₙ = 𝐛 - A * 𝐱ₙ  # Initial residual, 𝐫₀
     𝐩ₙ = 𝐫ₙ  # Initial momentum, 𝐩₀
     for n in 0:maxiter
-        if norm(𝐫ₙ) < ε
+        if norm(𝐫ₙ) < atol
             history.isconverged = true
             break
         end
