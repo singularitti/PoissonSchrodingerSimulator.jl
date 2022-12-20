@@ -37,7 +37,7 @@ end
     𝐱₀ = [1, 2]
     𝐱, ch = solve(A, 𝐛, 𝐱₀, 1e-24)
     @test 𝐱 ≈ [0.2222222222222221, 0.8888888888888891]  # Compare with other's result
-    @test norm(A * 𝐱 - 𝐛) / norm(𝐛) ≤ 1e-12
+    @test norm(A * 𝐱 - 𝐛) / norm(𝐛) == 0
     @test isconverged(ch) == true
     steps = eachstep(ch)
     @test steps[0].r == steps[0].p == -[5, 3]
