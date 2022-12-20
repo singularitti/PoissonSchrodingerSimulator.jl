@@ -4,7 +4,7 @@ using LinearAlgebra: dot, norm
 
 export solve, isconverged
 
-struct IterationStep
+mutable struct IterationStep
     n::UInt64
     alpha::Float64
     beta::Float64
