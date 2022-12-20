@@ -51,6 +51,40 @@ analytical solution for a point charge without boundaries. (This should be the C
 potential for a two-dimensional world, which has \(V(r) \sim -\ln r\), not the \(1/r\)
 from our three-dimensional world.)
 
+\subsection{The conjugate gradient method}
+
+The conjugate gradient method
+
+
+\begin{algorithm}
+    \caption{The conjugate gradient method implementation of solving
+        \(\mathrm{ A }\mathbf{ x } = \mathbf{ b }\).}
+    \label{lst:cg}
+    \begin{juliacode}
+function solve(A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxiter=2000)
+    history = ConvergenceHistory(maxiter, false, OffsetVector([], Origin(0)))
+    𝐱ₙ = 𝐱₀
+    𝐫ₙ = 𝐛 - A * 𝐱ₙ  # Initial residual, 𝐫₀
+    𝐩ₙ = 𝐫ₙ  # Initial momentum, 𝐩₀
+    for n in 0:maxiter
+        if norm(𝐫ₙ) < atol
+            history.isconverged = true
+            break
+        end
+        αₙ = compute_alpha(A, 𝐫ₙ, 𝐩ₙ)
+        𝐱ₙ₊₁ = 𝐱ₙ + αₙ * 𝐩ₙ
+        𝐫ₙ₊₁ = 𝐫ₙ - αₙ * A * 𝐩ₙ
+        βₙ = compute_beta(𝐫ₙ₊₁, 𝐫ₙ)
+        𝐩ₙ₊₁ = 𝐫ₙ₊₁ + βₙ * 𝐩ₙ
+        push!(history.data, IterationStep(n, αₙ, βₙ, 𝐱ₙ, 𝐫ₙ, 𝐩ₙ))
+        # Prepare for a new iteration
+        𝐱ₙ, 𝐫ₙ, 𝐩ₙ = 𝐱ₙ₊₁, 𝐫ₙ₊₁, 𝐩ₙ₊₁
+    end
+    return 𝐱ₙ, history
+end
+    \end{juliacode}
+\end{algorithm}
+
 
 \Question{} Plot the potential \(\phi(x, y)\) as a surface plot.
 \newline
