@@ -1,6 +1,7 @@
 module ConjugateGradient
 
 using LinearAlgebra: dot, norm
+using OffsetArrays: OffsetVector, Origin
 
 export solve, isconverged
 
@@ -14,18 +15,19 @@ mutable struct IterationStep
 end
 
 mutable struct ConvergenceHistory
+    maxiter::UInt64
     isconverged::Bool
-    history::Vector{IterationStep}
+    data::OffsetVector{IterationStep}
 end
 
 function solve(A, 𝐛, 𝐱₀, ε=eps(), maxiter=2000)
-    history = ConvergenceHistory(false, [])
+    history = ConvergenceHistory(maxiter, false, OffsetVector([], Origin(0)))
     𝐱 = 𝐱₀
     𝐫 = 𝐛 - A * 𝐱  # Residual
     𝐩 = 𝐫  # Momentum
     α = compute_alpha(A, 𝐫, 𝐩)
     β = compute_beta(A, 𝐫, 𝐩)
-    push!(history.history, IterationStep(0, α, β, 𝐱₀, 𝐫, 𝐩))
+    push!(history.data, IterationStep(0, α, β, 𝐱₀, 𝐫, 𝐩))
     for n in 1:maxiter
         𝐱 = 𝐱 + α * 𝐩  # Do not do in-place change!
         𝐫′ = 𝐫 - α * A * 𝐩  # Trial move
@@ -35,7 +37,7 @@ function solve(A, 𝐛, 𝐱₀, ε=eps(), maxiter=2000)
             β = compute_beta(𝐫′, 𝐫)
             𝐩 = 𝐫′ + β * 𝐩
             𝐫 = 𝐫′  # Accept the trial move
-            push!(history.history, IterationStep(n, α, β, 𝐱, 𝐫, 𝐩))
+            push!(history.data, IterationStep(n, α, β, 𝐱, 𝐫, 𝐩))
         end
     end
     return 𝐱, history
