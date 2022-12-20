@@ -44,4 +44,6 @@ compute_alpha(A, 𝐫, 𝐩) = dot(𝐫, 𝐫) / dot(𝐩, A, 𝐩)
 compute_beta(A, 𝐫, 𝐩) = -dot(𝐩, A, 𝐫) / dot(𝐩, A, 𝐩)
 compute_beta(𝐫ₙ₊₁, 𝐫ₙ) = dot(𝐫ₙ₊₁, 𝐫ₙ₊₁) / dot(𝐫ₙ, 𝐫ₙ)
 
+isconverged(ch::ConvergenceHistory) = ch.isconverged
+
 end
