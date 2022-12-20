@@ -1,11 +1,11 @@
 module Electrostatics
 
 using LinearAlgebra: Symmetric
-using SparseArrays: SparseMatrixCSC, spdiagm
+using SparseArrays: AbstractSparseMatrix, SparseMatrixCSC, spdiagm
 
 export DiscreteLaplacian
 
-struct DiscreteLaplacian <: AbstractMatrix{Int64}
+struct DiscreteLaplacian <: AbstractSparseMatrix{Int64,Int64}
     data::SparseMatrixCSC{Int64,Int64}
 end
 function DiscreteLaplacian(N::Integer)
