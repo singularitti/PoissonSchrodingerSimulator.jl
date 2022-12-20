@@ -19,4 +19,14 @@ function DiscreteLaplacian(N::Integer)
     return DiscreteLaplacian(Symmetric(A))
 end
 
+Base.parent(S::DiscreteLaplacian) = S.data
+
+Base.size(S::DiscreteLaplacian) = size(parent(S))
+
+Base.IndexStyle(::Type{DiscreteLaplacian}) = IndexLinear()
+
+Base.getindex(S::DiscreteLaplacian, i) = getindex(parent(S), i)
+
+Base.setindex!(S::DiscreteLaplacian, v, i) = setindex!(parent(S), v, i)
+
 end
