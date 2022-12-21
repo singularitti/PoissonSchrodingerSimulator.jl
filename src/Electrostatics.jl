@@ -13,14 +13,14 @@ function checkbc(ϕ::AbstractMatrix, ϕ₀)
 end
 checkbc(𝛟::AbstractVector, M, N, ϕ₀) = _checkvector(checkbc, 𝛟, M, N, ϕ₀)
 
-function setbc!(ϕ::AbstractMatrix, ϕ₀=zero(eltype(ϕ)))
+function setbc!(ϕ::AbstractMatrix, ϕ₀)
     ϕ[begin, :] = ϕ₀  # Top
     ϕ[end, :] = ϕ₀  # Bottom
     ϕ[:, begin] = ϕ₀  # Left
     ϕ[:, end] = ϕ₀  # Right
     return ϕ
 end
-function setbc!(𝛟::AbstractVector, M, N, ϕ₀=zero(eltype(𝛟)))
+function setbc!(𝛟::AbstractVector, M, N, ϕ₀)
     ϕ = reshape(𝛟, M, N)
     ϕ = setbc!(ϕ, ϕ₀)
     return reshape(ϕ, length(ϕ))
@@ -38,7 +38,7 @@ function checksquare(ϕ::AbstractMatrix, ϕ₀)
 end
 checksquare(𝛟::AbstractVector, M, N, ϕ₀) = _checkvector(checksquare, 𝛟, M, N, ϕ₀)
 
-function setsquare!(ϕ::AbstractMatrix, ϕ₀=oneunit(eltype(ϕ)))
+function setsquare!(ϕ::AbstractMatrix, ϕ₀)
     M, N = size(ϕ)
     xₘᵢₙ, xₘₐₓ, yₘᵢₙ, yₘₐₓ = map(Int64, (M / 2, M * 3//4, N * 5//8, N * 7//8))
     for i in xₘᵢₙ:xₘₐₓ
@@ -48,7 +48,7 @@ function setsquare!(ϕ::AbstractMatrix, ϕ₀=oneunit(eltype(ϕ)))
     end
     return ϕ
 end
-function setsquare!(𝛟::AbstractVector, M, N, ϕ₀=oneunit(eltype(𝛟)))
+function setsquare!(𝛟::AbstractVector, M, N, ϕ₀)
     ϕ = reshape(𝛟, M, N)
     ϕ = setsquare!(ϕ, ϕ₀)
     return reshape(ϕ, length(ϕ))
@@ -63,14 +63,14 @@ function checkcharges(ρ::AbstractMatrix, ρ₀)
 end
 checkcharges(𝛒::AbstractVector, M, N, ρ₀) = _checkvector(checkcharges, 𝛒, M, N, ρ₀)
 
-function setcharges!(ρ::AbstractMatrix, ρ₀=oneunit(eltype(ρ)))
+function setcharges!(ρ::AbstractMatrix, ρ₀)
     M, N = size(ρ)
     x₁, x₂, y = map(Int64, (M / 4, M * 3//4, N / 8))
     ρ[x₁, y] = ρ₀
     ρ[x₂, y] = ρ₀
     return ρ
 end
-function setcharges!(𝛒::AbstractVector, M, N, ρ₀=oneunit(eltype(𝛒)))
+function setcharges!(𝛒::AbstractVector, M, N, ρ₀)
     ρ = reshape(𝛒, M, N)
     ρ = setsquare!(ρ, ρ₀)
     return reshape(ρ, length(ρ))
