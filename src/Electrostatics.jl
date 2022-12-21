@@ -57,20 +57,20 @@ function _getindices(f::Function, vec::ReshapeVec)
     return linear_indices[cartesian_indices]
 end
 
-function _checkequal(f::Function, mat, value)
-    indices = f(mat)
+function _checkequal(f::Function, data::AbstractVecOrMat, value)
+    indices = f(data)
     for index in indices
-        @assert mat[index] == value
+        @assert data[index] == value
     end
     return nothing
 end
 
-function _setconst!(f, mat, value)
-    indices = f(mat)
+function _setconst!(f, data::AbstractVecOrMat, value)
+    indices = f(data)
     for index in indices
-        mat[index] = value
+        data[index] = value
     end
-    return mat
+    return data
 end
 
 Base.reshape(vec::ReshapeVec) = reshape(vec.data, vec.size)
