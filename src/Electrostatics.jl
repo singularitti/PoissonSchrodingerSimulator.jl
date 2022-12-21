@@ -40,7 +40,7 @@ setbc!(ϕ, ϕ₀) = _setconst!(getbcindices, ϕ, ϕ₀)
 function getsquareindices(ϕ::AbstractMatrix)
     M, N = size(ϕ)
     xₘᵢₙ, xₘₐₓ, yₘᵢₙ, yₘₐₓ = map(Int64, (M / 2, M * 3//4, N * 5//8, N * 7//8))
-    return map(xₘᵢₙ:xₘₐₓ, yₘᵢₙ:yₘₐₓ) do i, j
+    return map(Iterators.product(xₘᵢₙ:xₘₐₓ, yₘᵢₙ:yₘₐₓ)) do (i, j)
         CartesianIndex(i, j)
     end
 end
