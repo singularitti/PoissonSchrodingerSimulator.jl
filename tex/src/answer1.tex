@@ -68,6 +68,18 @@ Here we apply the periodic boundary condition
     \phi(x, y + (N-1)a) & = \phi(x, y - a).
 \end{align}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{laplacian}
+    \caption{The heatmap of the discrete Laplacian with \(N = 32\), and hence
+        the Laplacian matrix is of size \(1024 \times 1024\).
+        The color red denotes the terms \(-4\) on the diagonal of the matrix, and
+        the color dark gray denotes the ones, and the background gray
+        denotes the zeros.
+        As we can observe, the discrete Laplacian is a sparse matrix.}
+    \label{fig:laplacian}
+\end{figure}
+
 We can simplify Equations~\eqref{eq:del2phisim} to~\eqref{eq:delend} into a matrix
 representation, i.e., the discrete Laplacian representation:
 %
@@ -111,12 +123,13 @@ Notice that the structure of the coefficient matrix \(\mathrm{ A }\) is complete
 by the way that the basis is ordered.
 The non-zero elements in the coefficient matrix are markers for which \(\phi\) is coupled
 with each other.
-In vector \(\bm{\phi}\), we order the \(\phi\)'s in \(y\)-direction first and then
-\(x\)-direction, as stated above.
-
+The heatmap of a discrete Laplacian with \(N = 32\) is plotted in Figure~\ref{fig:laplacian}.
+The corresponding Laplacian matrix is of size \(1024 \times 1024\).
 Obviously, the discrete Laplacian is a sparse matrix.
 We could use sparse matrix algorithms or just use~\eqref{eq:del2phi} in the actual
 implementation.
+In vector \(\bm{\phi}\), we order the \(\phi\)'s in \(y\)-direction first and then
+\(x\)-direction, as stated above.
 
 For a box of size \(N\), the linear index \(n\) of point \((i, j)\) on the grid is
 %
