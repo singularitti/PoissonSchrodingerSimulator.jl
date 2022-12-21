@@ -3,12 +3,12 @@ module Electrostatics
 using LinearAlgebra: Symmetric
 using SparseArrays: AbstractSparseMatrix, SparseMatrixCSC, spdiagm
 
-export DiscreteLaplacian
+export DiscreteLaplacianPBCs
 
-struct DiscreteLaplacian <: AbstractSparseMatrix{Int64,Int64}
+struct DiscreteLaplacianPBCs <: AbstractSparseMatrix{Int64,Int64}
     data::SparseMatrixCSC{Int64,Int64}
 end
-function DiscreteLaplacian(N::Integer)
+function DiscreteLaplacianPBCs(N::Integer)
     A = spdiagm(
         0 => fill(-4, N^2),
         1 => fill(1, N^2 - 1),
@@ -16,17 +16,17 @@ function DiscreteLaplacian(N::Integer)
         N => fill(1, N^2 - N),
         N^2 - N => fill(1, N),
     )  # An upper triangular matrix
-    return DiscreteLaplacian(Symmetric(A))
+    return DiscreteLaplacianPBCs(Symmetric(A))
 end
 
-Base.parent(S::DiscreteLaplacian) = S.data
+Base.parent(S::DiscreteLaplacianPBCs) = S.data
 
-Base.size(S::DiscreteLaplacian) = size(parent(S))
+Base.size(S::DiscreteLaplacianPBCs) = size(parent(S))
 
-Base.IndexStyle(::Type{DiscreteLaplacian}) = IndexLinear()
+Base.IndexStyle(::Type{DiscreteLaplacianPBCs}) = IndexLinear()
 
-Base.getindex(S::DiscreteLaplacian, i) = getindex(parent(S), i)
+Base.getindex(S::DiscreteLaplacianPBCs, i) = getindex(parent(S), i)
 
-Base.setindex!(S::DiscreteLaplacian, v, i) = setindex!(parent(S), v, i)
+Base.setindex!(S::DiscreteLaplacianPBCs, v, i) = setindex!(parent(S), v, i)
 
 end
