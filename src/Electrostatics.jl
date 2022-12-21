@@ -51,10 +51,10 @@ end
 setsquare!(𝐯::AbstractVector, M, N, ϕ₀) = _setvec!(setsquare!, 𝐯, M, N, ϕ₀)
 
 function checkcharges(ρ::AbstractMatrix, ρ₀)
-    M, N = size(ρ)
-    x₁, x₂, y = map(Int64, (M / 4, M * 3//4, N / 8))
-    @assert ρ[x₁, y] == ρ₀
-    @assert ρ[x₂, y] == ρ₀
+    indices = getchargeindices(ρ)
+    for index in indices
+        @assert ρ[index] == ρ₀
+    end
     return nothing
 end
 checkcharges(𝛒::AbstractVector, M, N, ρ₀) = _checkvec(checkcharges, 𝛒, M, N, ρ₀)
