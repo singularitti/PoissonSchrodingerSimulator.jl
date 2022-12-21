@@ -32,13 +32,7 @@ end
 getsquareindices(𝛟::AbstractVector, M, N) =
     _getindices(getsquareindices, 𝛟::AbstractVector, M, N)
 
-function checksquare(ϕ::AbstractMatrix, ϕ₀)
-    indices = getsquareindices(ϕ)
-    for index in indices
-        @assert ϕ[index] == ϕ₀
-    end
-    return nothing
-end
+checksquare(ϕ::AbstractMatrix, ϕ₀) = _checkmat(getsquareindices, ϕ, ϕ₀)
 checksquare(𝛟::AbstractVector, M, N, ϕ₀) = _checkvec(checksquare, 𝛟, M, N, ϕ₀)
 
 function setsquare!(ϕ::AbstractMatrix, ϕ₀)
@@ -74,6 +68,13 @@ function setcharges!(ρ::AbstractMatrix, ρ₀)
 end
 setcharges!(𝛒::AbstractVector, M, N, ρ₀) = _setvec!(setcharges!, 𝛒, M, N, ρ₀)
 
+function _checkmat(f::Function, mat::AbstractMatrix, value)
+    indices = f(mat)
+    for index in indices
+        @assert mat[index] == value
+    end
+    return nothing
+end
 _checkvec(f::Function, 𝐯::AbstractVector, M, N, value) = f(reshape(𝐯, M, N), value)
 
 # See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
