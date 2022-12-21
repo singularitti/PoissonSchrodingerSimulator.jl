@@ -2,7 +2,16 @@ module Electrostatics
 
 using ..LastHomework: DiscreteLaplacianPBCs
 
-export ReshapeVector, checkbc, checksquare, checkcharges, setbc!, setsquare!, setcharges!
+export ReshapeVector,
+    getbcindices,
+    getsquareindices,
+    getchargeindices,
+    checkbc,
+    checksquare,
+    checkcharges,
+    setbc!,
+    setsquare!,
+    setcharges!
 
 struct ReshapeVector{T} <: AbstractVector{T}
     data::Vector{T}
