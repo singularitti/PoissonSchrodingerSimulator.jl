@@ -42,7 +42,6 @@ function checksquare(ϕ::AbstractMatrix, ϕ₀)
     indices = getsquareindices(ϕ)
     for index in indices
         @assert ϕ[index] == ϕ₀
-        ϕ[index] = ϕ₀
     end
     return nothing
 end
