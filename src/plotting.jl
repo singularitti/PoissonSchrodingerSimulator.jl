@@ -5,6 +5,28 @@ using .ConjugateGradient: ConvergenceHistory
 
 export residualplot
 
+@recipe function f(laplacian::DiscreteLaplacianPBCs)
+    size --> (800, 800)
+    yflip --> true  # Set the origin to the upper left corner, see https://github.com/MakieOrg/Makie.jl/issues/46
+    xlims --> extrema(axes(laplacian, 1)) .+ (-0.5, 0.5)  # See https://discourse.julialang.org/t/can-plots-jl-heatmap-coordinates-start-at-1-instead-of-0-5/90385/3
+    ylims --> extrema(axes(laplacian, 2)) .+ (-0.5, 0.5)
+    xguide --> raw"columns"  # Note that it is reversed!
+    xguideposition --> :top  # Place xguide along top axis
+    xmirror --> true  # Place xticks along top axis, see https://github.com/JuliaPlots/Plots.jl/issues/337
+    yguide --> raw"rows"  # Note that it is reversed!
+    tick_direction --> :out
+    guidefontsize --> 12
+    tickfontsize --> 10
+    color --> :RdGy_3  # Tricolor colormap
+    color_limits --> extrema(laplacian)
+    colorbar --> :none
+    frame --> :box
+    aspect_ratio --> :equal
+    margins --> (0, :mm)  # See https://github.com/JuliaPlots/Plots.jl/issues/4522#issuecomment-1318511879
+    right_margin --> (1.5, :mm)
+    return axes(laplacian)..., laplacian
+end
+
 @userplot ResidualPlot
 @recipe function f(plot::ResidualPlot)
     # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
