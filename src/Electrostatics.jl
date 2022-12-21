@@ -29,6 +29,15 @@ function getsquareindices(ϕ::AbstractMatrix)
         CartesianIndex(i, j)
     end
 end
+# See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
+# and http://docs.julialang.org/en/v1/base/arrays/#Base.LinearIndices
+function getsquareindices(𝛟::AbstractVector, M, N)
+    ϕ = reshape(𝛟, M, N)
+    linear_indices = LinearIndices(ϕ)
+    cartesian_indices = getsquareindices(ϕ)
+    return linear_indices[cartesian_indices]
+end
+
 function checksquare(ϕ::AbstractMatrix, ϕ₀)
     indices = getsquareindices(ϕ)
     for index in indices
