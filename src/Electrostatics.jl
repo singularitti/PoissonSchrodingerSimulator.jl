@@ -50,13 +50,7 @@ function getchargeindices(ρ::AbstractMatrix)
     return map(CartesianIndex, ((x₁, y), (x₂, y)))
 end
 
-function checkcharges(ρ::AbstractMatrix, ρ₀)
-    indices = getchargeindices(ρ)
-    for index in indices
-        @assert ρ[index] == ρ₀
-    end
-    return nothing
-end
+checkcharges(ρ::AbstractMatrix, ρ₀) = _checkmat(getchargeindices, ρ, ρ₀)
 checkcharges(𝛒::AbstractVector, M, N, ρ₀) = _checkvec(checkcharges, 𝛒, M, N, ρ₀)
 
 function setcharges!(ρ::AbstractMatrix, ρ₀)
