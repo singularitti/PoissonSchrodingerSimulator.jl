@@ -73,6 +73,19 @@ function _setconst!(f, data::AbstractVecOrMat, value)
     return data
 end
 
+Base.parent(vec::ReshapeVector) = vec.data
+
+Base.size(vec::ReshapeVector) = size(parent(vec))
+
+Base.IndexStyle(::Type{ReshapeVector{T}}) where {T} = IndexLinear()
+
+Base.getindex(vec::ReshapeVector, i) = getindex(parent(vec), i)
+
+Base.setindex!(vec::ReshapeVector, v, i) = setindex!(parent(vec), v, i)
+
+Base.similar(::ReshapeVector, ::Type{T}, dims::Dims) where {T} =
+    ReshapeVector(Vector{T}(undef, dims), dims)
+
 Base.reshape(vec::ReshapeVector) = reshape(vec.data, vec.size)
 
 end
