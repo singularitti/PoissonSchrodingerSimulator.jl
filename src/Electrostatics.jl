@@ -49,15 +49,6 @@ checkcharges(𝛒::AbstractVector, M, N, ρ₀) = _checkvec(checkcharges, 𝛒, 
 setcharges!(ρ::AbstractMatrix, ρ₀) = _setconst!(setcharges!, ρ, ρ₀)
 setcharges!(𝛒::AbstractVector, M, N, ρ₀) = _setconst!(setcharges!, 𝛒, M, N, ρ₀)
 
-function _checkmat(f::Function, mat::AbstractMatrix, value)
-    indices = f(mat)
-    for index in indices
-        @assert mat[index] == value
-    end
-    return nothing
-end
-_checkvec(f::Function, vec::AbstractVector, M, N, value) = f(reshape(vec, M, N), value)
-
 # See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
 # and http://docs.julialang.org/en/v1/base/arrays/#Base.LinearIndices
 function _getindices(f::Function, vec::AbstractVector, M, N)
@@ -66,6 +57,15 @@ function _getindices(f::Function, vec::AbstractVector, M, N)
     cartesian_indices = f(vec)
     return linear_indices[cartesian_indices]
 end
+
+function _checkmat(f::Function, mat::AbstractMatrix, value)
+    indices = f(mat)
+    for index in indices
+        @assert mat[index] == value
+    end
+    return nothing
+end
+_checkvec(f::Function, vec::AbstractVector, M, N, value) = f(reshape(vec, M, N), value)
 
 function _setconst!(f, mat::AbstractMatrix, value)
     indices = f(mat)
