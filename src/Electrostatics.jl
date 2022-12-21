@@ -20,21 +20,22 @@ struct ReshapeVector{T} <: AbstractVector{T}
 end
 ReshapeVector(data::AbstractVector{T}, size) where {T} = ReshapeVector{T}(data, size)
 
-function checkbc(ϕ::AbstractMatrix, ϕ₀)
-    @assert ϕ[begin, :] == ϕ₀  # Top
-    @assert ϕ[end, :] == ϕ₀  # Bottom
-    @assert ϕ[:, begin] == ϕ₀  # Left
-    @assert ϕ[:, end] == ϕ₀  # Right
-    return nothing
+function getbcindices(ϕ::AbstractMatrix)
+    cartesian_indices = CartesianIndices(ϕ)
+    # Note the geometry of the region is different from that of the matrix!
+    # See https://discourse.julialang.org/t/how-to-get-the-cartesian-indices-of-a-row-column-in-a-matrix/91940/2
+    return vcat(
+        cartesian_indices[begin, :],  # Bottom
+        cartesian_indices[end, :],  # Top
+        cartesian_indices[:, begin],  # Left
+        cartesian_indices[:, end],  # Right
+    )
 end
+getbcindices(𝛟::ReshapeVector) = _getindices(getbcindices, 𝛟)
 
-function setbc!(ϕ::AbstractMatrix, ϕ₀)
-    ϕ[begin, :] = ϕ₀  # Top
-    ϕ[end, :] = ϕ₀  # Bottom
-    ϕ[:, begin] = ϕ₀  # Left
-    ϕ[:, end] = ϕ₀  # Right
-    return ϕ
-end
+checkbc(ϕ, ϕ₀) = _checkequal(getbcindices, ϕ, ϕ₀)
+
+setbc!(ϕ, ϕ₀) = _setconst!(getbcindices, ϕ, ϕ₀)
 
 function getsquareindices(ϕ::AbstractMatrix)
     M, N = size(ϕ)
