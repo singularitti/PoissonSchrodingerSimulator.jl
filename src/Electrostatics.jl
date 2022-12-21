@@ -97,8 +97,8 @@ Base.getindex(vec::ReshapeVector, i) = getindex(parent(vec), i)
 
 Base.setindex!(vec::ReshapeVector, v, i) = setindex!(parent(vec), v, i)
 
-Base.similar(::ReshapeVector, ::Type{T}, dims::Dims) where {T} =
-    ReshapeVector(Vector{T}(undef, dims), dims)
+# Base.similar(::ReshapeVector, ::Type{T}, dims::Dims) where {T} =
+#     ReshapeVector(Vector{T}(undef, dims), dims)
 
 Base.reshape(vec::ReshapeVector) = reshape(vec.data, vec.size)
 
