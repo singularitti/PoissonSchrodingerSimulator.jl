@@ -35,13 +35,7 @@ getsquareindices(𝛟::AbstractVector, M, N) =
 checksquare(ϕ::AbstractMatrix, ϕ₀) = _checkmat(getsquareindices, ϕ, ϕ₀)
 checksquare(𝛟::AbstractVector, M, N, ϕ₀) = _checkvec(checksquare, 𝛟, M, N, ϕ₀)
 
-function setsquare!(ϕ::AbstractMatrix, ϕ₀)
-    indices = getsquareindices(ϕ)
-    for index in indices
-        ϕ[index] = ϕ₀
-    end
-    return ϕ
-end
+setsquare!(ϕ::AbstractMatrix, ϕ₀) = _setmat!(setsquare!, ϕ, ϕ₀)
 setsquare!(𝐯::AbstractVector, M, N, ϕ₀) = _setvec!(setsquare!, 𝐯, M, N, ϕ₀)
 
 function getchargeindices(ρ::AbstractMatrix)
@@ -53,13 +47,7 @@ end
 checkcharges(ρ::AbstractMatrix, ρ₀) = _checkmat(getchargeindices, ρ, ρ₀)
 checkcharges(𝛒::AbstractVector, M, N, ρ₀) = _checkvec(checkcharges, 𝛒, M, N, ρ₀)
 
-function setcharges!(ρ::AbstractMatrix, ρ₀)
-    indices = getchargeindices(ρ)
-    for index in indices
-        ρ[index] = ρ₀
-    end
-    return ρ
-end
+setcharges!(ρ::AbstractMatrix, ρ₀) = _setmat!(setcharges!, ρ::AbstractMatrix, ρ₀)
 setcharges!(𝛒::AbstractVector, M, N, ρ₀) = _setvec!(setcharges!, 𝛒, M, N, ρ₀)
 
 function _checkmat(f::Function, mat::AbstractMatrix, value)
@@ -80,6 +68,13 @@ function _getindices(f::Function, 𝐯::AbstractVector, M, N)
     return linear_indices[cartesian_indices]
 end
 
+function _setmat!(f, mat::AbstractMatrix, value)
+    indices = f(mat)
+    for index in indices
+        mat[index] = value
+    end
+    return mat
+end
 function _setvec!(f::Function, 𝐯::AbstractVector, M, N, value)
     indices = f(𝐯, M, N)
     for index in indices
