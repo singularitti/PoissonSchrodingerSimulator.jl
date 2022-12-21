@@ -47,7 +47,7 @@ getsquareindices(𝛟::ReshapeVector) = _getindices(getsquareindices, 𝛟)
 
 checksquare(ϕ, ϕ₀) = _checkequal(getsquareindices, ϕ, ϕ₀)
 
-setsquare!(ϕ, ϕ₀) = _setconst!(setsquare!, ϕ, ϕ₀)
+setsquare!(ϕ, ϕ₀) = _setconst!(getsquareindices, ϕ, ϕ₀)
 
 function getchargeindices(ρ::AbstractMatrix)
     M, N = size(ρ)
@@ -57,7 +57,7 @@ end
 
 checkcharges(ρ, ρ₀) = _checkequal(getchargeindices, ρ, ρ₀)
 
-setcharges!(ρ, ρ₀) = _setconst!(setcharges!, ρ, ρ₀)
+setcharges!(ρ, ρ₀) = _setconst!(getchargeindices, ρ, ρ₀)
 
 # See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
 # and http://docs.julialang.org/en/v1/base/arrays/#Base.LinearIndices
