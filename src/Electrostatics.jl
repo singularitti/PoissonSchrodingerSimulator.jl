@@ -48,14 +48,7 @@ function setsquare!(ϕ::AbstractMatrix, ϕ₀)
     end
     return ϕ
 end
-# setsquare!(𝛟::AbstractVector, M, N, ϕ₀) = _setvec!(setsquare!, 𝛟, M, N, ϕ₀)
-function setsquare!(𝛟::AbstractVector, M, N, ϕ₀)
-    indices = getsquareindices(𝛟, M, N)
-    for index in indices
-        𝛟[index] = ϕ₀
-    end
-    return 𝛟
-end
+setsquare!(𝐯::AbstractVector, M, N, ϕ₀) = _setvec!(setsquare!, 𝐯, M, N, ϕ₀)
 
 function checkcharges(ρ::AbstractMatrix, ρ₀)
     M, N = size(ρ)
@@ -87,9 +80,11 @@ function _getindices(f::Function, 𝐯::AbstractVector, M, N)
 end
 
 function _setvec!(f::Function, 𝐯::AbstractVector, M, N, value)
-    v = reshape(𝐯, M, N)
-    f(v, value)
-    return reshape(v, length(v))
+    indices = f(𝐯, M, N)
+    for index in indices
+        𝐯[index] = value
+    end
+    return 𝐯
 end
 
 end
