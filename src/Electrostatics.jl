@@ -18,7 +18,8 @@ struct ReshapeVector{T} <: AbstractVector{T}
         return new(data, size)
     end
 end
-ReshapeVector(data::AbstractVector{T}, size) where {T} = ReshapeVector{T}(data, size)
+ReshapeVector(data::AbstractVector{T}, dims) where {T} = ReshapeVector{T}(data, dims)
+ReshapeVector(data::AbstractVector{T}, dims...) where {T} = ReshapeVector{T}(data, dims)
 
 function getbcindices(ϕ::AbstractMatrix)
     cartesian_indices = CartesianIndices(ϕ)
