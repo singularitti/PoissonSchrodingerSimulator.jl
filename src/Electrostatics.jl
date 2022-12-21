@@ -36,7 +36,7 @@ function checksquare(ϕ::AbstractMatrix, ϕ₀)
     end
     return nothing
 end
-checksquare(𝛟::AbstractVector, M, N, ϕ₀) = _checkvector(checksquare, 𝛟, M, N, ϕ₀)
+checksquare(𝛟::AbstractVector, M, N, ϕ₀) = _checkvec(checksquare, 𝛟, M, N, ϕ₀)
 
 function setsquare!(ϕ::AbstractMatrix, ϕ₀)
     M, N = size(ϕ)
@@ -61,7 +61,7 @@ function checkcharges(ρ::AbstractMatrix, ρ₀)
     @assert ρ[x₂, y] == ρ₀
     return nothing
 end
-checkcharges(𝛒::AbstractVector, M, N, ρ₀) = _checkvector(checkcharges, 𝛒, M, N, ρ₀)
+checkcharges(𝛒::AbstractVector, M, N, ρ₀) = _checkvec(checkcharges, 𝛒, M, N, ρ₀)
 
 function setcharges!(ρ::AbstractMatrix, ρ₀)
     M, N = size(ρ)
@@ -76,6 +76,6 @@ function setcharges!(𝛒::AbstractVector, M, N, ρ₀)
     return reshape(ρ, length(ρ))
 end
 
-_checkvector(f::Function, 𝐯::AbstractVector, M, N, value) = f(reshape(𝐯, M, N), value)
+_checkvec(f::Function, 𝐯::AbstractVector, M, N, value) = f(reshape(𝐯, M, N), value)
 
 end
