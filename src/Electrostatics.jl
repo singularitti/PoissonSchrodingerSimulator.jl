@@ -11,7 +11,7 @@ function checkbc(ϕ::AbstractMatrix, ϕ₀)
     @assert ϕ[:, end] == ϕ₀  # Right
     return nothing
 end
-checkbc(𝛟::AbstractVector, M, N, ϕ₀) = _checkvector(checkbc, 𝛟, M, N, ϕ₀)
+checkbc(𝛟::AbstractVector, M, N, ϕ₀) = _checkvec(checkbc, 𝛟, M, N, ϕ₀)
 
 function setbc!(ϕ::AbstractMatrix, ϕ₀)
     ϕ[begin, :] = ϕ₀  # Top
@@ -20,11 +20,7 @@ function setbc!(ϕ::AbstractMatrix, ϕ₀)
     ϕ[:, end] = ϕ₀  # Right
     return ϕ
 end
-function setbc!(𝛟::AbstractVector, M, N, ϕ₀)
-    ϕ = reshape(𝛟, M, N)
-    ϕ = setbc!(ϕ, ϕ₀)
-    return reshape(ϕ, length(ϕ))
-end
+setbc!(𝛟::AbstractVector, M, N, ϕ₀) = _setvec!(setbc!, 𝛟, M, N, ϕ₀)
 
 function checksquare(ϕ::AbstractMatrix, ϕ₀)
     M, N = size(ϕ)
@@ -48,11 +44,7 @@ function setsquare!(ϕ::AbstractMatrix, ϕ₀)
     end
     return ϕ
 end
-function setsquare!(𝛟::AbstractVector, M, N, ϕ₀)
-    ϕ = reshape(𝛟, M, N)
-    ϕ = setsquare!(ϕ, ϕ₀)
-    return reshape(ϕ, length(ϕ))
-end
+setsquare!(𝛟::AbstractVector, M, N, ϕ₀) = _setvec!(setsquare!, 𝛟, M, N, ϕ₀)
 
 function checkcharges(ρ::AbstractMatrix, ρ₀)
     M, N = size(ρ)
@@ -70,12 +62,14 @@ function setcharges!(ρ::AbstractMatrix, ρ₀)
     ρ[x₂, y] = ρ₀
     return ρ
 end
-function setcharges!(𝛒::AbstractVector, M, N, ρ₀)
-    ρ = reshape(𝛒, M, N)
-    ρ = setsquare!(ρ, ρ₀)
-    return reshape(ρ, length(ρ))
-end
+setcharges!(𝛒::AbstractVector, M, N, ρ₀) = _setvec!(setcharges!, 𝛒, M, N, ρ₀)
 
 _checkvec(f::Function, 𝐯::AbstractVector, M, N, value) = f(reshape(𝐯, M, N), value)
+
+function _setvec!(f::Function, 𝐯::AbstractVector, M, N, value)
+    v = reshape(𝐯, M, N)
+    f(v, value)
+    return reshape(v, length(v))
+end
 
 end
