@@ -50,6 +50,12 @@ function setsquare!(ϕ::AbstractMatrix, ϕ₀)
 end
 setsquare!(𝐯::AbstractVector, M, N, ϕ₀) = _setvec!(setsquare!, 𝐯, M, N, ϕ₀)
 
+function getchargeindices(ρ::AbstractMatrix)
+    M, N = size(ρ)
+    x₁, x₂, y = map(Int64, (M / 4, M * 3//4, N / 8))
+    return map(CartesianIndex, ((x₁, y), (x₂, y)))
+end
+
 function checkcharges(ρ::AbstractMatrix, ρ₀)
     indices = getchargeindices(ρ)
     for index in indices
