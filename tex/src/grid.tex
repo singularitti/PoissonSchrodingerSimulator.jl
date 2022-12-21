@@ -1,12 +1,12 @@
 \begin{figure}
     \centering
     \begin{adjustbox}{width=\textwidth} % Scale a `tikzpicture`, see https://tex.stackexchange.com/a/11536/61591
-        \begin{tikzpicture}
+        \begin{tikzpicture}[yscale=-1] % See https://tex.stackexchange.com/a/90012/61591
             \draw[thick] (0,0) grid (32,32); % See https://tex.stackexchange.com/a/552215
-            \draw[thick,->] (0,0) -- (33,0) node[anchor=north west] {\(x\)}; % See https://www.overleaf.com/learn/latex/LaTeX_Graphics_using_TikZ%3A_A_Tutorial_for_Beginners_(Part_1)%E2%80%94Basic_Drawing
-            \draw[thick,->] (0,0) -- (0,33) node[anchor=south east] {\(y\)};
-            \foreach \x in {0,...,32}
-            \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north] {\(\x\)};
+            \draw[thick,->] (0,0) -- (33,0) node[anchor=south west] {\(x\)}; % See https://www.overleaf.com/learn/latex/LaTeX_Graphics_using_TikZ%3A_A_Tutorial_for_Beginners_(Part_1)%E2%80%94Basic_Drawing
+            \draw[thick,->] (0,0) -- (0,33) node[anchor=north east] {\(y\)};
+            \foreach \x in {1,...,32}
+            \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=south] {\(\x\)};
             \foreach \y in {0,...,32}
             \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {\(\y\)};
             % See https://tex.stackexchange.com/a/21164/61591
