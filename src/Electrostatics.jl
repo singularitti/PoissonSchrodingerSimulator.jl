@@ -36,7 +36,7 @@ checksquare(ϕ::AbstractMatrix, ϕ₀) = _checkmat(getsquareindices, ϕ, ϕ₀)
 checksquare(𝛟::AbstractVector, M, N, ϕ₀) = _checkvec(checksquare, 𝛟, M, N, ϕ₀)
 
 setsquare!(ϕ::AbstractMatrix, ϕ₀) = _setmat!(setsquare!, ϕ, ϕ₀)
-setsquare!(𝐯::AbstractVector, M, N, ϕ₀) = _setvec!(setsquare!, 𝐯, M, N, ϕ₀)
+setsquare!(𝛟::AbstractVector, M, N, ϕ₀) = _setvec!(setsquare!, 𝛟, M, N, ϕ₀)
 
 function getchargeindices(ρ::AbstractMatrix)
     M, N = size(ρ)
@@ -57,14 +57,14 @@ function _checkmat(f::Function, mat::AbstractMatrix, value)
     end
     return nothing
 end
-_checkvec(f::Function, 𝐯::AbstractVector, M, N, value) = f(reshape(𝐯, M, N), value)
+_checkvec(f::Function, vec::AbstractVector, M, N, value) = f(reshape(vec, M, N), value)
 
 # See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
 # and http://docs.julialang.org/en/v1/base/arrays/#Base.LinearIndices
-function _getindices(f::Function, 𝐯::AbstractVector, M, N)
-    v = reshape(𝐯, M, N)
-    linear_indices = LinearIndices(v)
-    cartesian_indices = f(v)
+function _getindices(f::Function, vec::AbstractVector, M, N)
+    vec = reshape(vec, M, N)
+    linear_indices = LinearIndices(vec)
+    cartesian_indices = f(vec)
     return linear_indices[cartesian_indices]
 end
 
@@ -75,12 +75,12 @@ function _setmat!(f, mat::AbstractMatrix, value)
     end
     return mat
 end
-function _setvec!(f::Function, 𝐯::AbstractVector, M, N, value)
-    indices = f(𝐯, M, N)
+function _setvec!(f::Function, vec::AbstractVector, M, N, value)
+    indices = f(vec, M, N)
     for index in indices
-        𝐯[index] = value
+        vec[index] = value
     end
-    return 𝐯
+    return vec
 end
 
 end
