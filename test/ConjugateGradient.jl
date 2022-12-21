@@ -12,7 +12,7 @@ using Test: @testset, @test
     ]
     𝐛 = [1, 2]
     𝐱₀ = [2, 1]
-    𝐱, ch = solve(A, 𝐛, 𝐱₀, 1e-24)
+    𝐱, ch = solve(A, 𝐛, 𝐱₀; atol=1e-24)
     @test 𝐱 ≈ [1 / 11, 7 / 11]  # Compare with the exact solution
     @test norm(A * 𝐱 - 𝐛) / norm(𝐛) ≤ 1e-12
     @test isconverged(ch) == true
@@ -35,7 +35,7 @@ end
     ]
     𝐛 = [2, 2]
     𝐱₀ = [1, 2]
-    𝐱, ch = solve(A, 𝐛, 𝐱₀, 1e-24)
+    𝐱, ch = solve(A, 𝐛, 𝐱₀; atol=1e-24)
     @test 𝐱 ≈ [0.2222222222222221, 0.8888888888888891]  # Compare with other's result
     @test norm(A * 𝐱 - 𝐛) / norm(𝐛) == 0
     @test isconverged(ch) == true
