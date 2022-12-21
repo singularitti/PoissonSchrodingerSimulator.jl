@@ -11,7 +11,7 @@ function checkbc(ϕ::AbstractMatrix, ϕ₀)
     @assert ϕ[:, end] == ϕ₀  # Right
     return nothing
 end
-checkbc(𝛟::AbstractVector, M, N, ϕ₀) = _checkvec(checkbc, 𝛟, M, N, ϕ₀)
+checkbc(𝛟::AbstractVector, M, N, ϕ₀) = _checkequal(checkbc, 𝛟, M, N, ϕ₀)
 
 function setbc!(ϕ::AbstractMatrix, ϕ₀)
     ϕ[begin, :] = ϕ₀  # Top
@@ -31,8 +31,8 @@ function getsquareindices(ϕ::AbstractMatrix)
 end
 getsquareindices(𝛟::AbstractVector, M, N) = _getindices(getsquareindices, 𝛟, M, N)
 
-checksquare(ϕ::AbstractMatrix, ϕ₀) = _checkmat(getsquareindices, ϕ, ϕ₀)
-checksquare(𝛟::AbstractVector, M, N, ϕ₀) = _checkvec(checksquare, 𝛟, M, N, ϕ₀)
+checksquare(ϕ::AbstractMatrix, ϕ₀) = _checkequal(getsquareindices, ϕ, ϕ₀)
+checksquare(𝛟::AbstractVector, M, N, ϕ₀) = _checkequal(checksquare, 𝛟, M, N, ϕ₀)
 
 setsquare!(ϕ::AbstractMatrix, ϕ₀) = _setconst!(setsquare!, ϕ, ϕ₀)
 setsquare!(𝛟::AbstractVector, M, N, ϕ₀) = _setconst!(setsquare!, 𝛟, M, N, ϕ₀)
@@ -43,8 +43,8 @@ function getchargeindices(ρ::AbstractMatrix)
     return map(CartesianIndex, ((x₁, y), (x₂, y)))
 end
 
-checkcharges(ρ::AbstractMatrix, ρ₀) = _checkmat(getchargeindices, ρ, ρ₀)
-checkcharges(𝛒::AbstractVector, M, N, ρ₀) = _checkvec(checkcharges, 𝛒, M, N, ρ₀)
+checkcharges(ρ::AbstractMatrix, ρ₀) = _checkequal(getchargeindices, ρ, ρ₀)
+checkcharges(𝛒::AbstractVector, M, N, ρ₀) = _checkequal(checkcharges, 𝛒, M, N, ρ₀)
 
 setcharges!(ρ::AbstractMatrix, ρ₀) = _setconst!(setcharges!, ρ, ρ₀)
 setcharges!(𝛒::AbstractVector, M, N, ρ₀) = _setconst!(setcharges!, 𝛒, M, N, ρ₀)
@@ -58,14 +58,20 @@ function _getindices(f::Function, vec::AbstractVector, M, N)
     return linear_indices[cartesian_indices]
 end
 
-function _checkmat(f::Function, mat::AbstractMatrix, value)
+function _checkequal(f::Function, mat::AbstractMatrix, value)
     indices = f(mat)
     for index in indices
         @assert mat[index] == value
     end
     return nothing
 end
-_checkvec(f::Function, vec::AbstractVector, M, N, value) = f(reshape(vec, M, N), value)
+function _checkequal(f::Function, vec::AbstractVector, M, N, value)
+    indices = f(vec, M, N)
+    for index in indices
+        @assert vec[index] == value
+    end
+    return nothing
+end
 
 function _setconst!(f, mat::AbstractMatrix, value)
     indices = f(mat)
