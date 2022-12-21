@@ -4,6 +4,11 @@ using ..LastHomework: DiscreteLaplacianPBCs
 
 export checkbc, checksquare, checkcharges, setbc!, setsquare!, setcharges!
 
+struct ReshapeVec{T} <: AbstractVector{T}
+    data::Vector{T}
+    size::NTuple{2,Int64}
+end
+
 function checkbc(ϕ::AbstractMatrix, ϕ₀)
     @assert ϕ[begin, :] == ϕ₀  # Top
     @assert ϕ[end, :] == ϕ₀  # Bottom
@@ -11,7 +16,6 @@ function checkbc(ϕ::AbstractMatrix, ϕ₀)
     @assert ϕ[:, end] == ϕ₀  # Right
     return nothing
 end
-checkbc(𝛟::AbstractVector, M, N, ϕ₀) = _checkequal(checkbc, 𝛟, M, N, ϕ₀)
 
 function setbc!(ϕ::AbstractMatrix, ϕ₀)
     ϕ[begin, :] = ϕ₀  # Top
@@ -20,7 +24,6 @@ function setbc!(ϕ::AbstractMatrix, ϕ₀)
     ϕ[:, end] = ϕ₀  # Right
     return ϕ
 end
-setbc!(𝛟::AbstractVector, M, N, ϕ₀) = _setconst!(setbc!, 𝛟, M, N, ϕ₀)
 
 function getsquareindices(ϕ::AbstractMatrix)
     M, N = size(ϕ)
@@ -29,13 +32,11 @@ function getsquareindices(ϕ::AbstractMatrix)
         CartesianIndex(i, j)
     end
 end
-getsquareindices(𝛟::AbstractVector, M, N) = _getindices(getsquareindices, 𝛟, M, N)
+getsquareindices(𝛟::ReshapeVec) = _getindices(getsquareindices, 𝛟)
 
-checksquare(ϕ::AbstractMatrix, ϕ₀) = _checkequal(getsquareindices, ϕ, ϕ₀)
-checksquare(𝛟::AbstractVector, M, N, ϕ₀) = _checkequal(checksquare, 𝛟, M, N, ϕ₀)
+checksquare(ϕ, ϕ₀) = _checkequal(getsquareindices, ϕ, ϕ₀)
 
-setsquare!(ϕ::AbstractMatrix, ϕ₀) = _setconst!(setsquare!, ϕ, ϕ₀)
-setsquare!(𝛟::AbstractVector, M, N, ϕ₀) = _setconst!(setsquare!, 𝛟, M, N, ϕ₀)
+setsquare!(ϕ, ϕ₀) = _setconst!(setsquare!, ϕ, ϕ₀)
 
 function getchargeindices(ρ::AbstractMatrix)
     M, N = size(ρ)
@@ -43,49 +44,35 @@ function getchargeindices(ρ::AbstractMatrix)
     return map(CartesianIndex, ((x₁, y), (x₂, y)))
 end
 
-checkcharges(ρ::AbstractMatrix, ρ₀) = _checkequal(getchargeindices, ρ, ρ₀)
-checkcharges(𝛒::AbstractVector, M, N, ρ₀) = _checkequal(checkcharges, 𝛒, M, N, ρ₀)
+checkcharges(ρ, ρ₀) = _checkequal(getchargeindices, ρ, ρ₀)
 
-setcharges!(ρ::AbstractMatrix, ρ₀) = _setconst!(setcharges!, ρ, ρ₀)
-setcharges!(𝛒::AbstractVector, M, N, ρ₀) = _setconst!(setcharges!, 𝛒, M, N, ρ₀)
+setcharges!(ρ, ρ₀) = _setconst!(setcharges!, ρ, ρ₀)
 
 # See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
 # and http://docs.julialang.org/en/v1/base/arrays/#Base.LinearIndices
-function _getindices(f::Function, vec::AbstractVector, M, N)
-    vec = reshape(vec, M, N)
+function _getindices(f::Function, vec::ReshapeVec)
+    vec = reshape(vec)
     linear_indices = LinearIndices(vec)
     cartesian_indices = f(vec)
     return linear_indices[cartesian_indices]
 end
 
-function _checkequal(f::Function, mat::AbstractMatrix, value)
+function _checkequal(f::Function, mat, value)
     indices = f(mat)
     for index in indices
         @assert mat[index] == value
     end
     return nothing
 end
-function _checkequal(f::Function, vec::AbstractVector, M, N, value)
-    indices = f(vec, M, N)
-    for index in indices
-        @assert vec[index] == value
-    end
-    return nothing
-end
 
-function _setconst!(f, mat::AbstractMatrix, value)
+function _setconst!(f, mat, value)
     indices = f(mat)
     for index in indices
         mat[index] = value
     end
     return mat
 end
-function _setconst!(f::Function, vec::AbstractVector, M, N, value)
-    indices = f(vec, M, N)
-    for index in indices
-        vec[index] = value
-    end
-    return vec
-end
+
+Base.reshape(vec::ReshapeVec) = reshape(vec.data, vec.size)
 
 end
