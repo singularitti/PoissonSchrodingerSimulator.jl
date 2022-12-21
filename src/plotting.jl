@@ -3,10 +3,11 @@ using RecipesBase: @userplot, @recipe, @series
 
 using .ConjugateGradient: ConvergenceHistory
 
-export residualplot
+export regionheatmap, residualplot
 
 @recipe function f(laplacian::DiscreteLaplacianPBCs)
     size --> (800, 800)
+    seriestype --> :heatmap
     yflip --> true  # Set the origin to the upper left corner, see https://github.com/MakieOrg/Makie.jl/issues/46
     xlims --> extrema(axes(laplacian, 1)) .+ (-0.5, 0.5)  # See https://discourse.julialang.org/t/can-plots-jl-heatmap-coordinates-start-at-1-instead-of-0-5/90385/3
     ylims --> extrema(axes(laplacian, 2)) .+ (-0.5, 0.5)
@@ -25,6 +26,25 @@ export residualplot
     margins --> (0, :mm)  # See https://github.com/JuliaPlots/Plots.jl/issues/4522#issuecomment-1318511879
     right_margin --> (1.5, :mm)
     return axes(laplacian)..., laplacian
+end
+
+@userplot RegionHeatMap
+@recipe function f(plot::RegionHeatMap)
+    data = plot.args[end]
+    size --> (800, 800)
+    seriestype --> :heatmap
+    xlims --> extrema(axes(data, 1)) .+ (-0.5, 0.5)  # See https://discourse.julialang.org/t/can-plots-jl-heatmap-coordinates-start-at-1-instead-of-0-5/90385/3
+    ylims --> extrema(axes(data, 2)) .+ (-0.5, 0.5)
+    xguide --> raw"$x$"
+    yguide --> raw"$y$"
+    tick_direction --> :out
+    guidefontsize --> 12
+    tickfontsize --> 10
+    color --> :thermometer
+    frame --> :box
+    aspect_ratio --> :equal
+    margins --> (0, :mm)  # See https://github.com/JuliaPlots/Plots.jl/issues/4522#issuecomment-1318511879
+    return axes(data)..., data
 end
 
 @userplot ResidualPlot
