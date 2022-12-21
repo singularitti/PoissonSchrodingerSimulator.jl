@@ -54,6 +54,7 @@ function getchargeindices(ρ::AbstractMatrix)
     x₁, x₂, y = map(Int64, (M / 4, M * 3//4, N / 8))
     return map(CartesianIndex, ((x₁, y), (x₂, y)))
 end
+getchargeindices(𝛒::ReshapeVector) = _getindices(getchargeindices, 𝛒)
 
 checkcharges(ρ, ρ₀) = _checkequal(getchargeindices, ρ, ρ₀)
 
