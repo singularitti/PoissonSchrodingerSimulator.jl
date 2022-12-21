@@ -23,24 +23,19 @@ end
 setbc!(𝛟::AbstractVector, M, N, ϕ₀) = _setvec!(setbc!, 𝛟, M, N, ϕ₀)
 
 function checksquare(ϕ::AbstractMatrix, ϕ₀)
-    M, N = size(ϕ)
-    xₘᵢₙ, xₘₐₓ, yₘᵢₙ, yₘₐₓ = map(Int64, (M / 2, M * 3//4, N * 5//8, N * 7//8))
-    for i in xₘᵢₙ:xₘₐₓ
-        for j in yₘᵢₙ:yₘₐₓ
-            @assert ϕ[i, j] == ϕ₀
-        end
+    indices = getsquareindices(ϕ)
+    for index in indices
+        @assert ϕ[index] == ϕ₀
+        ϕ[index] = ϕ₀
     end
     return nothing
 end
 checksquare(𝛟::AbstractVector, M, N, ϕ₀) = _checkvec(checksquare, 𝛟, M, N, ϕ₀)
 
 function setsquare!(ϕ::AbstractMatrix, ϕ₀)
-    M, N = size(ϕ)
-    xₘᵢₙ, xₘₐₓ, yₘᵢₙ, yₘₐₓ = map(Int64, (M / 2, M * 3//4, N * 5//8, N * 7//8))
-    for i in xₘᵢₙ:xₘₐₓ
-        for j in yₘᵢₙ:yₘₐₓ
-            ϕ[i, j] = ϕ₀
-        end
+    indices = getsquareindices(ϕ)
+    for index in indices
+        ϕ[index] = ϕ₀
     end
     return ϕ
 end
