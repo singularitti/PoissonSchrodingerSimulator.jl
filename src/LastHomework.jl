@@ -1,5 +1,6 @@
 module LastHomework
 
+include("core.jl")
 include("ConjugateGradient.jl")
 include("Lanczos.jl")
 include("Electrostatics.jl")
