@@ -20,7 +20,7 @@ function setbc!(ϕ::AbstractMatrix, ϕ₀)
     ϕ[:, end] = ϕ₀  # Right
     return ϕ
 end
-setbc!(𝛟::AbstractVector, M, N, ϕ₀) = _setvec!(setbc!, 𝛟, M, N, ϕ₀)
+setbc!(𝛟::AbstractVector, M, N, ϕ₀) = _setconst!(setbc!, 𝛟, M, N, ϕ₀)
 
 function getsquareindices(ϕ::AbstractMatrix)
     M, N = size(ϕ)
@@ -29,14 +29,13 @@ function getsquareindices(ϕ::AbstractMatrix)
         CartesianIndex(i, j)
     end
 end
-getsquareindices(𝛟::AbstractVector, M, N) =
-    _getindices(getsquareindices, 𝛟::AbstractVector, M, N)
+getsquareindices(𝛟::AbstractVector, M, N) = _getindices(getsquareindices, 𝛟, M, N)
 
 checksquare(ϕ::AbstractMatrix, ϕ₀) = _checkmat(getsquareindices, ϕ, ϕ₀)
 checksquare(𝛟::AbstractVector, M, N, ϕ₀) = _checkvec(checksquare, 𝛟, M, N, ϕ₀)
 
-setsquare!(ϕ::AbstractMatrix, ϕ₀) = _setmat!(setsquare!, ϕ, ϕ₀)
-setsquare!(𝛟::AbstractVector, M, N, ϕ₀) = _setvec!(setsquare!, 𝛟, M, N, ϕ₀)
+setsquare!(ϕ::AbstractMatrix, ϕ₀) = _setconst!(setsquare!, ϕ, ϕ₀)
+setsquare!(𝛟::AbstractVector, M, N, ϕ₀) = _setconst!(setsquare!, 𝛟, M, N, ϕ₀)
 
 function getchargeindices(ρ::AbstractMatrix)
     M, N = size(ρ)
@@ -47,8 +46,8 @@ end
 checkcharges(ρ::AbstractMatrix, ρ₀) = _checkmat(getchargeindices, ρ, ρ₀)
 checkcharges(𝛒::AbstractVector, M, N, ρ₀) = _checkvec(checkcharges, 𝛒, M, N, ρ₀)
 
-setcharges!(ρ::AbstractMatrix, ρ₀) = _setmat!(setcharges!, ρ::AbstractMatrix, ρ₀)
-setcharges!(𝛒::AbstractVector, M, N, ρ₀) = _setvec!(setcharges!, 𝛒, M, N, ρ₀)
+setcharges!(ρ::AbstractMatrix, ρ₀) = _setconst!(setcharges!, ρ, ρ₀)
+setcharges!(𝛒::AbstractVector, M, N, ρ₀) = _setconst!(setcharges!, 𝛒, M, N, ρ₀)
 
 function _checkmat(f::Function, mat::AbstractMatrix, value)
     indices = f(mat)
@@ -68,14 +67,14 @@ function _getindices(f::Function, vec::AbstractVector, M, N)
     return linear_indices[cartesian_indices]
 end
 
-function _setmat!(f, mat::AbstractMatrix, value)
+function _setconst!(f, mat::AbstractMatrix, value)
     indices = f(mat)
     for index in indices
         mat[index] = value
     end
     return mat
 end
-function _setvec!(f::Function, vec::AbstractVector, M, N, value)
+function _setconst!(f::Function, vec::AbstractVector, M, N, value)
     indices = f(vec, M, N)
     for index in indices
         vec[index] = value
