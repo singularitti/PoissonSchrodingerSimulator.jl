@@ -4,7 +4,7 @@ using ..LastHomework: DiscreteLaplacianPBCs
 
 export checkbc, checksquare, checkcharges, setbc!, setsquare!, setcharges!
 
-struct ReshapeVec{T} <: AbstractVector{T}
+struct ReshapeVector{T} <: AbstractVector{T}
     data::Vector{T}
     size::NTuple{2,Int64}
 end
@@ -32,7 +32,7 @@ function getsquareindices(ϕ::AbstractMatrix)
         CartesianIndex(i, j)
     end
 end
-getsquareindices(𝛟::ReshapeVec) = _getindices(getsquareindices, 𝛟)
+getsquareindices(𝛟::ReshapeVector) = _getindices(getsquareindices, 𝛟)
 
 checksquare(ϕ, ϕ₀) = _checkequal(getsquareindices, ϕ, ϕ₀)
 
@@ -50,7 +50,7 @@ setcharges!(ρ, ρ₀) = _setconst!(setcharges!, ρ, ρ₀)
 
 # See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
 # and http://docs.julialang.org/en/v1/base/arrays/#Base.LinearIndices
-function _getindices(f::Function, vec::ReshapeVec)
+function _getindices(f::Function, vec::ReshapeVector)
     vec = reshape(vec)
     linear_indices = LinearIndices(vec)
     cartesian_indices = f(vec)
@@ -73,6 +73,6 @@ function _setconst!(f, data::AbstractVecOrMat, value)
     return data
 end
 
-Base.reshape(vec::ReshapeVec) = reshape(vec.data, vec.size)
+Base.reshape(vec::ReshapeVector) = reshape(vec.data, vec.size)
 
 end
