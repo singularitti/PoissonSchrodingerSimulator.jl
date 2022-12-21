@@ -2,12 +2,23 @@ module Electrostatics
 
 using ..LastHomework: DiscreteLaplacianPBCs
 
-export checkbc, checksquare, checkcharges, setbc!, setsquare!, setcharges!
+export ReshapeVector, checkbc, checksquare, checkcharges, setbc!, setsquare!, setcharges!
 
 struct ReshapeVector{T} <: AbstractVector{T}
     data::Vector{T}
     size::NTuple{2,Int64}
+    function ReshapeVector{T}(data, size) where {T}
+        if length(data) != prod(size)
+            throw(
+                DimensionMismatch(
+                    "dimensions $size must be consistent with array size $(length(data))!"
+                ),
+            )
+        end
+        return new(data, size)
+    end
 end
+ReshapeVector(data::AbstractVector{T}, size) where {T} = ReshapeVector{T}(data, size)
 
 function checkbc(ϕ::AbstractMatrix, ϕ₀)
     @assert ϕ[begin, :] == ϕ₀  # Top
