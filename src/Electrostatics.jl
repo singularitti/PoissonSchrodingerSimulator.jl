@@ -67,7 +67,7 @@ setcharges!(ρ, ρ₀) = _setconst!(getchargeindices, ρ, ρ₀)
 function _getindices(f::Function, vec::ReshapeVector)
     vec = reshape(vec)
     linear_indices = LinearIndices(vec)
-    cartesian_indices = f(vec)
+    cartesian_indices = collect(f(vec))  # `getindex` only accepts vector indices
     return linear_indices[cartesian_indices]
 end
 
