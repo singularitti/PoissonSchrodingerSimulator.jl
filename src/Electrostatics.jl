@@ -29,14 +29,8 @@ function getsquareindices(ϕ::AbstractMatrix)
         CartesianIndex(i, j)
     end
 end
-# See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
-# and http://docs.julialang.org/en/v1/base/arrays/#Base.LinearIndices
-function getsquareindices(𝛟::AbstractVector, M, N)
-    ϕ = reshape(𝛟, M, N)
-    linear_indices = LinearIndices(ϕ)
-    cartesian_indices = getsquareindices(ϕ)
-    return linear_indices[cartesian_indices]
-end
+getsquareindices(𝛟::AbstractVector, M, N) =
+    _getindices(getsquareindices, 𝛟::AbstractVector, M, N)
 
 function checksquare(ϕ::AbstractMatrix, ϕ₀)
     indices = getsquareindices(ϕ)
@@ -82,6 +76,15 @@ end
 setcharges!(𝛒::AbstractVector, M, N, ρ₀) = _setvec!(setcharges!, 𝛒, M, N, ρ₀)
 
 _checkvec(f::Function, 𝐯::AbstractVector, M, N, value) = f(reshape(𝐯, M, N), value)
+
+# See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
+# and http://docs.julialang.org/en/v1/base/arrays/#Base.LinearIndices
+function _getindices(f::Function, 𝐯::AbstractVector, M, N)
+    v = reshape(𝐯, M, N)
+    linear_indices = LinearIndices(v)
+    cartesian_indices = f(v)
+    return linear_indices[cartesian_indices]
+end
 
 function _setvec!(f::Function, 𝐯::AbstractVector, M, N, value)
     v = reshape(𝐯, M, N)
