@@ -55,8 +55,8 @@ function getindices(ρ::AbstractMatrix, ::PointCharges)
 end
 # See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
 # and http://docs.julialang.org/en/v1/base/arrays/#Base.LinearIndices
-function getindices(vec::ReshapeVector, region::FixedValueRegion)
-    mat = reshape(vec)
+function getindices(vec::PartiallyFixedVector, region::FixedValueRegion)
+    mat = reshape(vec, BOX.dims)
     linear_indices = LinearIndices(mat)
     cartesian_indices = collect(getindices(vec, region))  # `getindex` only accepts vector indices
     return linear_indices[cartesian_indices]
