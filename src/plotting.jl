@@ -5,7 +5,7 @@ using .ConjugateGradient: ConvergenceHistory
 
 export regionheatmap, residualplot
 
-@recipe function f(laplacian::DiscreteLaplacianPBCs)
+@recipe function f(laplacian::DiscreteLaplacian)
     size --> (800, 800)
     seriestype --> :heatmap
     yflip --> true  # Set the origin to the upper left corner, see https://github.com/MakieOrg/Makie.jl/issues/46

@@ -1,6 +1,6 @@
 module Electrostatics
 
-using ..LastHomework: DiscreteLaplacianPBCs
+using ..LastHomework: DiscreteLaplacian
 
 export ReshapeVector,
     getbcindices,
