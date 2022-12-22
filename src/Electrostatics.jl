@@ -82,8 +82,7 @@ Base.setindex!(data::PartiallyFixedMatrix, v, i) = setindex!(parent(data), v, i)
 
 for T in (:SolutionMatrix, :ResidualMatrix)
     @eval begin
-        Base.similar(::$T, ::Type{S}, dims::Dims...) where {S} =
-            $T(Matrix{S}(undef, dims...))
+        Base.similar(::$T, ::Type{S}, dims::Dims) where {S} = $T(Matrix{S}(undef, dims))
     end
 end
 
