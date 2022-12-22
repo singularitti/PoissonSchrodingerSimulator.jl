@@ -1,8 +1,17 @@
 module Electrostatics
 
-using ..LastHomework: DiscreteLaplacianPBCs
+using ..LastHomework: DiscreteLaplacian
 
-export ReshapeVector, checkbc, checksquare, checkcharges, setbc!, setsquare!, setcharges!
+export ReshapeVector,
+    getbcindices,
+    getsquareindices,
+    getchargeindices,
+    checkbc,
+    checksquare,
+    checkcharges,
+    setbc!,
+    setsquare!,
+    setcharges!
 
 struct ReshapeVector{T} <: AbstractVector{T}
     data::Vector{T}
@@ -18,7 +27,8 @@ struct ReshapeVector{T} <: AbstractVector{T}
         return new(data, size)
     end
 end
-ReshapeVector(data::AbstractVector{T}, size) where {T} = ReshapeVector{T}(data, size)
+ReshapeVector(data::AbstractVector{T}, dims) where {T} = ReshapeVector{T}(data, dims)
+ReshapeVector(data::AbstractVector{T}, dims...) where {T} = ReshapeVector{T}(data, dims)
 
 function getbcindices(ϕ::AbstractMatrix)
     cartesian_indices = CartesianIndices(ϕ)
@@ -66,7 +76,7 @@ setcharges!(ρ, ρ₀) = _setconst!(getchargeindices, ρ, ρ₀)
 function _getindices(f::Function, vec::ReshapeVector)
     vec = reshape(vec)
     linear_indices = LinearIndices(vec)
-    cartesian_indices = f(vec)
+    cartesian_indices = collect(f(vec))  # `getindex` only accepts vector indices
     return linear_indices[cartesian_indices]
 end
 
@@ -96,8 +106,8 @@ Base.getindex(vec::ReshapeVector, i) = getindex(parent(vec), i)
 
 Base.setindex!(vec::ReshapeVector, v, i) = setindex!(parent(vec), v, i)
 
-Base.similar(::ReshapeVector, ::Type{T}, dims::Dims) where {T} =
-    ReshapeVector(Vector{T}(undef, dims), dims)
+# Base.similar(::ReshapeVector, ::Type{T}, dims::Dims) where {T} =
+#     ReshapeVector(Vector{T}(undef, dims), dims)
 
 Base.reshape(vec::ReshapeVector) = reshape(vec.data, vec.size)
 
