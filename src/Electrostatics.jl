@@ -5,18 +5,11 @@ using ..LastHomework: DiscreteLaplacian
 export Boundary,
     InternalSquare,
     PointCharges,
-    SolutionVector,
-    ResidualVector,
+    SolutionMatrix,
+    ResidualMatrix,
     getindices,
     checkequal,
     set!
-
-struct Region
-    dims::NTuple{2,Int64}
-end
-Region(m, n) = Region((m, n))
-
-const BOX = Region(128, 128)
 
 abstract type FixedValueRegion{T} end
 struct Boundary{T} <: FixedValueRegion{T}
@@ -29,12 +22,12 @@ struct PointCharges{T} <: FixedValueRegion{T}
     value::T
 end
 
-abstract type PartiallyFixedVector{T} <: AbstractVector{T} end
-struct SolutionVector{T} <: PartiallyFixedVector{T}
-    parent::Vector{T}
+abstract type PartiallyFixedMatrix{T} <: AbstractMatrix{T} end
+struct SolutionMatrix{T} <: PartiallyFixedMatrix{T}
+    parent::Matrix{T}
 end
-struct ResidualVector{T} <: PartiallyFixedVector{T}
-    parent::Vector{T}
+struct ResidualMatrix{T} <: PartiallyFixedMatrix{T}
+    parent::Matrix{T}
 end
 
 function getindices(ϕ::AbstractMatrix, ::Boundary)
@@ -60,16 +53,8 @@ function getindices(ρ::AbstractMatrix, ::PointCharges)
     x₁, x₂, y = map(Int64, (M / 4, M * 3//4, N / 8))
     return map(CartesianIndex, ((y, x₁), (y, x₂)))  # Note y -> row, x -> column
 end
-# See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
-# and http://docs.julialang.org/en/v1/base/arrays/#Base.LinearIndices
-function getindices(vec::PartiallyFixedVector, region::FixedValueRegion)
-    mat = reshape(vec, BOX.dims)
-    linear_indices = LinearIndices(mat)
-    cartesian_indices = collect(getindices(mat, region))  # `getindex` only accepts vector indices
-    return linear_indices[cartesian_indices]
-end
 
-function checkequal(data::AbstractVecOrMat, region::FixedValueRegion)
+function checkequal(data::PartiallyFixedMatrix, region::FixedValueRegion)
     indices = getindices(data, region)
     for index in indices
         @assert data[index] == region.value
@@ -77,7 +62,7 @@ function checkequal(data::AbstractVecOrMat, region::FixedValueRegion)
     return nothing
 end
 
-function set!(data::AbstractVecOrMat, region::FixedValueRegion)
+function set!(data::PartiallyFixedMatrix, region::FixedValueRegion)
     indices = getindices(data, region)
     for index in indices
         data[index] = region.value
@@ -85,35 +70,36 @@ function set!(data::AbstractVecOrMat, region::FixedValueRegion)
     return data
 end
 
-Base.parent(vec::PartiallyFixedVector) = vec.parent
+Base.parent(data::PartiallyFixedMatrix) = data.parent
 
-Base.size(vec::PartiallyFixedVector) = size(parent(vec))
+Base.size(data::PartiallyFixedMatrix) = size(parent(data))
 
-Base.IndexStyle(::Type{<:PartiallyFixedVector}) = IndexLinear()
+Base.IndexStyle(::Type{<:PartiallyFixedMatrix}) = IndexLinear()
 
-Base.getindex(vec::PartiallyFixedVector, i) = getindex(parent(vec), i)
+Base.getindex(data::PartiallyFixedMatrix, i) = getindex(parent(data), i)
 
-Base.setindex!(vec::PartiallyFixedVector, v, i) = setindex!(parent(vec), v, i)
+Base.setindex!(data::PartiallyFixedMatrix, v, i) = setindex!(parent(data), v, i)
 
-for T in (:SolutionVector, :ResidualVector)
+for T in (:SolutionMatrix, :ResidualMatrix)
     @eval begin
-        Base.similar(::$T, ::Type{S}, dims::Dims...) where {S} =
-            $T(Vector{S}(undef, dims...))
+        Base.similar(::$T, ::Type{S}, dims::Dims) where {S} = $T(Matrix{S}(undef, dims))
     end
 end
 
-function Base.:*(A::DiscreteLaplacian, 𝐯::SolutionVector)
-    𝐯′ = parent(A) * parent(𝐯)
-    set!(𝐯, Boundary(0))
-    set!(𝐯, InternalSquare(5))
-    return 𝐯′
+function Base.:*(A::DiscreteLaplacian, data::SolutionMatrix)
+    𝐯 = parent(A) * vec(parent(data))
+    data = SolutionMatrix(reshape(𝐯, size(data)))
+    set!(data, Boundary(0))
+    set!(data, InternalSquare(5))
+    return data
 end
-function Base.:*(A::DiscreteLaplacian, 𝐯::ResidualVector)
-    𝐯′ = parent(A) * parent(𝐯)
-    set!(𝐯, Boundary(0))
-    set!(𝐯, InternalSquare(0))
-    set!(𝐯, PointCharges(-20))
-    return 𝐯′
+function Base.:*(A::DiscreteLaplacian, data::ResidualMatrix)
+    𝐯 = parent(A) * vec(parent(data))
+    data = ResidualMatrix(reshape(𝐯, size(data)))
+    set!(data, Boundary(0))
+    set!(data, InternalSquare(0))
+    set!(data, PointCharges(-20))
+    return data
 end
 
 end

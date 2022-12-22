@@ -1,21 +1,19 @@
-using SparseArrays
-
 using Plots
 
 using LastHomework
 using LastHomework.ConjugateGradient
 using LastHomework.Electrostatics
 
-N = 128
-𝛟₀ = SolutionVector(zeros(N^2));
-set!(𝛟₀, Boundary(0));
-set!(𝛟₀, InternalSquare(5));
-𝛒₀ = ResidualVector(zeros(N^2));
-set!(𝛒₀, PointCharges(-20));
-A = DiscreteLaplacian(N)
+N = 16
+ϕ₀ = SolutionMatrix(zeros(N, N));
+set!(ϕ₀, Boundary(0));
+set!(ϕ₀, InternalSquare(5));
+surfaceplot(ϕ₀)
+ρ₀ = ResidualMatrix(zeros(N, N));
+set!(ρ₀, PointCharges(-20));
+surfaceplot(ρ₀)
+A = DiscreteLaplacian(N);
 
-𝛟, history = solve(A, -𝛒₀, 𝛟₀; maxiter=1000)
-phimat = collect(reshape(𝛟, N, N))
-regionheatmap(phimat)
-surfaceplot(phimat)
-surfaceplot!(collect(reshape(𝛟₀, N, N)))
+ϕ, history = solve(A, -ρ₀, ϕ₀; maxiter=1000)
+regionheatmap(ϕ)
+surfaceplot(ϕ)
