@@ -37,6 +37,14 @@ struct ResidualVector{T} <: PartiallyFixedVector{T}
     parent::Vector{T}
 end
 
+abstract type PartiallyFixedMatrix{T} <: AbstractMatrix{T} end
+struct SolutionMatrix{T} <: PartiallyFixedMatrix{T}
+    parent::Matrix{T}
+end
+struct ResidualMatrix{T} <: PartiallyFixedMatrix{T}
+    parent::Matrix{T}
+end
+
 function getindices(ϕ::AbstractMatrix, ::Boundary)
     cartesian_indices = CartesianIndices(ϕ)
     # Note the geometry of the region and the matrix rows/columns ordering are the same!
