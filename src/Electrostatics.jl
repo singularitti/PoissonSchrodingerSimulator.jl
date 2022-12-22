@@ -75,7 +75,7 @@ function getindices(vec::ReshapeVector, region::FixedRegion)
     return linear_indices[cartesian_indices]
 end
 
-function _checkequal(data::AbstractVecOrMat, value, region::FixedRegion)
+function checkequal(data::AbstractVecOrMat, value, region::FixedRegion)
     indices = getindices(data, region)
     for index in indices
         @assert data[index] == value
@@ -83,7 +83,7 @@ function _checkequal(data::AbstractVecOrMat, value, region::FixedRegion)
     return nothing
 end
 
-function _setconst!(data::AbstractVecOrMat, value, region::FixedRegion)
+function setconst!(data::AbstractVecOrMat, value, region::FixedRegion)
     indices = getindices(data, region)
     for index in indices
         data[index] = value
@@ -121,7 +121,7 @@ Base.similar(::PartiallyFixedVector, ::Type{T}, dims::Dims) where {T} =
 
 function Base.:*(A::DiscreteLaplacian, 𝐯::PartiallyFixedVector)
     𝐯′ = A * 𝐯
-    _setconst!(f, 𝐯, 1)
+    setconst!(f, 𝐯, 1)
     return 𝐯′
 end
 
