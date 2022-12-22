@@ -3,7 +3,7 @@ using RecipesBase: @userplot, @recipe, @series
 
 using .ConjugateGradient: ConvergenceHistory
 
-export regionheatmap, residualplot
+export regionheatmap, residualplot, surfaceplot
 
 @recipe function f(laplacian::DiscreteLaplacian)
     size --> (800, 800)
@@ -46,6 +46,27 @@ end
     color --> :thermometer
     frame --> :box
     aspect_ratio --> :equal
+    margins --> (0, :mm)  # See https://github.com/JuliaPlots/Plots.jl/issues/4522#issuecomment-1318511879
+    return axes(data)..., data
+end
+
+@userplot SurfacePlot
+@recipe function f(plot::SurfacePlot)
+    data = plot.args[end]
+    size --> (800, 800)
+    seriestype --> :surface
+    yflip --> true  # Set the origin to the upper left corner, see https://github.com/MakieOrg/Makie.jl/issues/46
+    xlims --> extrema(axes(data, 1)) .+ (-0.5, 0.5)  # See https://discourse.julialang.org/t/can-plots-jl-heatmap-coordinates-start-at-1-instead-of-0-5/90385/3
+    ylims --> extrema(axes(data, 2)) .+ (-0.5, 0.5)
+    xguide --> raw"$x$"
+    yguide --> raw"$y$"
+    zguide --> raw"$z$"
+    tick_direction --> :out
+    guidefontsize --> 10
+    tickfontsize --> 8
+    color --> :thermometer
+    frame --> :box
+    aspect_ratio --> :equal  # See https://docs.juliaplots.org/latest/gallery/gr/generated/gr-ref060/
     margins --> (0, :mm)  # See https://github.com/JuliaPlots/Plots.jl/issues/4522#issuecomment-1318511879
     return axes(data)..., data
 end
