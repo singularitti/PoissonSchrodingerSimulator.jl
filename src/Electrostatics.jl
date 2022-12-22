@@ -83,7 +83,7 @@ function checkequal(data::AbstractVecOrMat, value, region::FixedRegion)
     return nothing
 end
 
-function setconst!(data::AbstractVecOrMat, value, region::FixedRegion)
+function set!(data::AbstractVecOrMat, value, region::FixedRegion)
     indices = getindices(data, region)
     for index in indices
         data[index] = value
@@ -121,7 +121,7 @@ Base.similar(::PartiallyFixedVector, ::Type{T}, dims::Dims) where {T} =
 
 function Base.:*(A::DiscreteLaplacian, 𝐯::PartiallyFixedVector)
     𝐯′ = A * 𝐯
-    setconst!(f, 𝐯, 1)
+    set!(f, 𝐯, 1)
     return 𝐯′
 end
 
