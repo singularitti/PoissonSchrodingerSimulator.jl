@@ -4,10 +4,16 @@ using ..LastHomework: DiscreteLaplacian
 
 export getindices, checkequal, set!
 
-abstract type FixedRegion end
-struct Boundary <: FixedRegion end
-struct InternalSquare <: FixedRegion end
-struct PointCharges <: FixedRegion end
+abstract type FixedRegion{T} end
+struct Boundary{T} <: FixedRegion{T}
+    value::T
+end
+struct InternalSquare{T} <: FixedRegion{T}
+    value::T
+end
+struct PointCharges{T} <: FixedRegion{T}
+    value::T
+end
 
 abstract type PartiallyFixedVector{T} <: AbstractVector{T} end
 struct SolutionVector{T} <: PartiallyFixedVector{T}
