@@ -3,7 +3,7 @@ module ConjugateGradient
 using LinearAlgebra: dot, norm
 using OffsetArrays: OffsetVector, Origin
 
-export solve, isconverged, eachstep
+export solve!, isconverged, eachstep
 
 mutable struct IterationStep
     n::UInt64
@@ -14,20 +14,25 @@ mutable struct IterationStep
     p::Vector{Float64}
 end
 
-mutable struct ConvergenceHistory
+abstract type AbstractLogger end
+mutable struct EmptyLogger <: AbstractLogger
+    isconverged::Bool
+end
+EmptyLogger() = EmptyLogger(false)
+mutable struct Logger <: AbstractLogger
     maxiter::UInt64
     isconverged::Bool
     data::OffsetVector{IterationStep}
 end
+Logger(maxiter) = Logger(maxiter, false, OffsetVector([], Origin(0)))
 
-function solve(A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxiter=2000)
-    history = ConvergenceHistory(maxiter, false, OffsetVector([], Origin(0)))
+function solve!(A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxiter=2000, logger=EmptyLogger())
     𝐱ₙ = 𝐱₀
     𝐫ₙ = 𝐛 - A * 𝐱ₙ  # Initial residual, 𝐫₀
     𝐩ₙ = 𝐫ₙ  # Initial momentum, 𝐩₀
     for n in 0:maxiter
         if norm(𝐫ₙ) < atol
-            history.isconverged = true
+            setconverged!(logger)
             break
         end
         αₙ = dot(𝐫ₙ, 𝐫ₙ) / dot(𝐩ₙ, A, 𝐩ₙ)
@@ -35,20 +40,28 @@ function solve(A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxiter=2000)
         𝐫ₙ₊₁ = 𝐫ₙ - αₙ * A * 𝐩ₙ
         βₙ = dot(𝐫ₙ₊₁, 𝐫ₙ₊₁) / dot(𝐫ₙ, 𝐫ₙ)
         𝐩ₙ₊₁ = 𝐫ₙ₊₁ + βₙ * 𝐩ₙ
-        push!(history.data, IterationStep(n, αₙ, βₙ, 𝐱ₙ, 𝐫ₙ, 𝐩ₙ))
+        log!(logger, IterationStep(n, αₙ, βₙ, 𝐱ₙ, 𝐫ₙ, 𝐩ₙ))
         # Prepare for a new iteration
         𝐱ₙ, 𝐫ₙ, 𝐩ₙ = 𝐱ₙ₊₁, 𝐫ₙ₊₁, 𝐩ₙ₊₁
     end
-    return 𝐱ₙ, history
+    return 𝐱ₙ
 end
 
-isconverged(ch::ConvergenceHistory) = ch.isconverged
+log!(::EmptyLogger, args...) = nothing
+log!(logger::Logger, step) = push!(logger.data, step)
+
+function setconverged!(logger::AbstractLogger)
+    logger.isconverged = true
+    return logger
+end
+
+isconverged(ch::Logger) = ch.isconverged
 
 struct EachStep
-    history::ConvergenceHistory
+    history::Logger
 end
 
-eachstep(ch::ConvergenceHistory) = EachStep(ch)
+eachstep(ch::Logger) = EachStep(ch)
 
 Base.iterate(iter::EachStep) = iterate(iter.history.data)
 Base.iterate(iter::EachStep, state) = iterate(iter.history.data, state)
