@@ -30,6 +30,14 @@ end
 ReshapeVector(data::AbstractVector{T}, dims) where {T} = ReshapeVector{T}(data, dims)
 ReshapeVector(data::AbstractVector{T}, dims...) where {T} = ReshapeVector{T}(data, dims)
 
+abstract type WrappedVector{T} <: AbstractVector{T} end
+struct SolutionVector{T} <: WrappedVector{T}
+    parent::Vector{T}
+end
+struct ResidualVector{T} <: WrappedVector{T}
+    parent::Vector{T}
+end
+
 function getbcindices(ϕ::AbstractMatrix)
     cartesian_indices = CartesianIndices(ϕ)
     # Note the geometry of the region and the matrix rows/columns ordering are the same!
