@@ -103,13 +103,15 @@ for T in (:SolutionVector, :ResidualVector)
 end
 
 function Base.:*(A::DiscreteLaplacian, 𝐯::SolutionVector)
-    𝐯′ = A * 𝐯
+    𝐯′ = parent(A) * parent(𝐯)
     set!(𝐯, Boundary(0))
     set!(𝐯, InternalSquare(5))
     return 𝐯′
 end
 function Base.:*(A::DiscreteLaplacian, 𝐯::ResidualVector)
-    𝐯′ = A * 𝐯
+    𝐯′ = parent(A) * parent(𝐯)
+    set!(𝐯, Boundary(0))
+    set!(𝐯, InternalSquare(0))
     set!(𝐯, PointCharges(-20))
     return 𝐯′
 end
