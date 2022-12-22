@@ -5,8 +5,8 @@ using ..LastHomework: DiscreteLaplacian
 export Boundary,
     InternalSquare,
     PointCharges,
-    SolutionVector,
-    ResidualVector,
+    SolutionMatrix,
+    ResidualMatrix,
     getindices,
     checkequal,
     set!
