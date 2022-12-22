@@ -93,8 +93,8 @@ function _getindices(vec::ReshapeVector, region::FixedRegion)
     return linear_indices[cartesian_indices]
 end
 
-function _checkequal(f::Function, data::AbstractVecOrMat, value)
-    indices = f(data)
+function _checkequal(data::AbstractVecOrMat, value, region::FixedRegion)
+    indices = getindices(data, region)
     for index in indices
         @assert data[index] == value
     end
