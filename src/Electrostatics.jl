@@ -56,10 +56,6 @@ function getindices(ϕ::AbstractMatrix, ::Boundary)
 end
 getindices(𝛟::ReshapeVector, ::Boundary) = _getindices(𝛟, ::Boundary)
 
-checkbc(ϕ, ϕ₀) = _checkequal(getbcindices, ϕ, ϕ₀)
-
-setbc!(ϕ, ϕ₀) = _setconst!(getbcindices, ϕ, ϕ₀)
-
 function getindices(ϕ::AbstractMatrix, ::InternalSquare)
     M, N = size(ϕ)
     xₘᵢₙ, xₘₐₓ, yₘᵢₙ, yₘₐₓ = map(Int64, (M / 2, M * 3//4, N * 5//8, N * 7//8))
@@ -69,19 +65,11 @@ function getindices(ϕ::AbstractMatrix, ::InternalSquare)
 end
 getindices(𝛟::ReshapeVector, ::InternalSquare) = _getindices(𝛟, ::InternalSquare)
 
-checksquare(ϕ, ϕ₀) = _checkequal(getsquareindices, ϕ, ϕ₀)
-
-setsquare!(ϕ, ϕ₀) = _setconst!(getsquareindices, ϕ, ϕ₀)
-
 function getindices(ρ::AbstractMatrix, ::PointCharges)
     M, N = size(ρ)
     x₁, x₂, y = map(Int64, (M / 4, M * 3//4, N / 8))
     return map(CartesianIndex, ((y, x₁), (y, x₂)))  # Note y -> row, x -> column
 end
-
-checkcharges(ρ, ρ₀) = _checkequal(getchargeindices, ρ, ρ₀)
-
-setcharges!(ρ, ρ₀) = _setconst!(getchargeindices, ρ, ρ₀)
 getindices(𝛒::ReshapeVector, ::PointCharges) = _getindices(𝛒, ::PointCharges)
 
 # See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
