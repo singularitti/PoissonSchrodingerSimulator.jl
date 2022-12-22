@@ -30,6 +30,14 @@ end
 ReshapeVector(data::AbstractVector{T}, dims) where {T} = ReshapeVector{T}(data, dims)
 ReshapeVector(data::AbstractVector{T}, dims...) where {T} = ReshapeVector{T}(data, dims)
 
+abstract type PartiallyFixedVector{T} <: AbstractVector{T} end
+struct SolutionVector{T} <: PartiallyFixedVector{T}
+    parent::Vector{T}
+end
+struct ResidualVector{T} <: PartiallyFixedVector{T}
+    parent::Vector{T}
+end
+
 function getbcindices(ϕ::AbstractMatrix)
     cartesian_indices = CartesianIndices(ϕ)
     # Note the geometry of the region and the matrix rows/columns ordering are the same!
@@ -74,9 +82,9 @@ setcharges!(ρ, ρ₀) = _setconst!(getchargeindices, ρ, ρ₀)
 # See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
 # and http://docs.julialang.org/en/v1/base/arrays/#Base.LinearIndices
 function _getindices(f::Function, vec::ReshapeVector)
-    vec = reshape(vec)
-    linear_indices = LinearIndices(vec)
-    cartesian_indices = collect(f(vec))  # `getindex` only accepts vector indices
+    mat = reshape(vec)
+    linear_indices = LinearIndices(mat)
+    cartesian_indices = collect(f(mat))  # `getindex` only accepts vector indices
     return linear_indices[cartesian_indices]
 end
 
@@ -110,5 +118,24 @@ Base.setindex!(vec::ReshapeVector, v, i) = setindex!(parent(vec), v, i)
 #     ReshapeVector(Vector{T}(undef, dims), dims)
 
 Base.reshape(vec::ReshapeVector) = reshape(vec.data, vec.size)
+
+Base.parent(vec::PartiallyFixedVector) = vec.data
+
+Base.size(vec::PartiallyFixedVector) = size(parent(vec))
+
+Base.IndexStyle(::Type{PartiallyFixedVector{T}}) where {T} = IndexLinear()
+
+Base.getindex(vec::PartiallyFixedVector, i) = getindex(parent(vec), i)
+
+Base.setindex!(vec::PartiallyFixedVector, v, i) = setindex!(parent(vec), v, i)
+
+Base.similar(::PartiallyFixedVector, ::Type{T}, dims::Dims) where {T} =
+    PartiallyFixedVector(Vector{T}(undef, dims))
+
+function Base.:*(A::DiscreteLaplacian, 𝐯::PartiallyFixedVector)
+    𝐯′ = A * 𝐯
+    _setconst!(f, 𝐯, 1)
+    return 𝐯′
+end
 
 end
