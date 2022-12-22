@@ -119,4 +119,17 @@ Base.setindex!(vec::ReshapeVector, v, i) = setindex!(parent(vec), v, i)
 
 Base.reshape(vec::ReshapeVector) = reshape(vec.data, vec.size)
 
+Base.parent(vec::WrappedVector) = vec.data
+
+Base.size(vec::WrappedVector) = size(parent(vec))
+
+Base.IndexStyle(::Type{WrappedVector{T}}) where {T} = IndexLinear()
+
+Base.getindex(vec::WrappedVector, i) = getindex(parent(vec), i)
+
+Base.setindex!(vec::WrappedVector, v, i) = setindex!(parent(vec), v, i)
+
+Base.similar(::WrappedVector, ::Type{T}, dims::Dims) where {T} =
+    WrappedVector(Vector{T}(undef, dims))
+
 end
