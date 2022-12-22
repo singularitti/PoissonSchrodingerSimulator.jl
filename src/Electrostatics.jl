@@ -2,7 +2,14 @@ module Electrostatics
 
 using ..LastHomework: DiscreteLaplacian
 
-export getindices, checkequal, set!
+export Boundary,
+    InternalSquare,
+    PointCharges,
+    SolutionVector,
+    ResidualVector,
+    getindices,
+    checkequal,
+    set!
 
 struct Region
     dims::NTuple{2,Int64}
