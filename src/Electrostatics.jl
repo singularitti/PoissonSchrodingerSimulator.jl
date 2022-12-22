@@ -2,24 +2,7 @@ module Electrostatics
 
 using ..LastHomework: DiscreteLaplacian
 
-export ReshapeVector, getindices, checkequal, set!
-
-struct ReshapeVector{T} <: AbstractVector{T}
-    data::Vector{T}
-    size::NTuple{2,Int64}
-    function ReshapeVector{T}(data, size) where {T}
-        if length(data) != prod(size)
-            throw(
-                DimensionMismatch(
-                    "dimensions $size must be consistent with array size $(length(data))!"
-                ),
-            )
-        end
-        return new(data, size)
-    end
-end
-ReshapeVector(data::AbstractVector{T}, dims) where {T} = ReshapeVector{T}(data, dims)
-ReshapeVector(data::AbstractVector{T}, dims...) where {T} = ReshapeVector{T}(data, dims)
+export getindices, checkequal, set!
 
 abstract type FixedRegion end
 struct Boundary <: FixedRegion end
@@ -81,21 +64,6 @@ function set!(data::AbstractVecOrMat, value, region::FixedRegion)
     end
     return data
 end
-
-Base.parent(vec::ReshapeVector) = vec.data
-
-Base.size(vec::ReshapeVector) = size(parent(vec))
-
-Base.IndexStyle(::Type{ReshapeVector{T}}) where {T} = IndexLinear()
-
-Base.getindex(vec::ReshapeVector, i) = getindex(parent(vec), i)
-
-Base.setindex!(vec::ReshapeVector, v, i) = setindex!(parent(vec), v, i)
-
-# Base.similar(::ReshapeVector, ::Type{T}, dims::Dims) where {T} =
-#     ReshapeVector(Vector{T}(undef, dims), dims)
-
-Base.reshape(vec::ReshapeVector) = reshape(vec.data, vec.size)
 
 Base.parent(vec::PartiallyFixedVector) = vec.parent
 
