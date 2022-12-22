@@ -66,11 +66,6 @@ function getindices(ρ::AbstractMatrix, ::PointCharges)
     x₁, x₂, y = map(Int64, (M / 4, M * 3//4, N / 8))
     return map(CartesianIndex, ((y, x₁), (y, x₂)))  # Note y -> row, x -> column
 end
-function getindices(ρ::AbstractMatrix, ::PointCharges)
-    M, N = size(ρ)
-    x₁, x₂, y = map(Int64, (M / 4, M * 3//4, N / 8))
-    return map(CartesianIndex, ((y, x₁), (y, x₂)))  # Note y -> row, x -> column
-end
 # See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
 # and http://docs.julialang.org/en/v1/base/arrays/#Base.LinearIndices
 function getindices(vec::ReshapeVector, region::FixedRegion)
