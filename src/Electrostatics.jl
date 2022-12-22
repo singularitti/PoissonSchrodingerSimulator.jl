@@ -4,14 +4,14 @@ using ..LastHomework: DiscreteLaplacian
 
 export getindices, checkequal, set!
 
-abstract type FixedRegion{T} end
-struct Boundary{T} <: FixedRegion{T}
+abstract type FixedValueRegion{T} end
+struct Boundary{T} <: FixedValueRegion{T}
     value::T
 end
-struct InternalSquare{T} <: FixedRegion{T}
+struct InternalSquare{T} <: FixedValueRegion{T}
     value::T
 end
-struct PointCharges{T} <: FixedRegion{T}
+struct PointCharges{T} <: FixedValueRegion{T}
     value::T
 end
 
@@ -48,14 +48,14 @@ function getindices(ρ::AbstractMatrix, ::PointCharges)
 end
 # See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
 # and http://docs.julialang.org/en/v1/base/arrays/#Base.LinearIndices
-function getindices(vec::ReshapeVector, region::FixedRegion)
+function getindices(vec::ReshapeVector, region::FixedValueRegion)
     mat = reshape(vec)
     linear_indices = LinearIndices(mat)
     cartesian_indices = collect(getindices(vec, region))  # `getindex` only accepts vector indices
     return linear_indices[cartesian_indices]
 end
 
-function checkequal(data::AbstractVecOrMat, value, region::FixedRegion)
+function checkequal(data::AbstractVecOrMat, value, region::FixedValueRegion)
     indices = getindices(data, region)
     for index in indices
         @assert data[index] == value
@@ -63,7 +63,7 @@ function checkequal(data::AbstractVecOrMat, value, region::FixedRegion)
     return nothing
 end
 
-function set!(data::AbstractVecOrMat, value, region::FixedRegion)
+function set!(data::AbstractVecOrMat, value, region::FixedValueRegion)
     indices = getindices(data, region)
     for index in indices
         data[index] = value
