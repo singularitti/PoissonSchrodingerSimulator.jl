@@ -7,11 +7,11 @@ using LastHomework.ConjugateGradient
 using LastHomework.Electrostatics
 
 N = 128
-𝛟₀ = ReshapeVector(zeros(N^2), N, N);
-setbc!(𝛟₀, 0)
-setsquare!(𝛟₀, 5)
-𝛒₀ = ReshapeVector(zeros(N^2), N, N);
-setcharges!(𝛒₀, -20)
+𝛟₀ = SolutionVector(zeros(N^2));
+set!(𝛟₀, Boundary(0))
+set!(𝛟₀, InternalSquare(5))
+𝛒₀ = ResidualVector(zeros(N^2));
+set!(𝛒₀, PointCharges(-20))
 A = sparse(DiscreteLaplacian(N))
 
 𝛟, history = solve(A, -𝛒₀, 𝛟₀; maxiter=4)
