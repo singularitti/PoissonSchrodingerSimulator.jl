@@ -55,18 +55,18 @@ function getindices(vec::ReshapeVector, region::FixedValueRegion)
     return linear_indices[cartesian_indices]
 end
 
-function checkequal(data::AbstractVecOrMat, value, region::FixedValueRegion)
+function checkequal(data::AbstractVecOrMat, region::FixedValueRegion)
     indices = getindices(data, region)
     for index in indices
-        @assert data[index] == value
+        @assert data[index] == region.value
     end
     return nothing
 end
 
-function set!(data::AbstractVecOrMat, value, region::FixedValueRegion)
+function set!(data::AbstractVecOrMat, region::FixedValueRegion)
     indices = getindices(data, region)
     for index in indices
-        data[index] = value
+        data[index] = region.value
     end
     return data
 end
