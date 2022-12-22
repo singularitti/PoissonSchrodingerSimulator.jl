@@ -97,11 +97,11 @@ Base.setindex!(vec::ReshapeVector, v, i) = setindex!(parent(vec), v, i)
 
 Base.reshape(vec::ReshapeVector) = reshape(vec.data, vec.size)
 
-Base.parent(vec::PartiallyFixedVector) = vec.data
+Base.parent(vec::PartiallyFixedVector) = vec.parent
 
 Base.size(vec::PartiallyFixedVector) = size(parent(vec))
 
-Base.IndexStyle(::Type{PartiallyFixedVector{T}}) where {T} = IndexLinear()
+Base.IndexStyle(::Type{<:PartiallyFixedVector}) = IndexLinear()
 
 Base.getindex(vec::PartiallyFixedVector, i) = getindex(parent(vec), i)
 
