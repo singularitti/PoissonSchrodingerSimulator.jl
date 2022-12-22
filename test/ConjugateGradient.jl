@@ -1,6 +1,6 @@
 module ConjugateGradient
 
-using LastHomework.ConjugateGradient: solve, isconverged, eachstep
+using LastHomework.ConjugateGradient: Logger, solve!, isconverged, eachstep
 using LinearAlgebra: norm
 using Test: @testset, @test
 
@@ -12,11 +12,12 @@ using Test: @testset, @test
     ]
     𝐛 = [1, 2]
     𝐱₀ = [2, 1]
-    𝐱, ch = solve(A, 𝐛, 𝐱₀; atol=1e-24)
+    logger = Logger(2000)
+    𝐱 = solve!(A, 𝐛, 𝐱₀; atol=1e-24, logger=logger)
     @test 𝐱 ≈ [1 / 11, 7 / 11]  # Compare with the exact solution
     @test norm(A * 𝐱 - 𝐛) / norm(𝐛) ≤ 1e-12
-    @test isconverged(ch) == true
-    steps = eachstep(ch)
+    @test isconverged(logger) == true
+    steps = eachstep(logger)
     @test steps[0].r == steps[0].p == -[8, 3]
     @test steps[0].alpha == 73 / 331
     @test steps[0].beta ≈ 0.008771369374138607
@@ -35,11 +36,12 @@ end
     ]
     𝐛 = [2, 2]
     𝐱₀ = [1, 2]
-    𝐱, ch = solve(A, 𝐛, 𝐱₀; atol=1e-24)
+    logger = Logger(2000)
+    𝐱 = solve!(A, 𝐛, 𝐱₀; atol=1e-24, logger=logger)
     @test 𝐱 ≈ [0.2222222222222221, 0.8888888888888891]  # Compare with other's result
     @test norm(A * 𝐱 - 𝐛) / norm(𝐛) == 0
-    @test isconverged(ch) == true
-    steps = eachstep(ch)
+    @test isconverged(logger) == true
+    steps = eachstep(logger)
     @test steps[0].r == steps[0].p == -[5, 3]
     @test steps[0].alpha == 34 / 173
     @test steps[0].beta ≈ 0.028099836279194094  # The example's result is wrong
@@ -56,11 +58,12 @@ end
             -0.0113 0.5287
         ]
         𝐛 = [1.3864, 0.3719]
-        𝐱, ch = solve(A, 𝐛, -[3, 4])
+        logger = Logger(2000)
+        𝐱 = solve!(A, 𝐛, -[3, 4]; logger=logger)
         @test 𝐱 ≈ [0.5488138979502294, 0.7151533895344008]
         @test norm(A * 𝐱 - 𝐛) / norm(𝐛) < 1e-15
-        @test isconverged(ch) == true
-        steps = eachstep(ch)
+        @test isconverged(logger) == true
+        steps = eachstep(logger)
         @test steps[1].x ≈ [0.742786502583181, -2.975857971024216]
         @test norm(steps[1].r) ≈ 2.025447442457243
         @test steps[2].x ≈ [0.5488138979502315, 0.7151533895344007]
@@ -73,10 +76,11 @@ end
             -0.0851 0.0572 0.4738
         ]
         𝐛 = [-0.0043, 2.2501, 0.2798]
-        𝐱, ch = solve(A, 𝐛, [3, 1, -7])
+        logger = Logger(2000)
+        𝐱 = solve!(A, 𝐛, [3, 1, -7]; logger=logger)
         @test 𝐱 ≈ [0.5488032997143618, 0.7151992261015149, 0.6027728262403653]
         @test norm(A * 𝐱 - 𝐛) / norm(𝐛) < 1e-15
-        @test isconverged(ch) == true
+        @test isconverged(logger) == true
     end
     @testset "Problem 3" begin
         A = [
@@ -88,7 +92,8 @@ end
             -1.2728 0.2630 -1.0613 -0.4344 -0.3261 1.0869
         ]
         𝐛 = [3.0685, 0.0484, 2.5783, 1.2865, 0.8671, -0.8230]
-        𝐱, ch = solve(A, 𝐛, [9, 0, -2, 3, -2, 5])
+        logger = Logger(2000)
+        𝐱 = solve!(A, 𝐛, [9, 0, -2, 3, -2, 5]; logger=logger)
         @test 𝐱 ≈ [
             0.5488252073566335,
             0.7152045853108671,
