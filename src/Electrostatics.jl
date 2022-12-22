@@ -84,9 +84,15 @@ Base.setindex!(vec::PartiallyFixedVector, v, i) = setindex!(parent(vec), v, i)
 Base.similar(::PartiallyFixedVector, ::Type{T}, dims::Dims) where {T} =
     PartiallyFixedVector(Vector{T}(undef, dims))
 
-function Base.:*(A::DiscreteLaplacian, 𝐯::PartiallyFixedVector)
+function Base.:*(A::DiscreteLaplacian, 𝐯::SolutionVector)
     𝐯′ = A * 𝐯
-    set!(f, 𝐯, 1)
+    set!(𝐯, Boundary(0))
+    set!(𝐯, InternalSquare(5))
+    return 𝐯′
+end
+function Base.:*(A::DiscreteLaplacian, 𝐯::ResidualVector)
+    𝐯′ = A * 𝐯
+    set!(𝐯, PointCharges(-20))
     return 𝐯′
 end
 
