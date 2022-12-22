@@ -93,20 +93,20 @@ function set!(data::AbstractVecOrMat, region::FixedValueRegion)
     return data
 end
 
-Base.parent(vec::PartiallyFixedVector) = vec.parent
+Base.parent(data::PartiallyFixedMatrix) = data.parent
 
-Base.size(vec::PartiallyFixedVector) = size(parent(vec))
+Base.size(data::PartiallyFixedMatrix) = size(parent(data))
 
-Base.IndexStyle(::Type{<:PartiallyFixedVector}) = IndexLinear()
+Base.IndexStyle(::Type{<:PartiallyFixedMatrix}) = IndexLinear()
 
-Base.getindex(vec::PartiallyFixedVector, i) = getindex(parent(vec), i)
+Base.getindex(data::PartiallyFixedMatrix, i) = getindex(parent(data), i)
 
-Base.setindex!(vec::PartiallyFixedVector, v, i) = setindex!(parent(vec), v, i)
+Base.setindex!(data::PartiallyFixedMatrix, v, i) = setindex!(parent(data), v, i)
 
-for T in (:SolutionVector, :ResidualVector)
+for T in (:SolutionMatrix, :ResidualMatrix)
     @eval begin
         Base.similar(::$T, ::Type{S}, dims::Dims...) where {S} =
-            $T(Vector{S}(undef, dims...))
+            $T(Matrix{S}(undef, dims...))
     end
 end
 
