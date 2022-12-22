@@ -30,10 +30,10 @@ function solve(A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxiter=2000)
             history.isconverged = true
             break
         end
-        αₙ = compute_alpha(A, 𝐫ₙ, 𝐩ₙ)
+        αₙ = dot(𝐫ₙ, 𝐫ₙ) / dot(𝐩ₙ, A, 𝐩ₙ)
         𝐱ₙ₊₁ = 𝐱ₙ + αₙ * 𝐩ₙ
         𝐫ₙ₊₁ = 𝐫ₙ - αₙ * A * 𝐩ₙ
-        βₙ = compute_beta(𝐫ₙ₊₁, 𝐫ₙ)
+        βₙ = dot(𝐫ₙ₊₁, 𝐫ₙ₊₁) / dot(𝐫ₙ, 𝐫ₙ)
         𝐩ₙ₊₁ = 𝐫ₙ₊₁ + βₙ * 𝐩ₙ
         push!(history.data, IterationStep(n, αₙ, βₙ, 𝐱ₙ, 𝐫ₙ, 𝐩ₙ))
         # Prepare for a new iteration
@@ -41,11 +41,6 @@ function solve(A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxiter=2000)
     end
     return 𝐱ₙ, history
 end
-
-compute_alpha(A, 𝐫, 𝐩) = dot(𝐫, 𝐫) / dot(𝐩, A, 𝐩)
-
-compute_beta(A, 𝐫, 𝐩) = -dot(𝐩, A, 𝐫) / dot(𝐩, A, 𝐩)
-compute_beta(𝐫ₙ₊₁, 𝐫ₙ) = dot(𝐫ₙ₊₁, 𝐫ₙ₊₁) / dot(𝐫ₙ, 𝐫ₙ)
 
 isconverged(ch::ConvergenceHistory) = ch.isconverged
 
