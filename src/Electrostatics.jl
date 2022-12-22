@@ -30,6 +30,11 @@ end
 ReshapeVector(data::AbstractVector{T}, dims) where {T} = ReshapeVector{T}(data, dims)
 ReshapeVector(data::AbstractVector{T}, dims...) where {T} = ReshapeVector{T}(data, dims)
 
+abstract type FixedRegion end
+struct Boundary <: FixedRegion end
+struct InternalSquare <: FixedRegion end
+struct PointCharges <: FixedRegion end
+
 abstract type PartiallyFixedVector{T} <: AbstractVector{T} end
 struct SolutionVector{T} <: PartiallyFixedVector{T}
     parent::Vector{T}
