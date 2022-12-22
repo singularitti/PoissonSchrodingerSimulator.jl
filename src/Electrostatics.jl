@@ -86,10 +86,10 @@ setcharges!(ρ, ρ₀) = _setconst!(getchargeindices, ρ, ρ₀)
 
 # See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
 # and http://docs.julialang.org/en/v1/base/arrays/#Base.LinearIndices
-function _getindices(f::Function, vec::ReshapeVector)
+function _getindices(vec::ReshapeVector, region::FixedRegion)
     mat = reshape(vec)
     linear_indices = LinearIndices(mat)
-    cartesian_indices = collect(f(mat))  # `getindex` only accepts vector indices
+    cartesian_indices = collect(getindices(vec, region))  # `getindex` only accepts vector indices
     return linear_indices[cartesian_indices]
 end
 
