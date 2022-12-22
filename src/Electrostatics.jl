@@ -101,8 +101,8 @@ function _checkequal(data::AbstractVecOrMat, value, region::FixedRegion)
     return nothing
 end
 
-function _setconst!(f, data::AbstractVecOrMat, value)
-    indices = f(data)
+function _setconst!(data::AbstractVecOrMat, value, region::FixedRegion)
+    indices = getindices(data, region)
     for index in indices
         data[index] = value
     end
