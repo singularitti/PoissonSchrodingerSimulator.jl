@@ -1,8 +1,6 @@
 using LinearAlgebra: norm
 using RecipesBase: @userplot, @recipe, @series
 
-using .ConjugateGradient: ConvergenceHistory
-
 export regionheatmap, residualplot, surfaceplot
 
 @recipe function f(laplacian::DiscreteLaplacian)
