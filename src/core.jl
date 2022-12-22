@@ -1,10 +1,15 @@
-using LinearAlgebra: Symmetric
+using LinearAlgebra: Symmetric, issymmetric
 using SparseArrays: AbstractSparseMatrix, SparseMatrixCSC, spdiagm
 
 export DiscreteLaplacian
 
 struct DiscreteLaplacian <: AbstractSparseMatrix{Int64,Int64}
     data::SparseMatrixCSC{Int64,Int64}
+    function DiscreteLaplacian(data::AbstractMatrix)
+        @assert issymmetric(data)
+        @assert all(iszero(sum(data; dims=2)))
+        return new(data)
+    end
 end
 function DiscreteLaplacian(N::Integer)
     A = spdiagm(
