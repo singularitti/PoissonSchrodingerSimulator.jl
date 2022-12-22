@@ -14,14 +14,16 @@ mutable struct IterationStep
     p::Vector{Float64}
 end
 
-mutable struct ConvergenceHistory
+abstract type AbstractLogger end
+mutable struct Logger <: AbstractLogger
     maxiter::UInt64
     isconverged::Bool
     data::OffsetVector{IterationStep}
 end
+Logger(maxiter) = Logger(maxiter, false, OffsetVector([], Origin(0)))
 
 function solve(A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxiter=2000)
-    history = ConvergenceHistory(maxiter, false, OffsetVector([], Origin(0)))
+    history = Logger(maxiter, false, OffsetVector([], Origin(0)))
     𝐱ₙ = 𝐱₀
     𝐫ₙ = 𝐛 - A * 𝐱ₙ  # Initial residual, 𝐫₀
     𝐩ₙ = 𝐫ₙ  # Initial momentum, 𝐩₀
@@ -42,13 +44,13 @@ function solve(A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxiter=2000)
     return 𝐱ₙ, history
 end
 
-isconverged(ch::ConvergenceHistory) = ch.isconverged
+isconverged(ch::Logger) = ch.isconverged
 
 struct EachStep
-    history::ConvergenceHistory
+    history::Logger
 end
 
-eachstep(ch::ConvergenceHistory) = EachStep(ch)
+eachstep(ch::Logger) = EachStep(ch)
 
 Base.iterate(iter::EachStep) = iterate(iter.history.data)
 Base.iterate(iter::EachStep, state) = iterate(iter.history.data, state)
