@@ -86,17 +86,17 @@ for T in (:SolutionMatrix, :ResidualMatrix)
     end
 end
 
-function Base.:*(A::DiscreteLaplacian, 𝐯::SolutionMatrix)
-    𝐯′ = parent(A) * vec(parent(𝐯))
-    set!(𝐯, Boundary(0))
-    set!(𝐯, InternalSquare(5))
+function Base.:*(A::DiscreteLaplacian, data::SolutionMatrix)
+    𝐯′ = parent(A) * vec(parent(data))
+    set!(data, Boundary(0))
+    set!(data, InternalSquare(5))
     return 𝐯′
 end
-function Base.:*(A::DiscreteLaplacian, 𝐯::ResidualMatrix)
-    𝐯′ = parent(A) * vec(parent(𝐯))
-    set!(𝐯, Boundary(0))
-    set!(𝐯, InternalSquare(0))
-    set!(𝐯, PointCharges(-20))
+function Base.:*(A::DiscreteLaplacian, data::ResidualMatrix)
+    𝐯′ = parent(A) * vec(parent(data))
+    set!(data, Boundary(0))
+    set!(data, InternalSquare(0))
+    set!(data, PointCharges(-20))
     return 𝐯′
 end
 
