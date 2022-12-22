@@ -77,7 +77,7 @@ function getindices(vec::PartiallyFixedVector, region::FixedValueRegion)
     return linear_indices[cartesian_indices]
 end
 
-function checkequal(data::AbstractVecOrMat, region::FixedValueRegion)
+function checkequal(data::PartiallyFixedMatrix, region::FixedValueRegion)
     indices = getindices(data, region)
     for index in indices
         @assert data[index] == region.value
@@ -85,7 +85,7 @@ function checkequal(data::AbstractVecOrMat, region::FixedValueRegion)
     return nothing
 end
 
-function set!(data::AbstractVecOrMat, region::FixedValueRegion)
+function set!(data::PartiallyFixedMatrix, region::FixedValueRegion)
     indices = getindices(data, region)
     for index in indices
         data[index] = region.value
