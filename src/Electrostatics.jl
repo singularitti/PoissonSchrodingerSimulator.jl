@@ -65,7 +65,7 @@ end
 function getindices(vec::PartiallyFixedVector, region::FixedValueRegion)
     mat = reshape(vec, BOX.dims)
     linear_indices = LinearIndices(mat)
-    cartesian_indices = collect(getindices(vec, region))  # `getindex` only accepts vector indices
+    cartesian_indices = collect(getindices(mat, region))  # `getindex` only accepts vector indices
     return linear_indices[cartesian_indices]
 end
 
