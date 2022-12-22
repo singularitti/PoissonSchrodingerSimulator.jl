@@ -30,11 +30,11 @@ end
 ReshapeVector(data::AbstractVector{T}, dims) where {T} = ReshapeVector{T}(data, dims)
 ReshapeVector(data::AbstractVector{T}, dims...) where {T} = ReshapeVector{T}(data, dims)
 
-abstract type WrappedVector{T} <: AbstractVector{T} end
-struct SolutionVector{T} <: WrappedVector{T}
+abstract type PartiallyFixedVector{T} <: AbstractVector{T} end
+struct SolutionVector{T} <: PartiallyFixedVector{T}
     parent::Vector{T}
 end
-struct ResidualVector{T} <: WrappedVector{T}
+struct ResidualVector{T} <: PartiallyFixedVector{T}
     parent::Vector{T}
 end
 
@@ -119,20 +119,20 @@ Base.setindex!(vec::ReshapeVector, v, i) = setindex!(parent(vec), v, i)
 
 Base.reshape(vec::ReshapeVector) = reshape(vec.data, vec.size)
 
-Base.parent(vec::WrappedVector) = vec.data
+Base.parent(vec::PartiallyFixedVector) = vec.data
 
-Base.size(vec::WrappedVector) = size(parent(vec))
+Base.size(vec::PartiallyFixedVector) = size(parent(vec))
 
-Base.IndexStyle(::Type{WrappedVector{T}}) where {T} = IndexLinear()
+Base.IndexStyle(::Type{PartiallyFixedVector{T}}) where {T} = IndexLinear()
 
-Base.getindex(vec::WrappedVector, i) = getindex(parent(vec), i)
+Base.getindex(vec::PartiallyFixedVector, i) = getindex(parent(vec), i)
 
-Base.setindex!(vec::WrappedVector, v, i) = setindex!(parent(vec), v, i)
+Base.setindex!(vec::PartiallyFixedVector, v, i) = setindex!(parent(vec), v, i)
 
-Base.similar(::WrappedVector, ::Type{T}, dims::Dims) where {T} =
-    WrappedVector(Vector{T}(undef, dims))
+Base.similar(::PartiallyFixedVector, ::Type{T}, dims::Dims) where {T} =
+    PartiallyFixedVector(Vector{T}(undef, dims))
 
-function Base.:*(A::DiscreteLaplacian, 𝐯::WrappedVector)
+function Base.:*(A::DiscreteLaplacian, 𝐯::PartiallyFixedVector)
     𝐯′ = A * 𝐯
     _setconst!(f, 𝐯, 1)
     return 𝐯′
