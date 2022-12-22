@@ -132,4 +132,10 @@ Base.setindex!(vec::WrappedVector, v, i) = setindex!(parent(vec), v, i)
 Base.similar(::WrappedVector, ::Type{T}, dims::Dims) where {T} =
     WrappedVector(Vector{T}(undef, dims))
 
+function Base.:*(A::DiscreteLaplacian, 𝐯::WrappedVector)
+    𝐯′ = A * 𝐯
+    _setconst!(f, 𝐯, 1)
+    return 𝐯′
+end
+
 end
