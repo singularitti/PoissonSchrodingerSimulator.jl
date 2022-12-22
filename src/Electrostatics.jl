@@ -2,16 +2,7 @@ module Electrostatics
 
 using ..LastHomework: DiscreteLaplacian
 
-export ReshapeVector,
-    getbcindices,
-    getsquareindices,
-    getchargeindices,
-    checkbc,
-    checksquare,
-    checkcharges,
-    setbc!,
-    setsquare!,
-    setcharges!
+export ReshapeVector, getindices, checkequal, set!
 
 struct ReshapeVector{T} <: AbstractVector{T}
     data::Vector{T}
@@ -30,6 +21,11 @@ end
 ReshapeVector(data::AbstractVector{T}, dims) where {T} = ReshapeVector{T}(data, dims)
 ReshapeVector(data::AbstractVector{T}, dims...) where {T} = ReshapeVector{T}(data, dims)
 
+abstract type FixedRegion end
+struct Boundary <: FixedRegion end
+struct InternalSquare <: FixedRegion end
+struct PointCharges <: FixedRegion end
+
 abstract type PartiallyFixedVector{T} <: AbstractVector{T} end
 struct SolutionVector{T} <: PartiallyFixedVector{T}
     parent::Vector{T}
@@ -38,7 +34,7 @@ struct ResidualVector{T} <: PartiallyFixedVector{T}
     parent::Vector{T}
 end
 
-function getbcindices(ϕ::AbstractMatrix)
+function getindices(ϕ::AbstractMatrix, ::Boundary)
     cartesian_indices = CartesianIndices(ϕ)
     # Note the geometry of the region and the matrix rows/columns ordering are the same!
     # See https://discourse.julialang.org/t/how-to-get-the-cartesian-indices-of-a-row-column-in-a-matrix/91940/2
@@ -49,55 +45,37 @@ function getbcindices(ϕ::AbstractMatrix)
         cartesian_indices[:, end],  # Right
     )
 end
-getbcindices(𝛟::ReshapeVector) = _getindices(getbcindices, 𝛟)
-
-checkbc(ϕ, ϕ₀) = _checkequal(getbcindices, ϕ, ϕ₀)
-
-setbc!(ϕ, ϕ₀) = _setconst!(getbcindices, ϕ, ϕ₀)
-
-function getsquareindices(ϕ::AbstractMatrix)
+function getindices(ϕ::AbstractMatrix, ::InternalSquare)
     M, N = size(ϕ)
     xₘᵢₙ, xₘₐₓ, yₘᵢₙ, yₘₐₓ = map(Int64, (M / 2, M * 3//4, N * 5//8, N * 7//8))
     return map(Iterators.product(xₘᵢₙ:xₘₐₓ, yₘᵢₙ:yₘₐₓ)) do (i, j)
         CartesianIndex(j, i)  # Note y -> row, x -> column
     end
 end
-getsquareindices(𝛟::ReshapeVector) = _getindices(getsquareindices, 𝛟)
-
-checksquare(ϕ, ϕ₀) = _checkequal(getsquareindices, ϕ, ϕ₀)
-
-setsquare!(ϕ, ϕ₀) = _setconst!(getsquareindices, ϕ, ϕ₀)
-
-function getchargeindices(ρ::AbstractMatrix)
+function getindices(ρ::AbstractMatrix, ::PointCharges)
     M, N = size(ρ)
     x₁, x₂, y = map(Int64, (M / 4, M * 3//4, N / 8))
     return map(CartesianIndex, ((y, x₁), (y, x₂)))  # Note y -> row, x -> column
 end
-getchargeindices(𝛒::ReshapeVector) = _getindices(getchargeindices, 𝛒)
-
-checkcharges(ρ, ρ₀) = _checkequal(getchargeindices, ρ, ρ₀)
-
-setcharges!(ρ, ρ₀) = _setconst!(getchargeindices, ρ, ρ₀)
-
 # See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
 # and http://docs.julialang.org/en/v1/base/arrays/#Base.LinearIndices
-function _getindices(f::Function, vec::ReshapeVector)
+function getindices(vec::ReshapeVector, region::FixedRegion)
     mat = reshape(vec)
     linear_indices = LinearIndices(mat)
-    cartesian_indices = collect(f(mat))  # `getindex` only accepts vector indices
+    cartesian_indices = collect(getindices(vec, region))  # `getindex` only accepts vector indices
     return linear_indices[cartesian_indices]
 end
 
-function _checkequal(f::Function, data::AbstractVecOrMat, value)
-    indices = f(data)
+function checkequal(data::AbstractVecOrMat, value, region::FixedRegion)
+    indices = getindices(data, region)
     for index in indices
         @assert data[index] == value
     end
     return nothing
 end
 
-function _setconst!(f, data::AbstractVecOrMat, value)
-    indices = f(data)
+function set!(data::AbstractVecOrMat, value, region::FixedRegion)
+    indices = getindices(data, region)
     for index in indices
         data[index] = value
     end
@@ -134,7 +112,7 @@ Base.similar(::PartiallyFixedVector, ::Type{T}, dims::Dims) where {T} =
 
 function Base.:*(A::DiscreteLaplacian, 𝐯::PartiallyFixedVector)
     𝐯′ = A * 𝐯
-    _setconst!(f, 𝐯, 1)
+    set!(f, 𝐯, 1)
     return 𝐯′
 end
 
