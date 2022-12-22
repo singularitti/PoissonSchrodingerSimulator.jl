@@ -11,13 +11,6 @@ export Boundary,
     checkequal,
     set!
 
-struct Region
-    dims::NTuple{2,Int64}
-end
-Region(m, n) = Region((m, n))
-
-const BOX = Region(128, 128)
-
 abstract type FixedValueRegion{T} end
 struct Boundary{T} <: FixedValueRegion{T}
     value::T
