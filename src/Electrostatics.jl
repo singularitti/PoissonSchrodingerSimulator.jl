@@ -29,14 +29,6 @@ struct PointCharges{T} <: FixedValueRegion{T}
     value::T
 end
 
-abstract type PartiallyFixedVector{T} <: AbstractVector{T} end
-struct SolutionVector{T} <: PartiallyFixedVector{T}
-    parent::Vector{T}
-end
-struct ResidualVector{T} <: PartiallyFixedVector{T}
-    parent::Vector{T}
-end
-
 abstract type PartiallyFixedMatrix{T} <: AbstractMatrix{T} end
 struct SolutionMatrix{T} <: PartiallyFixedMatrix{T}
     parent::Matrix{T}
