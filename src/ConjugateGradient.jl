@@ -15,6 +15,10 @@ mutable struct IterationStep
 end
 
 abstract type AbstractLogger end
+mutable struct EmptyLogger <: AbstractLogger
+    isconverged::Bool
+end
+EmptyLogger() = EmptyLogger(false)
 mutable struct Logger <: AbstractLogger
     maxiter::UInt64
     isconverged::Bool
