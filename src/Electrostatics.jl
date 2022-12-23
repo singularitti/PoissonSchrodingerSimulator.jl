@@ -99,6 +99,8 @@ function solve!(
             setconverged!(logger)
             break
         end
+        setvalues!(𝐩ₙ, BOUNDARY)
+        setvalues!(𝐩ₙ, SQUARE)
         A𝐩ₙ = A * 𝐩ₙ  # Avoid running it multiple times
         setvalues!(A𝐩ₙ, BOUNDARY)
         setvalues!(A𝐩ₙ, SQUARE)
@@ -111,12 +113,6 @@ function solve!(
         𝐱ₙ, 𝐫ₙ, 𝐩ₙ = 𝐱ₙ₊₁, 𝐫ₙ₊₁, 𝐩ₙ₊₁  # Prepare for a new iteration
     end
     return 𝐱ₙ
-end
-
-function Base.:*(A::DiscreteLaplacian, 𝐩ₙ::AbstractVector)
-    setvalues!(𝐩ₙ, BOUNDARY)
-    setvalues!(𝐩ₙ, SQUARE)
-    return parent(A) * parent(𝐩ₙ)
 end
 
 end
