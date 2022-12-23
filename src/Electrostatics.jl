@@ -7,7 +7,7 @@ using ..ConjugateGradient: IterationStep, setconverged!, log!
 
 import ..ConjugateGradient: solve!
 
-export Boundary, InternalSquare, PointCharges, getindices, validate, set!
+export Boundary, InternalSquare, PointCharges, getindices, validate, setvalues!
 
 abstract type FixedValueRegion{T} end
 struct Boundary{T} <: FixedValueRegion{T}
@@ -73,7 +73,7 @@ function validate(data, region::FixedValueRegion)
     return nothing
 end
 
-function set!(data, region::FixedValueRegion)
+function setvalues!(data, region::FixedValueRegion)
     indices = getindices(data, region)
     for index in indices
         data[index] = region.value
@@ -93,8 +93,8 @@ function solve!(
             break
         end
         A𝐩ₙ = A * 𝐩ₙ  # Avoid running it multiple times
-        set!(A𝐩ₙ, BOUNDARY)
-        set!(A𝐩ₙ, SQUARE)
+        setvalues!(A𝐩ₙ, BOUNDARY)
+        setvalues!(A𝐩ₙ, SQUARE)
         αₙ = dot(𝐫ₙ, 𝐫ₙ) / dot(𝐩ₙ, A𝐩ₙ)
         𝐱ₙ₊₁ = 𝐱ₙ + αₙ * 𝐩ₙ
         𝐫ₙ₊₁ = 𝐫ₙ - αₙ * A𝐩ₙ
@@ -107,8 +107,8 @@ function solve!(
 end
 
 function Base.:*(A::DiscreteLaplacian, 𝐩ₙ::AbstractVector)
-    set!(𝐩ₙ, BOUNDARY)
-    set!(𝐩ₙ, SQUARE)
+    setvalues!(𝐩ₙ, BOUNDARY)
+    setvalues!(𝐩ₙ, SQUARE)
     return parent(A) * parent(𝐩ₙ)
 end
 
