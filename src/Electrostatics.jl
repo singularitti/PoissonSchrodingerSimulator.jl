@@ -89,6 +89,7 @@ function solve!(
     𝐱₀=zeros(length(𝐛));
     atol=eps(),
     maxiter=2000,
+    charge=-20,
     bc=0,
     ext_pot=5,
 )
