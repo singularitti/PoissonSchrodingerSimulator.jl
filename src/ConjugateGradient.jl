@@ -3,7 +3,7 @@ module ConjugateGradient
 using LinearAlgebra: dot, norm
 using OffsetArrays: OffsetVector, Origin
 
-export solve!, isconverged, eachstep
+export solve, solve!, isconverged, eachstep
 
 mutable struct IterationStep
     n::UInt64
@@ -26,7 +26,7 @@ mutable struct Logger <: AbstractLogger
 end
 Logger(maxiter) = Logger(maxiter, false, OffsetVector([], Origin(0)))
 
-function solve!(A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxiter=2000, logger=EmptyLogger())
+function solve!(logger, A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxiter=2000)
     𝐱ₙ = 𝐱₀
     𝐫ₙ = 𝐛 - A * 𝐱ₙ  # Initial residual, 𝐫₀
     𝐩ₙ = 𝐫ₙ  # Initial momentum, 𝐩₀
@@ -45,6 +45,7 @@ function solve!(A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxiter=2000, 
     end
     return 𝐱ₙ
 end
+solve(A, 𝐛, 𝐱₀=zeros(length(𝐛)); kwargs...) = solve!(EmptyLogger(), A, 𝐛, 𝐱₀; kwargs...)
 
 log!(::EmptyLogger, args...) = nothing
 log!(logger::Logger, step) = push!(logger.data, step)
