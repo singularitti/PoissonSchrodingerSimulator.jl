@@ -93,7 +93,7 @@ function solve!(
     bc=0,
     ext_pot=5,
 )
-    N = sqrt(length(𝐛))
+    N = Int(sqrt(length(𝐛)))
     BOUNDARY = Boundary((N, N), bc)
     SQUARE = InternalSquare((N, N), ext_pot)
     SQUARE_RESIDUAL = InternalSquare((N, N), 0)
