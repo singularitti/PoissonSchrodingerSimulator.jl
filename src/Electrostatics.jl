@@ -86,7 +86,7 @@ function solve!(
     logger,
     A::DiscreteLaplacian,
     𝐛,
-    𝐱₀=zeros(length(𝐛));
+    𝐱₀;
     atol=eps(),
     maxiter=2000,
     charge=-20,
@@ -97,6 +97,9 @@ function solve!(
     BOUNDARY = Boundary((N, N), bc)
     SQUARE = InternalSquare((N, N), ext_pot)
     SQUARE_RESIDUAL = InternalSquare((N, N), 0)
+    setvalues!(𝐱₀, BOUNDARY)
+    setvalues!(𝐱₀, SQUARE)
+    setvalues!(𝐛, PointCharges((N, N), charge))
     𝐱ₙ = 𝐱₀
     𝐫ₙ = 𝐛 - A * 𝐱ₙ  # Initial residual, 𝐫₀
     𝐩ₙ = copy(𝐫ₙ)  # Initial momentum, 𝐩₀
