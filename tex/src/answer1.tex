@@ -71,12 +71,12 @@ Here we apply the periodic boundary condition
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{laplacian}
-    \caption{The heatmap of the discrete Laplacian with \(N = 32\), and hence
-        the Laplacian matrix is of size \(1024 \times 1024\).
-        The color red denotes the terms \(-4\) on the diagonal of the matrix, and
-        the color dark gray denotes the ones, and the background gray
+    \caption{The heatmap of the discrete Laplacian with \(N = 6\), and hence
+        the Laplacian matrix is of size \(36 \times 36\).
+        The color gray denotes \(4\) on the diagonal of the matrix, and
+        the color red denotes \(-1\), and the background light red
         denotes the zeros.
-        As we can observe, the discrete Laplacian is a sparse matrix.}
+        As we can observe, the discrete Laplacian is a sparse, symmetric matrix.}
     \label{fig:laplacian}
 \end{figure}
 
@@ -123,8 +123,50 @@ Notice that the structure of the coefficient matrix \(\mathrm{ A }\) is complete
 by the way that the basis is ordered.
 The non-zero elements in the coefficient matrix are markers for which \(\phi\) is coupled
 with each other.
-The heatmap of a discrete Laplacian with \(N = 32\) is plotted in Figure~\ref{fig:laplacian}.
-The corresponding Laplacian matrix is of size \(1024 \times 1024\).
+
+However, there is one trick in Equation~\eqref{eq:poisson}.
+If we following the notation by~\eqref{eq:poisson}, the discrete Laplacian
+\(\mathrm{ A }\) is not a positive definite matrix.
+However, to use the conjugate gradient method, we need \(\mathrm{ A }\) to be a
+positive definite matrix. We still have some work to do.
+
+By our formulation, \(\mathrm{ A }\) is a symmetric matrix.
+To judge whether a symmetric matrix is a positive definite matrix, we use the
+Sylvester's criterion (\ref{thm:Sylvester}):
+%
+\begin{theorem}[Sylvester]
+    \label{thm:Sylvester}
+    A symmetric matrix \(\mathrm{ A }\) is positive definite if and only if all its
+    leading principal minors are positive.
+\end{theorem}
+%
+Obviously, \(\mathrm{ A }\) in~\eqref{eq:Axb} does not satisfy this criterion.
+Fortuantely, if we rewrite~\eqref{eq:poisson} as
+%
+\begin{equation}\label{eq:poissoncorrected}
+    -\nabla^2 \phi = \rho,
+\end{equation}
+%
+then all of the elements of \(\mathrm{ A }\) in~\eqref{eq:Axb} are negated.
+And amazingly, \(\mathrm{ A }\) is now a positive definite matrix!
+
+We can also prove that each row (column) of the matrix sums to \(0\) by
+translational symmetry. Therefore, the rules for numerically generating
+the matrix are\footnotemark{}:
+%
+\begin{itemize}
+    \item All main diagonal elements are \(4\).
+    \item The superdiagonal elements (\(k = 1\)) are either \(0\) or \(-1\).
+    \item The \((N-1)\)th diagonal elements are either \(0\) or \(-1\).
+    \item The \(N\)th diagonal elements are all \(-1\).
+    \item The \((N(N - 1))\)th diagonal elements are all \(-1\).
+\end{itemize}
+%
+\footnotetext{The general term for any diagonal going top-left to bottom-right
+    direction is \(k\)-diagonal where \(k\) is an offset from the main diagonal.}
+
+The heatmap of a discrete Laplacian with \(N = 6\) is plotted in Figure~\ref{fig:laplacian}.
+The corresponding Laplacian matrix is of size \(36 \times 36\).
 Obviously, the discrete Laplacian is a sparse matrix.
 We could use sparse matrix algorithms or just use~\eqref{eq:del2phi} in the actual
 implementation.
