@@ -81,20 +81,20 @@ function set!(data, region::FixedValueRegion)
     return vec(data)
 end
 
-function solve!(logger, A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxiter=2000)
+function solve!(
+    logger, A::DiscreteLaplacian, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxiter=2000
+)
     𝐱ₙ = 𝐱₀
     𝐫ₙ = 𝐛 - A * 𝐱ₙ  # Initial residual, 𝐫₀
-    𝐩ₙ = 𝐫ₙ  # Initial momentum, 𝐩₀
+    𝐩ₙ = copy(𝐫ₙ)  # Initial momentum, 𝐩₀
     for n in 0:maxiter
         if norm(𝐫ₙ) < atol
             setconverged!(logger)
             break
         end
-        𝐩ₙ = set(𝐩ₙ, BOUNDARY)
-        𝐩ₙ = set(𝐩ₙ, SQUARE)
         A𝐩ₙ = A * 𝐩ₙ  # Avoid running it multiple times
-        A𝐩ₙ = set(A𝐩ₙ, BOUNDARY)
-        A𝐩ₙ = set(A𝐩ₙ, SQUARE)
+        set!(A𝐩ₙ, BOUNDARY)
+        set!(A𝐩ₙ, SQUARE)
         αₙ = dot(𝐫ₙ, 𝐫ₙ) / dot(𝐩ₙ, A𝐩ₙ)
         𝐱ₙ₊₁ = 𝐱ₙ + αₙ * 𝐩ₙ
         𝐫ₙ₊₁ = 𝐫ₙ - αₙ * A𝐩ₙ
