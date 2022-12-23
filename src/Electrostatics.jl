@@ -2,33 +2,30 @@ module Electrostatics
 
 using ..LastHomework: DiscreteLaplacian
 
-export Boundary,
-    InternalSquare,
-    PointCharges,
-    SolutionMatrix,
-    ResidualMatrix,
-    getindices,
-    checkequal,
-    set!
+export Boundary, InternalSquare, PointCharges, getindices, checkequal, set
 
 abstract type FixedValueRegion{T} end
 struct Boundary{T} <: FixedValueRegion{T}
+    boxsize::NTuple{2,Int}
     value::T
 end
 struct InternalSquare{T} <: FixedValueRegion{T}
+    boxsize::NTuple{2,Int}
+    value::T
+end
+struct PointCharge{T} <: FixedValueRegion{T}
+    boxsize::NTuple{2,Int}
     value::T
 end
 struct PointCharges{T} <: FixedValueRegion{T}
+    boxsize::NTuple{2,Int}
     value::T
 end
 
-abstract type PartiallyFixedMatrix{T} <: AbstractMatrix{T} end
-struct SolutionMatrix{T} <: PartiallyFixedMatrix{T}
-    parent::Matrix{T}
-end
-struct ResidualMatrix{T} <: PartiallyFixedMatrix{T}
-    parent::Matrix{T}
-end
+N::Int64 = 33
+
+BOUNDARY = Boundary((N, N), 0)
+SQUARE = InternalSquare((N, N), 5)
 
 function getindices(ϕ::AbstractMatrix, ::Boundary)
     cartesian_indices = CartesianIndices(ϕ)
@@ -42,19 +39,27 @@ function getindices(ϕ::AbstractMatrix, ::Boundary)
     )
 end
 function getindices(ϕ::AbstractMatrix, ::InternalSquare)
-    M, N = size(ϕ)
+    M, N = size(ϕ) .- 1
     xₘᵢₙ, xₘₐₓ, yₘᵢₙ, yₘₐₓ = map(Int64, (M / 2, M * 3//4, N * 5//8, N * 7//8))
     return map(Iterators.product(xₘᵢₙ:xₘₐₓ, yₘᵢₙ:yₘₐₓ)) do (i, j)
-        CartesianIndex(j, i)  # Note y -> row, x -> column
+        CartesianIndex(j + 1, i + 1)   # Note y -> row, x -> column
     end
 end
 function getindices(ρ::AbstractMatrix, ::PointCharges)
-    M, N = size(ρ)
-    x₁, x₂, y = map(Int64, (M / 4, M * 3//4, N / 8))
+    M, N = size(ρ) .- 1
+    x₁, x₂, y = map(Int64, (M / 4, M * 3//4, N / 8)) .+ 1
     return map(CartesianIndex, ((y, x₁), (y, x₂)))  # Note y -> row, x -> column
 end
+# See See https://discourse.julialang.org/t/how-to-convert-cartesianindex-n-values-to-int64/15074/4
+# and http://docs.julialang.org/en/v1/base/arrays/#Base.LinearIndices
+function getindices(vec::AbstractVector, region::FixedValueRegion)
+    mat = reshape(vec, region.boxsize)
+    linear_indices = LinearIndices(mat)
+    cartesian_indices = collect(getindices(mat, region))  # `getindex` only accepts vector indices
+    return linear_indices[cartesian_indices]
+end
 
-function checkequal(data::PartiallyFixedMatrix, region::FixedValueRegion)
+function checkequal(data, region::FixedValueRegion)
     indices = getindices(data, region)
     for index in indices
         @assert data[index] == region.value
@@ -62,44 +67,18 @@ function checkequal(data::PartiallyFixedMatrix, region::FixedValueRegion)
     return nothing
 end
 
-function set!(data::PartiallyFixedMatrix, region::FixedValueRegion)
+function set(data, region::FixedValueRegion)
     indices = getindices(data, region)
     for index in indices
         data[index] = region.value
     end
-    return data
+    return vec(data)
 end
 
-Base.parent(data::PartiallyFixedMatrix) = data.parent
-
-Base.size(data::PartiallyFixedMatrix) = size(parent(data))
-
-Base.IndexStyle(::Type{<:PartiallyFixedMatrix}) = IndexLinear()
-
-Base.getindex(data::PartiallyFixedMatrix, i) = getindex(parent(data), i)
-
-Base.setindex!(data::PartiallyFixedMatrix, v, i) = setindex!(parent(data), v, i)
-
-for T in (:SolutionMatrix, :ResidualMatrix)
-    @eval begin
-        Base.similar(::$T, ::Type{S}, dims::Dims) where {S} = $T(Matrix{S}(undef, dims))
-    end
-end
-
-function Base.:*(A::DiscreteLaplacian, data::SolutionMatrix)
-    𝐯 = parent(A) * vec(parent(data))
-    data = SolutionMatrix(reshape(𝐯, size(data)))
-    set!(data, Boundary(0))
-    set!(data, InternalSquare(5))
-    return data
-end
-function Base.:*(A::DiscreteLaplacian, data::ResidualMatrix)
-    𝐯 = parent(A) * vec(parent(data))
-    data = ResidualMatrix(reshape(𝐯, size(data)))
-    set!(data, Boundary(0))
-    set!(data, InternalSquare(0))
-    set!(data, PointCharges(-20))
-    return data
+function Base.:*(A::DiscreteLaplacian, 𝐩ₙ::AbstractVector)
+    𝐩ₙ = set(𝐩ₙ, BOUNDARY)
+    𝐩ₙ = set(𝐩ₙ, SQUARE)
+    return parent(A) * parent(𝐩ₙ)
 end
 
 end
