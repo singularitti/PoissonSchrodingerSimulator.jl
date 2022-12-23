@@ -14,6 +14,6 @@ set!(ρ₀, PointCharges(-20));
 surfaceplot(ρ₀)
 A = DiscreteLaplacian(N);
 
-ϕ, history = solve(A, -ρ₀, ϕ₀; maxiter=1000)
+ϕ = solve(A, -vec(ρ₀), vec(ϕ₀); maxiter=1000)
 regionheatmap(ϕ)
 surfaceplot(ϕ)
