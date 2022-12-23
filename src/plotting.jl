@@ -1,7 +1,7 @@
-using LinearAlgebra: norm
+using LinearAlgebra: norm, dot
 using RecipesBase: @userplot, @recipe, @series
 
-export regionheatmap, residualplot, surfaceplot
+export regionheatmap, residualplot, surfaceplot, conjugacyplot
 
 @recipe function f(laplacian::DiscreteLaplacian)
     size --> (800, 800)
@@ -102,4 +102,29 @@ end
         label := ""
         steps, residuals
     end
+end
+
+@userplot ConjugacyPlot
+@recipe function f(plot::ConjugacyPlot)
+    A, history = plot.args
+    conjmatrix = parent([
+        dot(stepᵢ.p, A, stepⱼ.p) for stepᵢ in history.data, stepⱼ in history.data
+    ])  # See https://stackoverflow.com/a/48425828
+    size --> (800, 800)
+    seriestype --> :heatmap
+    yflip --> true  # Set the origin to the upper left corner, see https://github.com/MakieOrg/Makie.jl/issues/46
+    xlims --> extrema(axes(conjmatrix, 1)) .+ (-0.5, 0.5)  # See https://discourse.julialang.org/t/can-plots-jl-heatmap-coordinates-start-at-1-instead-of-0-5/90385/3
+    ylims --> extrema(axes(conjmatrix, 2)) .+ (-0.5, 0.5)
+    xguide --> raw"$x$"
+    xguideposition --> :top  # Place xguide along top axis
+    xmirror --> true  # Place xticks along top axis, see https://github.com/JuliaPlots/Plots.jl/issues/337
+    yguide --> raw"$y$"
+    tick_direction --> :out
+    guidefontsize --> 12
+    tickfontsize --> 10
+    color --> :thermometer
+    frame --> :box
+    aspect_ratio --> :equal
+    margins --> (0, :mm)  # See https://github.com/JuliaPlots/Plots.jl/issues/4522#issuecomment-1318511879
+    return axes(conjmatrix)..., conjmatrix
 end
