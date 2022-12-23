@@ -7,7 +7,7 @@ using ..ConjugateGradient: IterationStep, setconverged!, log!
 
 import ..ConjugateGradient: solve!
 
-export Boundary, InternalSquare, PointCharges, getindices, checkequal, set
+export Boundary, InternalSquare, PointCharges, getindices, checkequal, set!
 
 abstract type FixedValueRegion{T} end
 struct Boundary{T} <: FixedValueRegion{T}
@@ -73,7 +73,7 @@ function checkequal(data, region::FixedValueRegion)
     return nothing
 end
 
-function set(data, region::FixedValueRegion)
+function set!(data, region::FixedValueRegion)
     indices = getindices(data, region)
     for index in indices
         data[index] = region.value
