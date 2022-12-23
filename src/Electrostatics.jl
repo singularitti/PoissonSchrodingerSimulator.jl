@@ -2,14 +2,7 @@ module Electrostatics
 
 using ..LastHomework: DiscreteLaplacian
 
-export Boundary,
-    InternalSquare,
-    PointCharges,
-    SolutionMatrix,
-    ResidualMatrix,
-    getindices,
-    checkequal,
-    set!
+export Boundary, InternalSquare, PointCharges, getindices, checkequal, set!
 
 abstract type FixedValueRegion{T} end
 struct Boundary{T} <: FixedValueRegion{T}
@@ -20,14 +13,6 @@ struct InternalSquare{T} <: FixedValueRegion{T}
 end
 struct PointCharges{T} <: FixedValueRegion{T}
     value::T
-end
-
-abstract type PartiallyFixedMatrix{T} <: AbstractMatrix{T} end
-struct SolutionMatrix{T} <: PartiallyFixedMatrix{T}
-    parent::Matrix{T}
-end
-struct ResidualMatrix{T} <: PartiallyFixedMatrix{T}
-    parent::Matrix{T}
 end
 
 function getindices(ϕ::AbstractMatrix, ::Boundary)
@@ -67,38 +52,6 @@ function set!(data::PartiallyFixedMatrix, region::FixedValueRegion)
     for index in indices
         data[index] = region.value
     end
-    return data
-end
-
-Base.parent(data::PartiallyFixedMatrix) = data.parent
-
-Base.size(data::PartiallyFixedMatrix) = size(parent(data))
-
-Base.IndexStyle(::Type{<:PartiallyFixedMatrix}) = IndexLinear()
-
-Base.getindex(data::PartiallyFixedMatrix, i) = getindex(parent(data), i)
-
-Base.setindex!(data::PartiallyFixedMatrix, v, i) = setindex!(parent(data), v, i)
-
-for T in (:SolutionMatrix, :ResidualMatrix)
-    @eval begin
-        Base.similar(::$T, ::Type{S}, dims::Dims) where {S} = $T(Matrix{S}(undef, dims))
-    end
-end
-
-function Base.:*(A::DiscreteLaplacian, data::SolutionMatrix)
-    𝐯 = parent(A) * vec(parent(data))
-    data = SolutionMatrix(reshape(𝐯, size(data)))
-    set!(data, Boundary(0))
-    set!(data, InternalSquare(5))
-    return data
-end
-function Base.:*(A::DiscreteLaplacian, data::ResidualMatrix)
-    𝐯 = parent(A) * vec(parent(data))
-    data = ResidualMatrix(reshape(𝐯, size(data)))
-    set!(data, Boundary(0))
-    set!(data, InternalSquare(0))
-    set!(data, PointCharges(-20))
     return data
 end
 
