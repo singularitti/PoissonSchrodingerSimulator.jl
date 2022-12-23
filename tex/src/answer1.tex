@@ -125,30 +125,36 @@ The non-zero elements in the coefficient matrix are markers for which \(\phi\) i
 with each other.
 
 However, there is one trick in Equation~\eqref{eq:poisson}.
-If we following the notation by~\eqref{eq:poisson}, the discrete Laplacian
+If we following the notation by Equation~\eqref{eq:poisson}, the discrete Laplacian
 \(\mathrm{ A }\) is not a positive definite matrix.
 However, to use the conjugate gradient method, we need \(\mathrm{ A }\) to be a
 positive definite matrix. We still have some work to do.
 
 By our formulation, \(\mathrm{ A }\) is a symmetric matrix.
 To judge whether a symmetric matrix is a positive definite matrix, we use the
-Sylvester's criterion (\ref{thm:Sylvester}):
+Sylvester's criterion:
 %
 \begin{theorem}[Sylvester]
-    \label{thm:Sylvester}
     A symmetric matrix \(\mathrm{ A }\) is positive definite if and only if all its
     leading principal minors are positive.
 \end{theorem}
 %
-Obviously, \(\mathrm{ A }\) in~\eqref{eq:Axb} does not satisfy this criterion.
-Fortuantely, if we rewrite~\eqref{eq:poisson} as
+Obviously, \(\mathrm{ A }\) in Equation~\eqref{eq:Axb} does not satisfy this criterion.
+Fortuantely, if we rewrite Equation~\eqref{eq:poisson} as
 %
 \begin{equation}\label{eq:poissoncorrected}
     -\nabla^2 \phi = \rho,
 \end{equation}
 %
-then all of the elements of \(\mathrm{ A }\) in~\eqref{eq:Axb} are negated.
+then all of the elements of \(\mathrm{ A }\) in Equation~\eqref{eq:Axb} are negated.
 And amazingly, \(\mathrm{ A }\) is now a positive definite matrix!
+So the actual problem we are solving is
+%
+\begin{equation}
+    \mathrm{ A }' \bm{\phi} = \bm{\rho},
+\end{equation}
+%
+where \(\mathrm{ A }' = -\mathrm{ A }\).
 
 We can also prove that each row (column) of the matrix sums to \(0\) by
 translational symmetry. Therefore, the rules for numerically generating
@@ -168,7 +174,7 @@ the matrix are\footnotemark{}:
 The heatmap of a discrete Laplacian with \(N = 6\) is plotted in Figure~\ref{fig:laplacian}.
 The corresponding Laplacian matrix is of size \(36 \times 36\).
 Obviously, the discrete Laplacian is a sparse matrix.
-We could use sparse matrix algorithms or just use~\eqref{eq:del2phi} in the actual
+We could use sparse matrix algorithms or just use Equation~\eqref{eq:del2phi} in the actual
 implementation.
 In vector \(\bm{\phi}\), we order the \(\phi\)'s in \(y\)-direction first and then
 \(x\)-direction, as stated above.
@@ -181,7 +187,7 @@ on the grid is
 \end{equation}
 %
 in the \(y\)-direction first indexing order, where \(n = 1\), \(\ldots\), \(N^2\).
-And since \(x = a i = i\), \(y = a j = j\),~\eqref{eq:nij} can be rewritten as
+And since \(x = a i = i\), \(y = a j = j\), Equation~\eqref{eq:nij} can be rewritten as
 %
 \begin{equation}
     n = N x + y.
