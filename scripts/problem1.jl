@@ -2,18 +2,23 @@ using Plots
 
 using LastHomework
 using LastHomework.ConjugateGradient
-using LastHomework.Electrostatics
+# using LastHomework.Electrostatics
 
-N = 16
-ϕ₀ = SolutionMatrix(zeros(N, N));
-set!(ϕ₀, Boundary(0));
-set!(ϕ₀, InternalSquare(5));
+logger = Logger(1000)
+L = 32
+N = L + 1  # Grid size
+ϕ₀ = zeros(N^2);
+boundary = Boundary((N, N), 0)
+square = InternalSquare((N, N), 5)
+ϕ₀ = set(ϕ₀, boundary);
+ϕ₀ = set(ϕ₀, square);
 surfaceplot(ϕ₀)
-ρ₀ = ResidualMatrix(zeros(N, N));
-set!(ρ₀, PointCharges(-20));
-surfaceplot(ρ₀)
+ρ = zeros(N^2);
+ρ = set(ρ, PointCharges((N, N), -20));
+surfaceplot(ρ)
 A = DiscreteLaplacian(N);
 
-ϕ = solve(A, -vec(ρ₀), vec(ϕ₀); maxiter=1000)
+ϕ = solve!(logger, A, ρ, ϕ₀; maxiter=10)
 regionheatmap(ϕ)
 surfaceplot(ϕ)
+conjugacyplot(A, logger)
