@@ -75,4 +75,10 @@ function set(data, region::FixedValueRegion)
     return vec(data)
 end
 
+function Base.:*(A::DiscreteLaplacian, 𝐩ₙ::AbstractVector)
+    𝐩ₙ = set(𝐩ₙ, BOUNDARY)
+    𝐩ₙ = set(𝐩ₙ, SQUARE)
+    return parent(A) * parent(𝐩ₙ)
+end
+
 end
