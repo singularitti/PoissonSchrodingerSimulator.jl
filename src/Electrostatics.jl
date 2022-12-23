@@ -6,12 +6,19 @@ export Boundary, InternalSquare, PointCharges, getindices, checkequal, set!
 
 abstract type FixedValueRegion{T} end
 struct Boundary{T} <: FixedValueRegion{T}
+    boxsize::NTuple{2,Int}
     value::T
 end
 struct InternalSquare{T} <: FixedValueRegion{T}
+    boxsize::NTuple{2,Int}
+    value::T
+end
+struct PointCharge{T} <: FixedValueRegion{T}
+    boxsize::NTuple{2,Int}
     value::T
 end
 struct PointCharges{T} <: FixedValueRegion{T}
+    boxsize::NTuple{2,Int}
     value::T
 end
 
