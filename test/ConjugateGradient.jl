@@ -1,6 +1,6 @@
 module ConjugateGradient
 
-using LastHomework.ConjugateGradient: Logger, solve!, isconverged, eachstep
+using LastHomework.ConjugateGradient: Logger, solve, solve!, isconverged, eachstep
 using LinearAlgebra: norm
 using Test: @testset, @test
 
@@ -13,7 +13,7 @@ using Test: @testset, @test
     𝐛 = [1, 2]
     𝐱₀ = [2, 1]
     logger = Logger(2000)
-    𝐱 = solve!(A, 𝐛, 𝐱₀; atol=1e-24, logger=logger)
+    𝐱 = solve!(logger, A, 𝐛, 𝐱₀; atol=1e-24)
     @test 𝐱 ≈ [1 / 11, 7 / 11]  # Compare with the exact solution
     @test norm(A * 𝐱 - 𝐛) / norm(𝐛) ≤ 1e-12
     @test isconverged(logger) == true
@@ -37,7 +37,7 @@ end
     𝐛 = [2, 2]
     𝐱₀ = [1, 2]
     logger = Logger(2000)
-    𝐱 = solve!(A, 𝐛, 𝐱₀; atol=1e-24, logger=logger)
+    𝐱 = solve!(logger, A, 𝐛, 𝐱₀; atol=1e-24)
     @test 𝐱 ≈ [0.2222222222222221, 0.8888888888888891]  # Compare with other's result
     @test norm(A * 𝐱 - 𝐛) / norm(𝐛) == 0
     @test isconverged(logger) == true
@@ -59,7 +59,7 @@ end
         ]
         𝐛 = [1.3864, 0.3719]
         logger = Logger(2000)
-        𝐱 = solve!(A, 𝐛, -[3, 4]; logger=logger)
+        𝐱 = solve!(logger, A, 𝐛, -[3, 4])
         @test 𝐱 ≈ [0.5488138979502294, 0.7151533895344008]
         @test norm(A * 𝐱 - 𝐛) / norm(𝐛) < 1e-15
         @test isconverged(logger) == true
@@ -77,7 +77,7 @@ end
         ]
         𝐛 = [-0.0043, 2.2501, 0.2798]
         logger = Logger(2000)
-        𝐱 = solve!(A, 𝐛, [3, 1, -7]; logger=logger)
+        𝐱 = solve!(logger, A, 𝐛, [3, 1, -7])
         @test 𝐱 ≈ [0.5488032997143618, 0.7151992261015149, 0.6027728262403653]
         @test norm(A * 𝐱 - 𝐛) / norm(𝐛) < 1e-15
         @test isconverged(logger) == true
@@ -92,8 +92,7 @@ end
             -1.2728 0.2630 -1.0613 -0.4344 -0.3261 1.0869
         ]
         𝐛 = [3.0685, 0.0484, 2.5783, 1.2865, 0.8671, -0.8230]
-        logger = Logger(2000)
-        𝐱 = solve!(A, 𝐛, [9, 0, -2, 3, -2, 5]; logger=logger)
+        𝐱 = solve(A, 𝐛, [9, 0, -2, 3, -2, 5])
         @test 𝐱 ≈ [
             0.5488252073566335,
             0.7152045853108671,
