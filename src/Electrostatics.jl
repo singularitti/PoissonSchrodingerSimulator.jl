@@ -27,12 +27,6 @@ struct PointCharges{T} <: FixedValueRegion{T}
     value::T
 end
 
-N::Int64 = 33
-
-BOUNDARY = Boundary((N, N), 0)
-SQUARE = InternalSquare((N, N), 5)
-SQUARE_RESIDUAL = InternalSquare((N, N), 0)
-
 function getindices(ϕ::AbstractMatrix, ::Boundary)
     cartesian_indices = CartesianIndices(ϕ)
     # Note the geometry of the region and the matrix rows/columns ordering are the same!
@@ -89,8 +83,19 @@ function setvalues!(data, region::FixedValueRegion)
 end
 
 function solve!(
-    logger, A::DiscreteLaplacian, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxiter=2000
+    logger,
+    A::DiscreteLaplacian,
+    𝐛,
+    𝐱₀=zeros(length(𝐛));
+    atol=eps(),
+    maxiter=2000,
+    bc=0,
+    ext_pot=5,
 )
+    N = sqrt(length(𝐛))
+    BOUNDARY = Boundary((N, N), bc)
+    SQUARE = InternalSquare((N, N), ext_pot)
+    SQUARE_RESIDUAL = InternalSquare((N, N), 0)
     𝐱ₙ = 𝐱₀
     𝐫ₙ = 𝐛 - A * 𝐱ₙ  # Initial residual, 𝐫₀
     𝐩ₙ = copy(𝐫ₙ)  # Initial momentum, 𝐩₀
