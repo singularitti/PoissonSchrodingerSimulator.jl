@@ -22,6 +22,11 @@ struct PointCharges{T} <: FixedValueRegion{T}
     value::T
 end
 
+N::Int64 = 33
+
+BOUNDARY = Boundary((N, N), 0)
+SQUARE = InternalSquare((N, N), 5)
+
 function getindices(ϕ::AbstractMatrix, ::Boundary)
     cartesian_indices = CartesianIndices(ϕ)
     # Note the geometry of the region and the matrix rows/columns ordering are the same!
