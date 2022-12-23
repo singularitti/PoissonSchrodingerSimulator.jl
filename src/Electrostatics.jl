@@ -22,7 +22,8 @@ struct PointCharges{T} <: FixedValueRegion{T}
     value::T
 end
 
-function getindices(ϕ::AbstractMatrix, ::Boundary)
+function getindices(ϕ, region::Boundary)
+    ϕ = reshape(ϕ, region.boxsize)
     cartesian_indices = CartesianIndices(ϕ)
     # Note the geometry of the region and the matrix rows/columns ordering are the same!
     # See https://discourse.julialang.org/t/how-to-get-the-cartesian-indices-of-a-row-column-in-a-matrix/91940/2
@@ -33,16 +34,18 @@ function getindices(ϕ::AbstractMatrix, ::Boundary)
         cartesian_indices[:, end],  # Right
     )
 end
-function getindices(ϕ::AbstractMatrix, ::InternalSquare)
-    M, N = size(ϕ)
+function getindices(ϕ, region::InternalSquare)
+    M, N = region.boxsize .- 1
+    ϕ = reshape(ϕ, region.boxsize)
     xₘᵢₙ, xₘₐₓ, yₘᵢₙ, yₘₐₓ = map(Int64, (M / 2, M * 3//4, N * 5//8, N * 7//8))
     return map(Iterators.product(xₘᵢₙ:xₘₐₓ, yₘᵢₙ:yₘₐₓ)) do (i, j)
-        CartesianIndex(j, i)  # Note y -> row, x -> column
+        CartesianIndex(j + 1, i + 1)   # Note y -> row, x -> column
     end
 end
-function getindices(ρ::AbstractMatrix, ::PointCharges)
-    M, N = size(ρ)
-    x₁, x₂, y = map(Int64, (M / 4, M * 3//4, N / 8))
+function getindices(ρ, region::PointCharges)
+    M, N = region.boxsize .- 1
+    ρ = reshape(ρ, region.boxsize)
+    x₁, x₂, y = map(Int64, (M / 4, M * 3//4, N / 8)) .+ 1
     return map(CartesianIndex, ((y, x₁), (y, x₂)))  # Note y -> row, x -> column
 end
 
