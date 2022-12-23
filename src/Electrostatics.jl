@@ -7,7 +7,7 @@ using ..ConjugateGradient: IterationStep, setconverged!, log!
 
 import ..ConjugateGradient: solve!
 
-export Boundary, InternalSquare, PointCharges, getindices, checkequal, set!
+export Boundary, InternalSquare, PointCharges, getindices, validate, set!
 
 abstract type FixedValueRegion{T} end
 struct Boundary{T} <: FixedValueRegion{T}
@@ -65,7 +65,7 @@ function getindices(vec::AbstractVector, region::FixedValueRegion)
     return linear_indices[cartesian_indices]
 end
 
-function checkequal(data, region::FixedValueRegion)
+function validate(data, region::FixedValueRegion)
     indices = getindices(data, region)
     for index in indices
         @assert data[index] == region.value
