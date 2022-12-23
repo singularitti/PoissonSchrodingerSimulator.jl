@@ -2,7 +2,7 @@ module Electrostatics
 
 using ..LastHomework: DiscreteLaplacian
 
-export Boundary, InternalSquare, PointCharges, getindices, checkequal, set!
+export Boundary, InternalSquare, PointCharges, getindices, checkequal, set
 
 abstract type FixedValueRegion{T} end
 struct Boundary{T} <: FixedValueRegion{T}
@@ -62,12 +62,12 @@ function checkequal(data::PartiallyFixedMatrix, region::FixedValueRegion)
     return nothing
 end
 
-function set!(data::PartiallyFixedMatrix, region::FixedValueRegion)
+function set(data, region::FixedValueRegion)
     indices = getindices(data, region)
     for index in indices
         data[index] = region.value
     end
-    return data
+    return vec(data)
 end
 
 end
