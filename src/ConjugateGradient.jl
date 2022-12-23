@@ -3,7 +3,7 @@ module ConjugateGradient
 using LinearAlgebra: dot, norm
 using OffsetArrays: OffsetVector, Origin
 
-export solve, solve!, isconverged, eachstep
+export Logger, solve, solve!, isconverged, eachstep
 
 mutable struct IterationStep
     n::UInt64
