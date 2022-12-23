@@ -4,15 +4,15 @@ using SparseArrays: AbstractSparseMatrix, SparseMatrixCSC, spdiagm
 export DiscreteLaplacian
 
 struct DiscreteLaplacian <: AbstractSparseMatrix{Int64,Int64}
-    data::SparseMatrixCSC{Int64,Int64}
-    function DiscreteLaplacian(data::AbstractMatrix)
-        @assert issymmetric(data)
-        @assert all(iszero(sum(data; dims=2)))
+    parent::SparseMatrixCSC{Int64,Int64}
+    function DiscreteLaplacian(parent::AbstractMatrix)
+        @assert issymmetric(parent)
+        @assert all(iszero(sum(parent; dims=2)))
         @assert all(
-            det(leading_principal_minor(data, k)) > zero(eltype(data)) for
-            k in axes(data, 1)[begin:(end - 1)]
+            det(leading_principal_minor(parent, k)) > zero(eltype(parent)) for
+            k in axes(parent, 1)[begin:(end - 1)]
         )
-        return new(data)
+        return new(parent)
     end
 end
 function DiscreteLaplacian(N::Integer)
@@ -28,7 +28,7 @@ end
 
 leading_principal_minor(A::AbstractMatrix, k) = A[begin:k, begin:k]
 
-Base.parent(S::DiscreteLaplacian) = S.data
+Base.parent(S::DiscreteLaplacian) = S.parent
 
 Base.size(S::DiscreteLaplacian) = size(parent(S))
 
