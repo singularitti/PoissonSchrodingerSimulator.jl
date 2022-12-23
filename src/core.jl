@@ -1,4 +1,4 @@
-using LinearAlgebra: Symmetric, issymmetric
+using LinearAlgebra: Symmetric, issymmetric, det
 using SparseArrays: AbstractSparseMatrix, SparseMatrixCSC, spdiagm
 
 export DiscreteLaplacian
@@ -8,6 +8,10 @@ struct DiscreteLaplacian <: AbstractSparseMatrix{Int64,Int64}
     function DiscreteLaplacian(data::AbstractMatrix)
         @assert issymmetric(data)
         @assert all(iszero(sum(data; dims=2)))
+        @assert all(
+            det(leading_principal_minor(data, k)) > zero(eltype(data)) for
+            k in axes(data, 1)[begin:(end - 1)]
+        )
         return new(data)
     end
 end
