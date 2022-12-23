@@ -31,6 +31,7 @@ N::Int64 = 33
 
 BOUNDARY = Boundary((N, N), 0)
 SQUARE = InternalSquare((N, N), 5)
+SQUARE_RESIDUAL = InternalSquare((N, N), 0)
 
 function getindices(ϕ::AbstractMatrix, ::Boundary)
     cartesian_indices = CartesianIndices(ϕ)
