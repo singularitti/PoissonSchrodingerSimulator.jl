@@ -12,6 +12,6 @@ N = L + 1  # Grid size
 A = DiscreteLaplacian(N);
 
 ϕ = solve!(logger, A, ρ, ϕ₀; maxiter=500)
-regionheatmap(ϕ)
-surfaceplot(ϕ)
+regionheatmap(reshape(ϕ, N, N))
+surfaceplot(reshape(ϕ, N, N))
 conjugacyplot(A, logger)
