@@ -17,11 +17,11 @@ struct DiscreteLaplacian <: AbstractSparseMatrix{Int64,Int64}
 end
 function DiscreteLaplacian(N::Integer)
     A = spdiagm(
-        0 => fill(-4, N^2),
-        1 => [mod(i, N) == N - 1 ? 0 : 1 for i in 0:(N^2 - 2)],
-        N - 1 => [mod(i, N) == 0 ? 1 : 0 for i in 0:(N^2 - N)],
-        N => fill(1, N^2 - N),
-        N^2 - N => fill(1, N),
+        0 => fill(4, N^2),
+        1 => [mod(i, N) == N - 1 ? 0 : -1 for i in 0:(N^2 - 2)],
+        N - 1 => [mod(i, N) == 0 ? -1 : 0 for i in 0:(N^2 - N)],
+        N => fill(-1, N^2 - N),
+        N^2 - N => fill(-1, N),
     )  # An upper triangular matrix
     return DiscreteLaplacian(Symmetric(A))
 end
