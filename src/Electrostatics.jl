@@ -107,8 +107,8 @@ function solve!(logger, A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxite
 end
 
 function Base.:*(A::DiscreteLaplacian, 𝐩ₙ::AbstractVector)
-    𝐩ₙ = set(𝐩ₙ, BOUNDARY)
-    𝐩ₙ = set(𝐩ₙ, SQUARE)
+    set!(𝐩ₙ, BOUNDARY)
+    set!(𝐩ₙ, SQUARE)
     return parent(A) * parent(𝐩ₙ)
 end
 
