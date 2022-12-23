@@ -7,7 +7,7 @@ using ..ConjugateGradient: IterationStep, setconverged!, log!
 
 import ..ConjugateGradient: solve!
 
-export Boundary, InternalSquare, PointCharges, getindices, validate, setvalues!
+export Boundary, InternalSquare, PointCharges, getindices, validate, getvalues, setvalues!
 
 abstract type FixedValueRegion{T} end
 struct Boundary{T} <: FixedValueRegion{T}
@@ -71,6 +71,13 @@ function validate(data, region::FixedValueRegion)
         @assert data[index] == region.value
     end
     return nothing
+end
+
+function getvalues(data, region::FixedValueRegion)
+    indices = getindices(data, region)
+    return map(indices) do index
+        data[index]
+    end
 end
 
 function setvalues!(data, region::FixedValueRegion)
