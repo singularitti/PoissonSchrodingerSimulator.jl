@@ -25,9 +25,9 @@ function lanczos(A::Hamiltonian, 𝐪₁=normalize(rand(size(A, 1))), β₁=0; m
     BOUNDARY = Boundary((N, N), 0)
     SQUARE = InternalSquare((N, N), 0)
     n = 1  # Initial step
-    𝐪₁ = normalize(𝐪₁)
     setvalues!(𝐪₁, BOUNDARY)
     setvalues!(𝐪₁, SQUARE)
+    𝐪₁ = normalize(𝐪₁)
     Q = Matrix{eltype(𝐪₁)}(undef, size(A, 1), maxiter)  # N² × M
     Q[:, 1] = 𝐪₁
     𝐩₁ = A * 𝐪₁
@@ -49,8 +49,8 @@ function lanczos(A::Hamiltonian, 𝐪₁=normalize(rand(size(A, 1))), β₁=0; m
             error("")
         else
             𝐪ₙ = 𝐫ₙ₋₁ / 𝛃[n]
-            setvalues!(𝐪ₙ, BOUNDARY)
-            setvalues!(𝐪ₙ, SQUARE)
+            validate(𝐫ₙ, BOUNDARY)
+            validate(𝐫ₙ, SQUARE)
             Q[:, n] = 𝐪ₙ
         end
         𝐩ₙ = A * 𝐪ₙ
@@ -58,8 +58,6 @@ function lanczos(A::Hamiltonian, 𝐪₁=normalize(rand(size(A, 1))), β₁=0; m
         setvalues!(𝐩ₙ, SQUARE)
         𝛂[n] = 𝐪ₙ ⋅ 𝐩ₙ  # 𝐪ₙ⊺ A 𝐪ₙ
         𝐫ₙ = 𝐩ₙ - 𝛂[n] * 𝐪ₙ - 𝛃[n] * Q[:, n - 1]
-        validate(𝐫ₙ, BOUNDARY)
-        validate(𝐫ₙ, SQUARE)
         validate(𝐪ₙ, BOUNDARY)
         validate(𝐪ₙ, SQUARE)
     end
