@@ -1,13 +1,16 @@
 using Plots
 
-using LastHomework
 using LastHomework.Lanczos
 using LastHomework.QuantumMechanics
 
-L = 64
-N = L + 1  # Grid size
+include("problem1.jl")
+
 q = 0.001
-A = DiscreteLaplacian(N);
-H = Hamiltonian(A, ϕ, q)
+H = Hamiltonian(A, 𝛟, q)
 
 𝛙 = loop_lanczos(H, 40)
+P = probability(𝛙)
+regionheatmap(myreshape(P))
+savefig("tex/plots/psi_heatmap.pdf")
+surfaceplot(myreshape(P))
+savefig("tex/plots/psi_surface.pdf")
