@@ -237,3 +237,18 @@ fraction, and add \(1\) back to obtain the correct index of an element in the
 specific area.
 Figures~\ref{fig:t0:a} and~\ref{fig:t0:b} show the heat maps of
 \(\bm{\phi}(0)\) and \(\bm{\rho}\) with \(N = 33\).
+
+We benefit from using the configuration shown in Figure~\ref{fig:grid} that it follows
+Julia's matrix column-major order for storing multidimensional arrays in linear storage, such
+as random access memory.
+Therefore, we could just \code{reshape} the \(N^2 \times 1\) \(\bm{\phi}\) vector
+(solution) obtained into an \(N \times N\) matrix for easier plotting.
+%
+\begin{algorithm}
+    \caption{Reshape the \(N^2 \times 1\) \(\phi(x, y)\) vector
+        (solution) obtained into an \(N \times N\) matrix.}
+    \label{lst:reshape}
+    \begin{juliacode}
+ϕ = reshape(𝛟, N, N)
+    \end{juliacode}
+\end{algorithm}
