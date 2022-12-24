@@ -32,11 +32,13 @@ function lanczos(A::AbstractMatrix, 𝐪₁=normalize(rand(size(A, 1))), β₁=0
     return T, Q
 end
 
+recover_eigvec(Q, 𝐰) = normalize(Q[:, axes(𝐰, 1)] * 𝐰)
+
 function restart_lanczos(T, Q)
     vals, vecs = eigen(T)
     index = argmin(vals)  # Index of the smallest eigenvalue
     𝐰 = vecs[:, index]  # Associated eigenvector
-    return normalize(vec(𝐰' * Q[axes(𝐰, 1), :]))
+    return recover_eigvec(Q, 𝐰)
 end
 
 function loop_lanczos(
