@@ -1,6 +1,6 @@
 module QuantumMechanics
 
-using LinearAlgebra: SymTridiagonal, norm, normalize, diagind
+using LinearAlgebra: SymTridiagonal, norm, normalize, diagind, ⋅
 using SparseArrays: AbstractSparseMatrix, SparseMatrixCSC
 
 using ..LastHomework: DiscreteLaplacian, Boundary, InternalSquare, validate, setvalues!
@@ -20,7 +20,7 @@ function Hamiltonian(A::DiscreteLaplacian, 𝛟::AbstractVector, q::Number)
     return Hamiltonian(H)
 end
 
-function lanczos(A::Hamiltonian, M=size(A, 2), 𝐪₁=normalize(rand(M)), β₁=0)
+function lanczos(A::Hamiltonian, 𝐪₁=normalize(rand(size(A, 1))), β₁=0; maxiter=30)
     N = Int(sqrt(size(A, 1)))  # A is a N² × N² matrix
     BOUNDARY = Boundary((N, N), 0)
     SQUARE = InternalSquare((N, N), 0)
@@ -28,7 +28,7 @@ function lanczos(A::Hamiltonian, M=size(A, 2), 𝐪₁=normalize(rand(M)), β₁
     𝐪₁ = normalize(𝐪₁)
     setvalues!(𝐪₁, BOUNDARY)
     setvalues!(𝐪₁, SQUARE)
-    Q = Matrix{eltype(𝐪₁)}(undef, size(A, 1), M)  # N² × M
+    Q = Matrix{eltype(𝐪₁)}(undef, size(A, 1), maxiter)  # N² × M
     Q[:, 1] = 𝐪₁
     𝐩₁ = A * 𝐪₁
     setvalues!(𝐩₁, BOUNDARY)
@@ -39,10 +39,10 @@ function lanczos(A::Hamiltonian, M=size(A, 2), 𝐪₁=normalize(rand(M)), β₁
     validate(𝐫ₙ, SQUARE)
     # setvalues!(𝐫ₙ, BOUNDARY)
     # setvalues!(𝐫ₙ, SQUARE)
-    𝛂 = Vector{eltype(float(α₁))}(undef, M)
-    𝛃 = Vector{eltype(float(β₁))}(undef, M)
+    𝛂 = Vector{eltype(float(α₁))}(undef, maxiter)
+    𝛃 = Vector{eltype(float(β₁))}(undef, maxiter)
     𝛂[n], 𝛃[n] = α₁, β₁
-    for n in 2:M
+    for n in 2:maxiter
         𝐫ₙ₋₁ = 𝐫ₙ
         𝛃[n] = norm(𝐫ₙ₋₁)
         if iszero(𝛃[n])
