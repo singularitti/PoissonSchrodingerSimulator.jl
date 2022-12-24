@@ -11,7 +11,7 @@ function lanczos(A::AbstractMatrix, M=size(A, 2), 𝐪₁=normalize(rand(M)), β
     Q[:, 1] = 𝐪₁
     𝐩₁ = A * 𝐪₁
     α₁ = 𝐪₁ ⋅ 𝐩₁  # 𝐪ₙ⊺ A 𝐪ₙ
-    𝐫ₙ = 𝐩₁ - α₁ * 𝐪₁  # 𝐫₁
+    𝐫ₙ = 𝐩₁ - α₁ * 𝐪₁  # 𝐫₁, Gram–Schmidt process
     𝛂 = Vector{eltype(float(α₁))}(undef, M)
     𝛃 = Vector{eltype(float(β₁))}(undef, M)
     𝛂[n], 𝛃[n] = α₁, β₁
