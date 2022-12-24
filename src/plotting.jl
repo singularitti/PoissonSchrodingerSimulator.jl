@@ -77,31 +77,21 @@ end
     # If we are passed two args, we use the first as labels
     steps = length(plot.args) == 2 ? plot.args[1] : eachindex(residuals)
     size --> (700, 400)
-    markersize --> 2
-    markerstrokecolor --> :auto
-    markerstrokewidth --> 0
+    seriestype --> :path
     xlims --> extrema(steps)
     ylims --> extrema(residuals)
+    yscale --> :log10
     xguide --> raw"iteration step ($n$)"
-    yguide --> raw"residual $\Vert \mathbf{b} - \mathrm{A} \mathbf{x} \Vert$"
+    yguide --> raw"residual $\Vert \mathbf{b} - \mathrm{A} \mathbf{x} \Vert$ (logarithmic scale)"
     guidefontsize --> 10
     tickfontsize --> 8
     legendfontsize --> 8
     legend_foreground_color --> nothing
     legend_position --> :topright
     frame --> :box
-    palette --> :tab20
+    palette --> :tab10
     grid --> nothing
-    @series begin
-        seriestype --> :scatter
-        steps, residuals
-    end
-    @series begin
-        seriestype --> :path
-        z_order --> :back
-        label := ""
-        steps, residuals
-    end
+    return steps, residuals
 end
 
 @userplot ConjugacyPlot
