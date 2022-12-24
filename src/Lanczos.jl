@@ -37,10 +37,9 @@ function restart_lanczos(
 )
     T, Q = lanczos(A, 𝐪₁, β₁; maxiter=maxiter)
     vals, vecs = eigen(T)
-    index = argmin(vals)
-    𝐰 = vecs[index]
-    subspacedim = length(𝐰)
-    return normalize(vec(𝐰' * Q[axes(𝐰, 1), begin:subspacedim]))
+    index = argmin(vals)  # Index of the smallest eigenvalue
+    𝐰 = vecs[:, index]  # Associated eigenvector
+    return normalize(vec(𝐰' * Q[axes(𝐰, 1), :]))
 end
 
 function loop_lanczos(
