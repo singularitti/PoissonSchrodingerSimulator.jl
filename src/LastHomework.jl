@@ -1,6 +1,6 @@
 module LastHomework
 
-include("core.jl")
+include("laplacian.jl")
 include("ConjugateGradient.jl")
 include("Lanczos.jl")
 include("regions.jl")
