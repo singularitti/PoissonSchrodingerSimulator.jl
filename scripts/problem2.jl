@@ -10,4 +10,4 @@ q = 0.001
 A = DiscreteLaplacian(N);
 H = Hamiltonian(A, ϕ, q)
 
-lanczos(H; maxiter=30)
+𝛙 = loop_lanczos(H, 40)
