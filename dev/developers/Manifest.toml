@@ -83,13 +83,13 @@ version = "0.21.3"
 
 [[deps.JuliaFormatter]]
 deps = ["CSTParser", "CommonMark", "DataStructures", "Glob", "Pkg", "Tokenize"]
-git-tree-sha1 = "004138f0ec3bedc35c0321a9cf1836415641d1f8"
+git-tree-sha1 = "447f5702b5271d99f064e924061bc05e26f52c4c"
 uuid = "98e50ef6-434e-11e9-1051-2b60c6c9e899"
-version = "1.0.17"
+version = "1.0.18"
 
 [[deps.LastHomework]]
 deps = ["LinearAlgebra", "OffsetArrays", "RecipesBase", "SparseArrays"]
-git-tree-sha1 = "efff73b7ee0d82e0f6a00e6ecb3a02c0441866f8"
+git-tree-sha1 = "14932c76a82fcc88ce858b062f6c7f3904b510ae"
 repo-rev = "main"
 repo-url = "https://github.com/singularitti/LastHomework.jl"
 uuid = "7c33b4bb-5f88-4700-8477-0120191a56c3"
