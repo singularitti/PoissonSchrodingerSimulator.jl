@@ -12,8 +12,13 @@ export Hamiltonian
 struct Hamiltonian{T} <: AbstractSparseMatrix{T,Int64}
     parent::SparseMatrixCSC{T,Int64}
 end
-Hamiltonian(A::DiscreteLaplacian, 𝛟::AbstractVector, q::Number) =
-    Hamiltonian(A[diagind(A)] .+ q * 𝛟)
+Hamiltonian(parent::AbstractMatrix{T}) where {T} =
+    Hamiltonian{T}(SparseMatrixCSC{T}(parent))
+function Hamiltonian(A::DiscreteLaplacian, 𝛟::AbstractVector, q::Number)
+    H = float(A)
+    H[diagind(H)] .+= q * 𝛟
+    return Hamiltonian(H)
+end
 
 function lanczos(A::Hamiltonian, M=size(A, 2), 𝐪₁=normalize(rand(M)), β₁=0)
     N = Int(sqrt(size(A, 1)))  # A is a N² × N² matrix
