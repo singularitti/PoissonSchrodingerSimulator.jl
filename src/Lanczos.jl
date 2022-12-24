@@ -42,18 +42,13 @@ function restart_lanczos(T, Q)
 end
 
 function loop_lanczos(
-    A::AbstractMatrix, n=size(A, 2), 𝐪₁=normalize(rand(size(A, 1))), β₁=0; maxiter=30
+    A::AbstractMatrix, n, 𝐪₁=normalize(rand(size(A, 1))), β₁=0; maxiter=30
 )
-    total_iter = n ÷ maxiter
-    Qseries = []
-    for _ in 1:(total_iter + 1)
+    for _ in 1:n
         T, Q = lanczos(A, 𝐪₁, β₁; maxiter=maxiter)
-        push!(Qseries, Q)
         𝐪₁ = restart_lanczos(T, Q)
     end
-    Q = hcat(Qseries...)
-    𝐰 = 𝐪₁[1:maxiter]
-    return normalize(vec(𝐰 * Q[axes(𝐰, 1), :]))
+    return 𝐪₁
 end
 
 end
