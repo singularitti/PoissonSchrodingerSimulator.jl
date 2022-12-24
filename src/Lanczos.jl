@@ -37,7 +37,11 @@ recover_eigvec(Q, 𝐰) = normalize(Q[:, axes(𝐰, 1)] * 𝐰)
 
 function restart_lanczos(T, Q)
     vals, vecs = eigen(T)
-    index = argmin(vals)  # Index of the smallest eigenvalue
+    if all(vals .> 0)
+        index = argmin(vals)  # Index of the smallest eigenvalue
+    else
+        index = argmax(abs.(vals))  # Index of the smallest eigenvalue
+    end
     𝐰 = vecs[:, index]  # Associated eigenvector
     return recover_eigvec(Q, 𝐰)
 end
