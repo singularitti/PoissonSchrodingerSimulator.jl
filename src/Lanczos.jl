@@ -1,7 +1,6 @@
 module Lanczos
 
-using LinearAlgebra: norm, normalize, ⋅
-using SparseArrays: spdiagm
+using LinearAlgebra: SymTridiagonal, norm, normalize, ⋅
 
 function lanczos(A::AbstractMatrix, M=size(A, 2), 𝐪₁=normalize(rand(M)), β₁=0)
     n = 1  # Initial step
@@ -27,7 +26,7 @@ function lanczos(A::AbstractMatrix, M=size(A, 2), 𝐪₁=normalize(rand(M)), β
         𝛂[n] = 𝐪ₙ ⋅ 𝐩ₙ  # 𝐪ₙ⊺ A 𝐪ₙ
         𝐫ₙ = 𝐩ₙ - 𝛂[n] * 𝐪ₙ - 𝛃[n] * Q[:, n - 1]
     end
-    T = spdiagm(0 => 𝛂, 1 => 𝛃, -1 => 𝛃)
+    T = SymTridiagonal(𝛂, 𝛃)
     return T, Q
 end
 
