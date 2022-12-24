@@ -4,7 +4,7 @@ In this problem, you will now investigate the quantum mechanics of a charged par
 electrostatic field you found in Problem~\ref{sec:pe}. In particular, you will determine the
 ground state wavefunction using the Lanczos algorithm. In addition to the electrostatic
 potential, the charged particle will not propagate outside the square region or into the
-internal square. This means the wavefunction will vanish outside of the square, and on its
+internal square. This means the wavefunction will vanish outside the square and on its
 boundaries, and for all points in the internal square. We choose our units and the particle
 mass so that the time-independent Schrödinger equation is
 %
@@ -17,7 +17,7 @@ We let the charged particle have a charge of \(q = 0.001\) in dimensionless unit
 this equation is real, all of the eigenvectors are real.
 
 Implement the Lanczos algorithm to find the lowest eigenvalue and eigenvector for this
-system. Your matrix times vector function here is very similar to the one your wrote for
+system. Your matrix times vector function here is very similar to the one you wrote for
 Problem~\ref{sec:pe}, but now there is an additional term, \(q \phi \psi\).
 Thinking of the left-hand side of Equation~\eqref{eq:sch}
 as a matrix operation, the \(q \phi \psi\) term is an additional diagonal element of the
@@ -44,7 +44,7 @@ potential energy to the eigenvector to see if the result is the eigenvector scal
 eigenvalue. You will have to restart the Lanczos \(30 - 40\) times to get single precision
 accuracy in the lowest eigenvalue.
 
-Once you can reliably find the lowest eigenvalues and eigenvectors, find the probability
-that the particle is in the region \(y < 0.5\). Remember, the probability is determined by
-the sum over \(y < 0.5\) of the wave function's norm squared. Make a 3D plot of the
-probability, i.e., \(\abs{\psi(x, y)}^2\).
+\Question{} Once you can reliably find the lowest eigenvalues and eigenvectors, find the
+probability that the particle is in the region \(y < 0.5\). Remember, the probability is
+determined by the sum over \(y < 0.5\) of the wave function's norm squared. Make a 3D plot
+of the probability, i.e., \(\abs{\psi(x, y)}^2\).
