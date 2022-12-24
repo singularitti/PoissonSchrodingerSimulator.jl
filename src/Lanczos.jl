@@ -2,6 +2,8 @@ module Lanczos
 
 using LinearAlgebra: SymTridiagonal, norm, normalize, ⋅
 
+export lanczos
+
 function lanczos(A::AbstractMatrix, M=size(A, 2), 𝐪₁=normalize(rand(M)), β₁=0)
     n = 1  # Initial step
     𝐪₁ = normalize(𝐪₁)
