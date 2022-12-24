@@ -7,7 +7,7 @@ using ..LastHomework: DiscreteLaplacian, Boundary, InternalSquare, validate, set
 
 import ..Lanczos: lanczos
 
-export Hamiltonian
+export Hamiltonian, probability
 
 struct Hamiltonian{T} <: AbstractSparseMatrix{T,Int64}
     parent::SparseMatrixCSC{T,Int64}
@@ -66,6 +66,8 @@ function lanczos(A::Hamiltonian, 𝐪₁=normalize(rand(size(A, 1))), β₁=0; m
     T = SymTridiagonal(𝛂, 𝛃)
     return T, Q
 end
+
+probability(𝛙::AbstractVector) = abs2.(normalize(𝛙))
 
 Base.parent(S::Hamiltonian) = S.parent
 
