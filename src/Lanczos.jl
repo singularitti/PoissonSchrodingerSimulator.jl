@@ -32,10 +32,7 @@ function lanczos(A::AbstractMatrix, 𝐪₁=normalize(rand(size(A, 1))), β₁=0
     return T, Q
 end
 
-function restart_lanczos(
-    A::AbstractMatrix, 𝐪₁=normalize(rand(size(A, 1))), β₁=0; maxiter=30
-)
-    T, Q = lanczos(A, 𝐪₁, β₁; maxiter=maxiter)
+function restart_lanczos(T, Q)
     vals, vecs = eigen(T)
     index = argmin(vals)  # Index of the smallest eigenvalue
     𝐰 = vecs[:, index]  # Associated eigenvector
