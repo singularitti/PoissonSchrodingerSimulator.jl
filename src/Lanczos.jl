@@ -1,6 +1,7 @@
 module Lanczos
 
 using LinearAlgebra: SymTridiagonal, norm, normalize, eigen, ⋅
+using ProgressMeter: @showprogress
 
 export lanczos, restart_lanczos, loop_lanczos
 
@@ -44,7 +45,7 @@ end
 function loop_lanczos(
     A::AbstractMatrix, n, 𝐪₁=normalize(rand(size(A, 1))), β₁=0; maxiter=30
 )
-    for _ in 1:n
+    @showprogress for _ in 1:n
         T, Q = lanczos(A, 𝐪₁, β₁; maxiter=maxiter)
         𝐪₁ = restart_lanczos(T, Q)
     end
