@@ -59,7 +59,7 @@ function lanczos(A::Hamiltonian, 𝐯₁=rand(size(A, 1)); maxiter=30)
         # validate(𝐰ₙ, BOUNDARY)
         # validate(𝐰ₙ, SQUARE)
     end
-    T = SymTridiagonal(𝛂, 𝛃)
+    T = SymTridiagonal(𝛂, 𝛃[2:end])
     return T, V
 end
 

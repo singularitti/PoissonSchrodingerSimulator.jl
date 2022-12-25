@@ -29,7 +29,7 @@ function lanczos(A::AbstractMatrix, 𝐯₁=rand(size(A, 1)); maxiter=30)
         𝛂[n] = 𝐰′ₙ ⋅ 𝐯ₙ  # 𝐯ₙ⊺ A 𝐯ₙ
         𝐰ₙ = 𝐰′ₙ - 𝛂[n] * 𝐯ₙ - 𝛃[n] * V[:, n - 1]
     end
-    T = SymTridiagonal(𝛂, 𝛃)
+    T = SymTridiagonal(𝛂, 𝛃[2:end])
     return T, V
 end
 
