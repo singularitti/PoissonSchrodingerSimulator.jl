@@ -1,19 +1,21 @@
+\section{Poisson's Equation}\label{sec:pe}
+
 \input{grid}
 
 Consider the two-dimensional region shown in Figure~\ref{fig:grid}.
 Inside this region, you will first
 solve an electrostatic problem and then a quantum mechanics eigenvalue problem. Let the
-region have length \(1\) in the \(x\) and \(y\) directions, given in dimensionless units.
-The solid square in the interior has length \(0.25\) and height \(0.25\) and its center is
-at \((x, y) = (0.625, 0.75)\). The circles at \((0.25, 0.125)\) and \((0.75, 0.125)\) are
+region have length \(L = l a\) in both \(x\) and \(y\) directions,
+where \(a\) is the constant distance between each adjacent pair of grid points.
+The solid square in the interior has size \(0.25L \times 0.25L\) and its center is
+at \((x, y) = (0.625L, 0.75L)\). The circles at \((0.25L, 0.125L)\) and \((0.75L, 0.125L)\) are
 point charges. Choose a two-dimensional grid to cover this region. You will need to
 discretize the Laplacian on this grid and write a function to produce the result of applying
 the discretized Laplacian to a vector, i.e., to the potential \(\phi(x, y)\) or the
 wavefunction \(\psi(x, y)\) defined on this two-dimensional region. I recommend you choose a
-grid of size \((N + 1) \times (N + 1)\), with the points with values of \(0\) or \((N + 1)\)
-lying on the boundary. \(N = 128\) is a reasonable size to use.
-
-\section{Poisson's Equation}\label{sec:pe}
+grid of size \(N \times N = (L + 1) \times (L + 1)\),
+with the points with values of \(0\) or \((L + 1)\)
+lying on the boundary. \(L = 128\) is a reasonable size to use.
 
 Write a program to use the conjugate gradient algorithm to solve Poisson's equation
 %
@@ -22,11 +24,11 @@ Write a program to use the conjugate gradient algorithm to solve Poisson's equat
 \end{equation}
 %
 We will work in dimensionless units, so the \(a\) that enters the discretized Laplacian can be
-set to \(1\) and the charges and potentials given will be in dimensionless units. The
-boundary of the region is held at a potential of zero, and the internal square is held at a
+set to \(1\), and the charges and potentials given will be in dimensionless units. The
+boundary of the region is held at a potential of \(0\), and the internal square is held at a
 constant potential of \(5\). Let the point charges each have a value of \(20\), also in
 dimensionless units. Thus you will want to solve the discretized version of Poisson's
-equation with \(\rho(0.25, 0.125) = -20\) and \(\rho(0.75, 0.125) = -20\) and \(\rho = 0\)
+equation with \(\rho(0.25L, 0.125L) = -20\) and \(\rho(0.75L, 0.125L) = -20\) and \(\rho = 0\)
 everywhere else.
 
 As discussed, one approach to this problem is to write your matrix
@@ -41,9 +43,9 @@ conditions during the conjugate gradient.
 
 You can do a simple test of your program by
 removing the square from the above figure and putting the point charge in the center of the
-large square region, i.e., \((0.5, 0.5)\). This will make the solution close to the known
+large square region, i.e., \((0.5L, 0.5L)\). This will make the solution close to the known
 analytical solution for a point charge without boundaries. (This should be the Coulomb
-potential for a two-dimensional world, which has \(V(r) \sim -\ln r\), not the \(1/r\)
+potential for a two-dimensional world, which has \(V(r) \sim -\ln r\), not the \(1 / r\)
 from our three-dimensional world.)
 
 \subsection{The conjugate gradient method}

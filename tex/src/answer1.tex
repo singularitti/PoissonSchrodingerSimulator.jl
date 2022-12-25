@@ -193,7 +193,7 @@ And since \(x = a i = i\), \(y = a j = j\), Equation~\eqref{eq:nij} can be rewri
     n = N x + y.
 \end{equation}
 %
-We draw a schematic plot of the system with \(N = 33\) for simplicity in
+We draw a schematic plot of the system with \(L = 32\) (\(N = 33\)) for simplicity in
 Figure~\ref{fig:grid}, where you can observe this relation.
 In the iterative solver for Equation~\eqref{eq:Axb},
 the initial vector \(\bm{\rho}(0)\) has \(\rho(0)_a = -20\) and \(\rho(0)_b = -20\),
@@ -202,23 +202,25 @@ where \(a\) and \(b\) are the linear indices of the two charges.
 And the initial vector \(\bm{\phi}(0)\) has \(5\) in the components corresponding to
 the points in the solid square, and has zero in the components corresponding to
 the boundary of the region while having non-zero values everywhere else.
-The solid square in the interior has length \(\frac{1}{4}\) and height \(\frac{1}{4}\) and
-its center is at \((x, y) = (\frac{5}{8}, \frac{3}{4})\).
-The point charges are at \((\frac{1}{4}, \frac{1}{8})\) and \((\frac{3}{4}, \frac{1}{8})\).
+The solid square in the interior has length \(L/4\) and
+its center is at \((x, y) = (5L/8, 3L/4)\).
+The point charges are at \((L/4, L/8)\) and \((3L/4, L/8)\).
 
 \begin{figure}
     \centering
     \begin{minipage}[t]{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{phi0}
-        \subcaption{The heat map of the initial value \(\bm{\phi}(0)\) with \(N = 33\).}
+        \includegraphics[width=\linewidth]{phi0_heatmap}
+        \subcaption{The heat map of the initial value \(\bm{\phi}(0)\) with
+            \(L = 128\) (\(N = 129\)).}
         \label{fig:t0:a}
     \end{minipage}
     \hfill
     \begin{minipage}[t]{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{rho}
-        \subcaption{The heat map of the charge density \(\bm{\rho}\) with \(N = 33\).}
+        \includegraphics[width=\linewidth]{rho_heatmap}
+        \subcaption{The heat map of the charge density \(\bm{\rho}\) with
+            \(L = 128\) (\(N = 129\)).}
         \label{fig:t0:b}
     \end{minipage}
 \end{figure}
@@ -229,14 +231,14 @@ horizontal direction (the \(x\) direction in Figure~\ref{fig:grid}),
 and its rows are plotted in the vertical direction
 (the \(y\) direction in Figure~\ref{fig:grid}).
 So we need to transpose its elements when indexing the matrix.
-Also, since \(x\) and \(y\) start from \(0\) to \(N\), the actual matrix is of size
-\((N + 1) \times (N + 1)\), as shown in Figure~\ref{fig:grid}.
+Also, since \(x\) and \(y\) span from \(0\) to \(L\), the actual matrix is of size
+\(N \times N = (L + 1) \times (L + 1)\), as shown in Figure~\ref{fig:grid}.
 So when indexing the elements in the internal square and the point charges,
-we need to subtract \(1\) from our matrix's size, and multiply it by the corresponding
-fraction, and add \(1\) back to obtain the correct index of an element in the
+we need to subtract \(1\) from our matrix's size and multiply it by the corresponding
+fraction, then add \(1\) back to obtain the correct index of an element in the
 specific area.
 Figures~\ref{fig:t0:a} and~\ref{fig:t0:b} show the heat maps of
-\(\bm{\phi}(0)\) and \(\bm{\rho}\) with \(N = 33\).
+\(\bm{\phi}(0)\) and \(\bm{\rho}\) with \(L = 128\) (i.e., \(N = 129\)).
 
 We benefit from using the configuration shown in Figure~\ref{fig:grid} that it follows
 Julia's matrix column-major order for storing multidimensional arrays in linear storage, such
