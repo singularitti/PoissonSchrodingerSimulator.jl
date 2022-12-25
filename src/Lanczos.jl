@@ -33,7 +33,7 @@ function lanczos(A::AbstractMatrix, 𝐪₁=normalize(rand(size(A, 1))), β₁=0
     return T, Q
 end
 
-recover_eigvec(Q, 𝐰) = normalize(Q[:, axes(𝐰, 1)] * 𝐰)
+recover_eigvec(Q, 𝐰) = normalize(Q * 𝐰)
 
 function restart_lanczos(T, Q)
     vals, vecs = eigen(T)
