@@ -11,7 +11,7 @@ matrix, and \(\bm{b}\) is an \(N \times 1\)
 vector, and \(\bm{x}\) is the solution.
 The algorithm is represented in Snippet~\ref{lst:cg}.
 
-\begin{algorithm}
+\begin{algorithm}[!hbt]
     \caption{The conjugate gradient method implementation of solving
         \(\mathrm{ A }\bm{ x } = \bm{ b }\).}
     \label{lst:cg}
@@ -61,16 +61,14 @@ where \(\square\) denotes the two-dimensional simulation box,
 \(\partial\square\) denotes the boundary of the box,
 and \(\blacksquare\) denotes the solid internal square.
 
-% \input{stencil}
-
 First, we want to discretize the Laplacian operator \(\nabla^2\).
 With grid spacing \(a\), the standard discretization for a square grid is
 %
-\begin{equation}\label{eq:del2phi}
+\begin{multline}\label{eq:del2phi}
     \nabla^2 \phi(x, y) =
-    \frac{ 1 }{ a^2 } \bigl(\phi(x - a, y) - 2 \phi(x, y) + \phi(x + a, y)\bigr) +
+    \frac{ 1 }{ a^2 } \bigl(\phi(x - a, y) - 2 \phi(x, y) + \phi(x + a, y)\bigr) +\\
     \frac{ 1 }{ a^2 } \bigl(\phi(x, y - a) - 2 \phi(x, y) + \phi(x, y + a)\bigr).
-\end{equation}
+\end{multline}
 %
 We simplify Equation~\eqref{eq:del2phi} as
 %
@@ -82,6 +80,12 @@ We simplify Equation~\eqref{eq:del2phi} as
 %
 for all \(i\) and \(j\),
 where \(i\) and \(j\) label the \(x\) and \(y\) coordinates, respectively.
+Equation~\eqref{eq:del2phi} is what we called the \emph{five-point stencil}
+for the discretization of a Laplacian using central differences,
+as shown in Figure~\ref{fig:stencil}.
+
+\input{stencil}
+
 By starting at the upper left corner and traversing in the \(y\)-direction first, and
 subsequently in the \(x\)-direction---the lexicographical ordering---we get the following
 system of equations:
