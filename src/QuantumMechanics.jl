@@ -20,54 +20,54 @@ function Hamiltonian(A::DiscreteLaplacian, 𝛟::AbstractVector, q::Number)
     return Hamiltonian(H)
 end
 
-function lanczos(A::Hamiltonian, 𝐪₁=normalize(rand(size(A, 1))), β₁=0; maxiter=30)
+function lanczos(A::Hamiltonian, 𝐯₁=normalize(rand(size(A, 1))); maxiter=30)
     N = Int(sqrt(size(A, 1)))  # A is a N² × N² matrix
     BOUNDARY = Boundary((N, N), 0)
     SQUARE = InternalSquare((N, N), 0)
     n = 1  # Initial step
-    𝐪₁ = normalize(𝐪₁)
-    setvalues!(𝐪₁, BOUNDARY)
-    setvalues!(𝐪₁, SQUARE)
-    Q = Matrix{eltype(𝐪₁)}(undef, size(A, 1), maxiter)  # N² × M
-    Q[:, 1] = 𝐪₁
-    𝐩₁ = A * 𝐪₁
-    setvalues!(𝐩₁, BOUNDARY)
-    setvalues!(𝐩₁, SQUARE)
-    α₁ = 𝐪₁ ⋅ 𝐩₁  # 𝐪ₙ⊺ A 𝐪ₙ
-    𝐫ₙ = 𝐩₁ - α₁ * 𝐪₁  # 𝐫₁, Gram–Schmidt process
-    validate(𝐫ₙ, BOUNDARY)
-    validate(𝐫ₙ, SQUARE)
-    # setvalues!(𝐫ₙ, BOUNDARY)
-    # setvalues!(𝐫ₙ, SQUARE)
+    setvalues!(𝐯₁, BOUNDARY)
+    setvalues!(𝐯₁, SQUARE)
+    𝐯₁ = normalize(𝐯₁)
+    V = Matrix{eltype(𝐯₁)}(undef, length(𝐯₁), maxiter)  # N² × maxiter
+    V[:, n] = 𝐯₁
+    𝐰′₁ = A * 𝐯₁
+    setvalues!(𝐰′₁, BOUNDARY)
+    setvalues!(𝐰′₁, SQUARE)
+    α₁ = 𝐰′₁ ⋅ 𝐯₁   # 𝐯₁⊺ A 𝐯₁
+    𝐰ₙ = 𝐰′₁ - α₁ * 𝐯₁  # 𝐰₁, Gram–Schmidt process
+    # validate(𝐰ₙ, BOUNDARY)
+    # validate(𝐰ₙ, SQUARE)
     𝛂 = Vector{eltype(float(α₁))}(undef, maxiter)
-    𝛃 = Vector{eltype(float(β₁))}(undef, maxiter)
-    𝛂[n], 𝛃[n] = α₁, β₁
+    𝛃 = Vector{Float64}(undef, maxiter)
+    𝛂[n], 𝛃[n] = α₁, 0
     for n in 2:maxiter
-        𝐫ₙ₋₁ = 𝐫ₙ
-        𝛃[n] = norm(𝐫ₙ₋₁)
+        𝐰ₙ₋₁ = 𝐰ₙ
+        𝛃[n] = norm(𝐰ₙ₋₁)
         if iszero(𝛃[n])
             error("")
         else
-            𝐪ₙ = 𝐫ₙ₋₁ / 𝛃[n]
-            setvalues!(𝐪ₙ, BOUNDARY)
-            setvalues!(𝐪ₙ, SQUARE)
-            Q[:, n] = 𝐪ₙ
+            𝐯ₙ = 𝐰ₙ₋₁ / 𝛃[n]
+            # validate(𝐯ₙ, BOUNDARY)
+            # validate(𝐯ₙ, SQUARE)
+            V[:, n] = 𝐯ₙ
         end
-        𝐩ₙ = A * 𝐪ₙ
-        setvalues!(𝐩ₙ, BOUNDARY)
-        setvalues!(𝐩ₙ, SQUARE)
-        𝛂[n] = 𝐪ₙ ⋅ 𝐩ₙ  # 𝐪ₙ⊺ A 𝐪ₙ
-        𝐫ₙ = 𝐩ₙ - 𝛂[n] * 𝐪ₙ - 𝛃[n] * Q[:, n - 1]
-        validate(𝐫ₙ, BOUNDARY)
-        validate(𝐫ₙ, SQUARE)
-        validate(𝐪ₙ, BOUNDARY)
-        validate(𝐪ₙ, SQUARE)
+        𝐰′ₙ = A * 𝐯ₙ
+        setvalues!(𝐰′ₙ, BOUNDARY)
+        setvalues!(𝐰′ₙ, SQUARE)
+        𝛂[n] = 𝐰′ₙ ⋅ 𝐯ₙ  # 𝐯ₙ⊺ A 𝐯ₙ
+        𝐰ₙ = 𝐰′ₙ - 𝛂[n] * 𝐯ₙ - 𝛃[n] * V[:, n - 1]
+        # validate(𝐰ₙ, BOUNDARY)
+        # validate(𝐰ₙ, SQUARE)
     end
     T = SymTridiagonal(𝛂, 𝛃)
-    return T, Q
+    return T, V
 end
 
 probability(𝛙::AbstractVector) = abs2.(normalize(𝛙))
+function probability(𝛙::AbstractMatrix, xrange=1:size(𝛙, 1), yrange=1:size(𝛙, 2))
+    𝛙′ = normalize(𝛙)
+    return sum(abs2.(𝛙′[xrange, yrange]))
+end
 
 Base.parent(S::Hamiltonian) = S.parent
 
