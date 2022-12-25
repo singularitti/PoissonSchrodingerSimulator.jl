@@ -66,6 +66,10 @@ function lanczos(A::Hamiltonian, 𝐪₁=normalize(rand(size(A, 1))); maxiter=30
 end
 
 probability(𝛙::AbstractVector) = abs2.(normalize(𝛙))
+function probability(𝛙::AbstractMatrix, xrange=1:size(𝛙, 1), yrange=1:size(𝛙, 2))
+    𝛙′ = normalize(𝛙)
+    return sum(abs2.(𝛙′[xrange, yrange]))
+end
 
 Base.parent(S::Hamiltonian) = S.parent
 
