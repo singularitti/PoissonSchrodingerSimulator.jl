@@ -1,0 +1,77 @@
+\subsection{Using CG to solve the electrostatic problem}
+
+To solve the problem, we need to change the
+code in Snippets~\ref{lst:cg} to satisfy the boundary conditions, which includes
+the boundary of the whole region and the internal square.
+
+In the beginning, we need to set the initial values of
+\(\bm{\phi}(n) = \bm{\phi}(0) = \bm{x}_0\),
+where \(n\) labels the number of iterations, as shown in Figure~\ref{fig:t0:a}.
+We also need to set the initial values of the residual
+%
+\begin{equation}\label{eq:r0}
+    \bm{r}_0 = \bm{b} - \mathrm{A} \bm{x}_0.
+\end{equation}
+%
+On the boundary and in the internal square, \(\bm{r}_0(x, y)\) is \(0\).
+Or, we could just set \(\bm{p}_0(x, y) \equiv 0\) since \(\bm{p}_0 = \bm{r}_0\).
+
+As we start our iterations, we first need to set \(\bm{p}_n(x, y)\) to \(0\)
+for \((x, y)\) on the boundary or in the internal square.
+
+The next step is \code{A𝐩ₙ = A * 𝐩ₙ}, we also want to set \code{A𝐩ₙ} to be \(0\)
+in these regions. Since \code{A𝐩ₙ} is used to update the residual:
+%
+\begin{equation}\label{eq:rn}
+    \bm{r}_{n+1} = \bm{r}_n - \alpha_n \mathrm{A} \bm{p}_n.
+\end{equation}
+%
+If \code{A𝐩ₙ} is not zero in these areas, the residual will grow exponentially
+as we iterate.
+
+If these values are set correctly, the residuals \(\{\bm{r}_n\}\) will have
+zeros in these regions throughout the whole process.
+This is because the values of \(\{\bm{r}_n\}\) (where \(n = 1\), \(\ldots\), \(N\))
+only depend on \(\bm{r}_0\) and \(\mathrm{A} \bm{p}_n\), as shown in
+Equations~\eqref{eq:r0} and~\eqref{eq:rn}.
+
+Also, the values of the solutions, i.e., the electric potential \(\{\bm{\phi}_n\}\),
+only depend on its initial value \(\bm{\phi}_0\) and \(\bm{p}_n\) since
+%
+\begin{equation}
+    \bm{x}_{n+1} = \bm{x}_n + \alpha_n \bm{p}_n.
+\end{equation}
+%
+We can check their values as we iterate over \(1\) to \(N\).
+
+The solution, \(\bm{x}_N = \bm{\phi}_N\), after \(N=500\) iterations, is reshaped
+as a square and plotted as a heatmap in Figure~\ref{fig:phi_heatmap}.
+We can see that the negative charges produce negative potentials,
+and the highest value for the whole electric potential is at the surface
+of the square, as expected.
+
+\begin{figure}[!hbt]
+    \centering
+    \includegraphics[width=0.8\textwidth]{phi_heatmap}
+    \caption{The heatmap plot for the solution \(\bm{\phi}\) to
+        Equation~\eqref{eq:poissoncorrected} on a \(129 \times 129\) grid,
+        after \(500\) CG iterations.}
+    \label{fig:phi_heatmap}
+\end{figure}
+
+We also plot a three-dimensional manifold for \(\bm{\phi}_N\)
+in Figure~\ref{fig:phi_surface}.
+As we can see, at those point charges, the potential decreases drastically,
+whose lowest value here is \(-15.661696\).
+In fact, if we have a smaller grid size, e.g., \(L = 32\) or \(L = 64\),
+we will have a little bit higher values for the minimum of the potential.
+Since the \(1 / r\) tail is smeared out by our coarse grid size.
+
+\begin{figure}[!hbt]
+    \centering
+    \includegraphics[width=0.8\textwidth]{phi_surface}
+    \caption{The surface plot for the solution \(\bm{\phi}\) to
+        Equation~\eqref{eq:poissoncorrected} on a \(129 \times 129\) grid,
+        after \(500\) CG iterations.}
+    \label{fig:phi_surface}
+\end{figure}
