@@ -20,7 +20,7 @@ function Hamiltonian(A::DiscreteLaplacian, 𝛟::AbstractVector, q::Number)
     return Hamiltonian(H)
 end
 
-function lanczos(A::Hamiltonian, 𝐯₁=normalize(rand(size(A, 1))); maxiter=30)
+function lanczos(A::Hamiltonian, 𝐯₁=rand(size(A, 1)); maxiter=30)
     N = Int(sqrt(size(A, 1)))  # A is a N² × N² matrix
     BOUNDARY = Boundary((N, N), 0)
     SQUARE = InternalSquare((N, N), 0)
