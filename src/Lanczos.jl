@@ -5,7 +5,7 @@ using ProgressMeter: @showprogress
 
 export lanczos, restart_lanczos, loop_lanczos
 
-function lanczos(A::AbstractMatrix, 𝐪₁=normalize(rand(size(A, 1))), β₁=0; maxiter=30)
+function lanczos(A::AbstractMatrix, 𝐪₁=normalize(rand(size(A, 1))); maxiter=30)
     n = 1  # Initial step
     𝐪₁ = normalize(𝐪₁)
     Q = Matrix{eltype(𝐪₁)}(undef, size(A, 1), maxiter)  # N × M
@@ -14,8 +14,8 @@ function lanczos(A::AbstractMatrix, 𝐪₁=normalize(rand(size(A, 1))), β₁=0
     α₁ = 𝐪₁ ⋅ 𝐩₁  # 𝐪ₙ⊺ A 𝐪ₙ
     𝐫ₙ = 𝐩₁ - α₁ * 𝐪₁  # 𝐫₁, Gram–Schmidt process
     𝛂 = Vector{eltype(float(α₁))}(undef, maxiter)
-    𝛃 = Vector{eltype(float(β₁))}(undef, maxiter)
-    𝛂[n], 𝛃[n] = α₁, β₁
+    𝛃 = Vector{Float64}(undef, maxiter)
+    𝛂[n], 𝛃[n] = α₁, 0
     for n in 2:maxiter
         𝐫ₙ₋₁ = 𝐫ₙ
         𝛃[n] = norm(𝐫ₙ₋₁)
@@ -46,11 +46,9 @@ function restart_lanczos(T, Q)
     return recover_eigvec(Q, 𝐰)
 end
 
-function loop_lanczos(
-    A::AbstractMatrix, n, 𝐪₁=normalize(rand(size(A, 1))), β₁=0; maxiter=30
-)
+function loop_lanczos(A::AbstractMatrix, n, 𝐪₁=normalize(rand(size(A, 1))); maxiter=30)
     @showprogress for _ in 1:n
-        T, Q = lanczos(A, 𝐪₁, β₁; maxiter=maxiter)
+        T, Q = lanczos(A, 𝐪₁; maxiter=maxiter)
         𝐪₁ = restart_lanczos(T, Q)
     end
     return 𝐪₁
