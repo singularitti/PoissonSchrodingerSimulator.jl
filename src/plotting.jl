@@ -14,8 +14,8 @@ export regionheatmap, residualplot, surfaceplot, conjugacyplot
     xmirror --> true  # Place xticks along top axis, see https://github.com/JuliaPlots/Plots.jl/issues/337
     yguide --> raw"rows"  # Note that it is reversed!
     tick_direction --> :out
-    guidefontsize --> 12
-    tickfontsize --> 10
+    guidefontsize --> 14
+    tickfontsize --> 8
     color --> :RdGy_3  # Tricolor colormap
     color_limits --> extrema(laplacian)
     colorbar --> :none
@@ -39,8 +39,8 @@ end
     xmirror --> true  # Place xticks along top axis, see https://github.com/JuliaPlots/Plots.jl/issues/337
     yguide --> raw"$y$"
     tick_direction --> :out
-    guidefontsize --> 12
-    tickfontsize --> 10
+    guidefontsize --> 14
+    tickfontsize --> 8
     color --> :thermometer
     frame --> :box
     aspect_ratio --> :equal
@@ -60,7 +60,7 @@ end
     yguide --> raw"$y$"
     zguide --> raw"$z$"
     tick_direction --> :out
-    guidefontsize --> 10
+    guidefontsize --> 14
     tickfontsize --> 8
     color --> :thermometer
     frame --> :box
@@ -76,18 +76,16 @@ end
     residuals = [norm(step.r) for step in history.data]
     # If we are passed two args, we use the first as labels
     steps = length(plot.args) == 2 ? plot.args[1] : eachindex(residuals)
-    size --> (700, 400)
+    size --> (800, 400)
     seriestype --> :path
     xlims --> extrema(steps)
     ylims --> extrema(residuals)
     yscale --> :log10
-    xguide --> raw"iteration step ($n$)"
+    xguide --> raw"iteration step ($i$)"
     yguide --> raw"residual $\Vert \mathbf{b} - \mathrm{A} \mathbf{x} \Vert$ (logarithmic scale)"
     guidefontsize --> 10
     tickfontsize --> 8
-    legendfontsize --> 8
-    legend_foreground_color --> nothing
-    legend_position --> :topright
+    legend --> :none
     frame --> :box
     palette --> :tab10
     grid --> nothing
