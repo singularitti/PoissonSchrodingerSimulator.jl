@@ -252,21 +252,21 @@ The point charges are at \((L/4, L/8)\) and \((3L/4, L/8)\).
 
 \begin{figure}[!hbt]
     \centering
-    \begin{minipage}[t]{0.49\linewidth}
+    \begin{subfigure}[t]{0.49\linewidth}
         \centering
         \includegraphics[width=\linewidth]{phi0_heatmap}
-        \subcaption{The heatmap of the initial value \(\bm{\phi}(0)\) with
-            \(L = 128\) (\(N = 129\)).}
-        \label{fig:t0:a}
-    \end{minipage}
+        \caption{\label{fig:t0:a}}
+    \end{subfigure}
     \hfill
-    \begin{minipage}[t]{0.49\linewidth}
+    \begin{subfigure}[t]{0.49\linewidth}
         \centering
         \includegraphics[width=\linewidth]{rho_heatmap}
-        \subcaption{The heatmap of the charge density \(\bm{\rho}\) with
-            \(L = 128\) (\(N = 129\)).}
-        \label{fig:t0:b}
-    \end{minipage}
+        \caption{\label{fig:t0:b}}
+    \end{subfigure}
+    \caption{The heatmaps of the initial values (\protect\subref{fig:t0:a}) \(\bm{\phi}(0)\)
+        and (\protect\subref{fig:t0:b}) charge density \(\bm{\rho}\)
+        with \(L = 128\) (\(N = 129\)).}
+    \label{fig:status}
 \end{figure}
 
 One thing to notice is that if we want to plot a heatmap of
