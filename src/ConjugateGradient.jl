@@ -1,6 +1,6 @@
 module ConjugateGradient
 
-using LinearAlgebra: dot, norm
+using LinearAlgebra: norm, ⋅
 using OffsetArrays: OffsetVector, Origin
 
 export Logger, solve, solve!, isconverged, eachstep
@@ -35,10 +35,11 @@ function solve!(logger, A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxite
             setconverged!(logger)
             break
         end
-        αₙ = dot(𝐫ₙ, 𝐫ₙ) / dot(𝐩ₙ, A, 𝐩ₙ)
+        A𝐩ₙ = A * 𝐩ₙ  # Avoid duplicated computation
+        αₙ = 𝐫ₙ ⋅ 𝐫ₙ / 𝐩ₙ ⋅ A𝐩ₙ  # `⋅` means dot product between two vectors
         𝐱ₙ₊₁ = 𝐱ₙ + αₙ * 𝐩ₙ
-        𝐫ₙ₊₁ = 𝐫ₙ - αₙ * A * 𝐩ₙ
-        βₙ = dot(𝐫ₙ₊₁, 𝐫ₙ₊₁) / dot(𝐫ₙ, 𝐫ₙ)
+        𝐫ₙ₊₁ = 𝐫ₙ - αₙ * A𝐩ₙ
+        βₙ = 𝐫ₙ₊₁ ⋅ 𝐫ₙ₊₁ / 𝐫ₙ ⋅ 𝐫ₙ
         𝐩ₙ₊₁ = 𝐫ₙ₊₁ + βₙ * 𝐩ₙ
         log!(logger, IterationStep(n, αₙ, βₙ, 𝐱ₙ, 𝐫ₙ, 𝐩ₙ))
         𝐱ₙ, 𝐫ₙ, 𝐩ₙ = 𝐱ₙ₊₁, 𝐫ₙ₊₁, 𝐩ₙ₊₁  # Prepare for a new iteration
