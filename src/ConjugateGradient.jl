@@ -5,7 +5,7 @@ using OffsetArrays: OffsetVector, Origin
 
 export Logger, solve, solve!, isconverged, eachstep
 
-mutable struct IterationStep
+mutable struct Step
     n::UInt64
     alpha::Float64
     beta::Float64
@@ -22,7 +22,7 @@ EmptyLogger() = EmptyLogger(false)
 mutable struct Logger <: AbstractLogger
     maxiter::UInt64
     isconverged::Bool
-    data::OffsetVector{IterationStep}
+    data::OffsetVector{Step}
 end
 Logger(maxiter) = Logger(maxiter, false, OffsetVector([], Origin(0)))
 
@@ -41,7 +41,7 @@ function solve!(logger, A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxite
         𝐫ₙ₊₁ = 𝐫ₙ - αₙ * A𝐩ₙ
         βₙ = 𝐫ₙ₊₁ ⋅ 𝐫ₙ₊₁ / 𝐫ₙ ⋅ 𝐫ₙ
         𝐩ₙ₊₁ = 𝐫ₙ₊₁ + βₙ * 𝐩ₙ
-        log!(logger, IterationStep(n, αₙ, βₙ, 𝐱ₙ, 𝐫ₙ, 𝐩ₙ))
+        log!(logger, Step(n, αₙ, βₙ, 𝐱ₙ, 𝐫ₙ, 𝐩ₙ))
         𝐱ₙ, 𝐫ₙ, 𝐩ₙ = 𝐱ₙ₊₁, 𝐫ₙ₊₁, 𝐩ₙ₊₁  # Prepare for a new iteration
     end
     return 𝐱ₙ
@@ -67,7 +67,7 @@ eachstep(ch::Logger) = EachStep(ch)
 Base.iterate(iter::EachStep) = iterate(iter.history.data)
 Base.iterate(iter::EachStep, state) = iterate(iter.history.data, state)
 
-Base.eltype(::EachStep) = IterationStep
+Base.eltype(::EachStep) = Step
 
 Base.length(iter::EachStep) = length(iter.history.data)
 
@@ -79,7 +79,7 @@ Base.firstindex(iter::EachStep) = firstindex(iter.history.data)
 
 Base.lastindex(iter::EachStep) = lastindex(iter.history.data)
 
-function Base.show(io::IO, step::IterationStep)
+function Base.show(io::IO, step::Step)
     if get(io, :compact, false) || get(io, :typeinfo, nothing) == typeof(step)
         Base.show_default(IOContext(io, :limit => true), step)  # From https://github.com/mauro3/Parameters.jl/blob/ecbf8df/src/Parameters.jl#L556
     else
