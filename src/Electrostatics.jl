@@ -4,7 +4,7 @@ using LinearAlgebra: norm, ⋅
 
 using ..LastHomework:
     DiscreteLaplacian, Boundary, InternalSquare, PointCharges, validate, setvalues!
-using ..ConjugateGradient: IterationStep, setconverged!, log!
+using ..ConjugateGradient: Step, setconverged!, log!
 
 import ..ConjugateGradient: solve!
 
@@ -45,7 +45,7 @@ function solve!(
         𝐫ₙ₊₁ = 𝐫ₙ - αₙA𝐩ₙ
         βₙ = 𝐫ₙ₊₁ ⋅ 𝐫ₙ₊₁ / 𝐫ₙ ⋅ 𝐫ₙ
         𝐩ₙ₊₁ = 𝐫ₙ₊₁ + βₙ * 𝐩ₙ
-        log!(logger, IterationStep(n, αₙ, βₙ, 𝐱ₙ, 𝐫ₙ, 𝐩ₙ))
+        log!(logger, Step(n, αₙ, βₙ, 𝐱ₙ, 𝐫ₙ, 𝐩ₙ))
         𝐱ₙ, 𝐫ₙ, 𝐩ₙ = 𝐱ₙ₊₁, 𝐫ₙ₊₁, 𝐩ₙ₊₁  # Prepare for a new iteration
         # validate(𝐫ₙ, SQUARE_RESIDUAL)
         # validate(𝐱ₙ, SQUARE)  # Check if 𝐱ₙ is 5 in the square
