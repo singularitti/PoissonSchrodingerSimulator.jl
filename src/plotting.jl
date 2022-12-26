@@ -45,6 +45,7 @@ end
     frame --> :box
     aspect_ratio --> :equal
     margins --> (0, :mm)  # See https://github.com/JuliaPlots/Plots.jl/issues/4522#issuecomment-1318511879
+    right_margin --> (1.5, :mm)
     return axes(data)..., data
 end
 
@@ -65,7 +66,9 @@ end
     color --> :thermometer
     frame --> :box
     aspect_ratio --> :equal  # See https://docs.juliaplots.org/latest/gallery/gr/generated/gr-ref060/
+    view_angle --> (60, 35)
     margins --> (0, :mm)  # See https://github.com/JuliaPlots/Plots.jl/issues/4522#issuecomment-1318511879
+    right_margin --> (1.5, :mm)
     return axes(data)..., data
 end
 
