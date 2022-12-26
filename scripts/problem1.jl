@@ -4,8 +4,8 @@ using LastHomework
 using LastHomework.ConjugateGradient
 using LastHomework.Electrostatics
 
-step_cg = 500
-logger = Logger(step_cg)
+maxiter = 500
+logger = Logger(maxiter)
 L = 128
 N = L + 1  # Grid size
 
@@ -15,7 +15,7 @@ myreshape(𝐯) = reshape(𝐯, N, N)
 𝛒 = zeros(N^2);
 A = DiscreteLaplacian(N);
 
-𝛟 = solve!(logger, A, 𝛒, 𝛟₀; maxiter=step_cg)
+𝛟 = solve!(logger, A, 𝛒, 𝛟₀; maxiter=maxiter)
 regionheatmap(myreshape(𝛟₀))
 savefig("tex/plots/phi0_heatmap.pdf")
 regionheatmap(myreshape(𝛒))
