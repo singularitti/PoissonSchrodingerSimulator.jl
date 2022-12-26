@@ -23,22 +23,23 @@ Thinking of the left-hand side of Equation~\eqref{eq:sch}
 as a matrix operation, the \(q \phi \psi\) term is an additional diagonal element of the
 matrix. You need to multiply \(q \phi\) and \(\psi\) at the same point for all points.
 
-You may find the eigenvalues and eigenvectors of the tridiagonal Lanczos matrix, \(T_k\),
+You may find the eigenvalues and eigenvectors of the tridiagonal Lanczos matrix, \(\mathrm{T}_k\),
 which is generated from \(k - 1\) steps of the Lanczos recursion. Denote the smallest
-eigenvalue of \(T_k\) by \(e_0\) and let \(w\) be the associated eigenvector, where \(w\) is
-a vector of length \(k\).
+eigenvalue of \(\mathrm{T}_k\) by \(E_0\) and let \(\bm{w}\) be the associated eigenvector, 
+where \(\bm{w}\) is a vector of length \(k\).
 
 Since the Lanczos is unstable if the iteration continues for too long, you should run it for
 a small number of steps (\(30\) is a good place to start), compute the approximate lowest
-eigenvalue and eigenvector of \(T_k\) and restart the Lanczos again. When you restart the
+eigenvalue and eigenvector of \(\mathrm{T}_k\) and restart the Lanczos again. When you restart the
 Lanczos, use the current best approximation to the desired eigenvector of the full system,
 which is
 %
-\begin{equation}
-    \sum_i w_i v_{i, n}, \quad n = 1, \ldots, N,
+\begin{equation}\label{eq:restart}
+    v'_n = \sum_i v_{n,i} w_i, \quad n = 1, \ldots, N,
 \end{equation}
 %
-where \(N\) is the size of the vectors for the full problem and \(v_{i, n}\) is the \(i\)th
+where \(N\) is the size of the vectors for the full problem and \(v_{n, i}\) is the
+\(n\)th element of the \(i\)th
 Lanczos vector. Check the accuracy of your lowest eigenvalue by applying the Laplacian plus
 potential energy to the eigenvector to see if the result is the eigenvector scaled by the
 eigenvalue. You will have to restart the Lanczos \(30 - 40\) times to get single precision
@@ -48,3 +49,4 @@ accuracy in the lowest eigenvalue.
 probability that the particle is in the region \(y < 0.5\). Remember, the probability is
 determined by the sum over \(y < 0.5\) of the wave function's norm squared. Make a 3D plot
 of the probability, i.e., \(\abs{\psi(x, y)}^2\).
+\newline
