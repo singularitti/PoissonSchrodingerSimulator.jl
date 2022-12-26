@@ -1,15 +1,25 @@
 \Answer{}
 Since we already have the electrostatic field \(\bm{\phi}\) from Problem~\ref{sec:pe},
 we now need to add it to the differential operator (the discrete Laplacian).
-It is a \(N \times 1\) vector, which can fit into the diagonal of the
-\(N^2 \times N^2\) Laplacian matrix.
+Equation~\eqref{eq:del2phi} is now rewritten as
+%
+\begin{multline}\label{eq:del2psi}
+    \bigl(-\nabla^2 + q \phi\bigr) \psi(x, y) =
+    \frac{ 1 }{ a^2 } \bigl(\psi(x - a, y) - 2 \psi(x, y) + \psi(x + a, y)\bigr) +\\
+    \frac{ 1 }{ a^2 } \bigl(\psi(x, y - a) - 2 \psi(x, y) + \psi(x, y + a)\bigr) +
+    q \phi(x, y) \psi(x, y).
+\end{multline}
+%
+As stated in Problem~\ref{sec:pe},
+$\phi(x, y)$ can be reshaped as an \(N^2 \times 1\) vector,
+which can fit into the diagonal of the \(N^2 \times N^2\) Laplacian matrix.
 
 Since the Hamiltonian is a Hermitian matrix, we could use the Lanczos algorithm to
 solve its eigenvalues and eigenvectors.
 The input of our algorithm is the symmetric matrix
 %
 \begin{equation}\label{eq:hamiltonian}
-    H = -\nabla^2 + q \phi
+    \hat{H} = -\nabla^2 + q \phi
 \end{equation}
 %
 where \(\phi\) is the reshaped matrix from the electrostatic potential \(\bm{\phi}\).
@@ -18,8 +28,7 @@ We also need a small number ($k$) of iterations (\(30\) here).
 The procedure is as follows:
 %
 \begin{enumerate}
-                       Euclidean norm $1$.
-    \item\label{it:v1} Let $\bm{v}_1 \in \mathbb{ R }^n$ be an arbitrary vector with
+    \item\label{it:v1} Let $\bm{v}_1 \in \mathbb{ R }^n$ be an arbitrary vector with Euclidean norm $1$.
     \item Let $\bm{w}'_1 = \mathrm{A} \bm{v}_1$, and
           $\alpha_1 = \bm{w}^{\prime\intercal}_1 \cdot \bm{v}_1 = \bm{v}_1^\intercal \mathrm{A} \bm{v}_1$,
           and $\bm{w}_1 = \bm{w}'_1 - \alpha_1 \bm{v}_1$.
@@ -187,14 +196,14 @@ What is more important is the probability implied by the wave function.
 The probability of the charged particle appearing at position $x$ is defined by
 %
 \begin{equation}
-    P(x) = | \psi(x) |^2 = \psi^\ast(x) \psi(x).
+    P(x) = \abs{\psi(x)}^2 = \psi^\ast(x) \psi(x).
 \end{equation}
 %
 And the probability that its position $x$ will be in the interval $a \leq x \leq b$ is the
 integral of the density over this interval:
 %
 \begin{equation}\label{eq:Prange}
-    P(a \leq x \leq b) = \int_{a}^{b} | \psi(x) |^2 \, \mathrm{d}x.
+    P(a \leq x \leq b) = \int_{a}^{b} \abs{\psi(x)}^2 \, \mathrm{d}x.
 \end{equation}
 %
 We will use this equation later.
