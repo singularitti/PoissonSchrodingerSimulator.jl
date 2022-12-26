@@ -18,8 +18,8 @@ We also need a small number ($k$) of iterations (\(30\) here).
 The procedure is as follows:
 %
 \begin{enumerate}
-    \item\label{it:v1} Let $\bm{v}_1 \in \mathbb{ C }^n$ be an arbitrary vector with
                        Euclidean norm $1$.
+    \item\label{it:v1} Let $\bm{v}_1 \in \mathbb{ R }^n$ be an arbitrary vector with
     \item Let $\bm{w}'_1 = \mathrm{A} \bm{v}_1$, and
           $\alpha_1 = \bm{w}^{\prime\intercal}_1 \cdot \bm{v}_1 = \bm{v}_1^\intercal \mathrm{A} \bm{v}_1$,
           and $\bm{w}_1 = \bm{w}'_1 - \alpha_1 \bm{v}_1$.
@@ -202,6 +202,20 @@ We will use this equation later.
 We plot the probability of the charged particle appearing at any position
 as a heatmap and a surface plot in Figure~\ref{fig:P_heatmap} and Figure~\ref{fig:P_surface},
 respectively.
+Clearly, they show that the charged particle is not possible to be present in the
+internal square and on the boundary.
+They also indicate that the particle is more likely to be found near the negative
+point charge located at \((0.25L, 0.125L)\). Because there is a positive potential
+$\phi = 5$ near the negative charge at \((0.75L, 0.125L)\), where the former partially
+screens the latter's attraction force and drives the positive-charged particle away.
+We can prove this by testing the possibility of the particle appearing in the
+range where $y < 0.5L$ using Equation~\eqref{eq:Prange}, the result is
+%
+\begin{equation}
+    P(x, y < 0.5L) \approx 0.966264.
+\end{equation}
+%
+Therefore, the particle dominantly will be found in the area where $y < 0.5L$.
 
 \begin{figure}[!hbt]
     \centering
@@ -219,19 +233,3 @@ respectively.
         (at the peak).}
     \label{fig:P_surface}
 \end{figure}
-
-Clearly, they show that the charged particle is not possible to be present in the
-internal square and on the boundary.
-They also indicate that the particle is more likely to be found near the negative
-point charge located at \((0.25L, 0.125L)\). Because there is a positive potential
-$\phi = 5$ near the negative charge at \((0.75L, 0.125L)\), where the former partially
-screens the latter's attraction force and drives the positive-charged particle away.
-
-We can prove this by testing the possibility of the particle appearing in the
-range where $y < 0.5$ using Equation~\eqref{eq:Prange}, the result is
-%
-\begin{equation}
-    P(x, y < 0.5) \approx 0.966264.
-\end{equation}
-%
-Therefore, the particle dominantly will be found in the area where $y < 0.5$.
