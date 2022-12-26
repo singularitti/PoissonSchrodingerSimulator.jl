@@ -62,7 +62,7 @@ struct EachStep
     history::Logger
 end
 
-eachstep(ch::Logger) = EachStep(ch)
+eachstep(logger::Logger) = EachStep(logger)
 
 Base.iterate(iter::EachStep) = iterate(iter.history.data)
 Base.iterate(iter::EachStep, state) = iterate(iter.history.data, state)
