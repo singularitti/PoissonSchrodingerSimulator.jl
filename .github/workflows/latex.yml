@@ -32,5 +32,5 @@ jobs:
       - name: Upload pdf
         uses: actions/upload-artifact@v3
         with:
-          name: default
+          name: PDF artifact
           path: tex/build/default/default.pdf
