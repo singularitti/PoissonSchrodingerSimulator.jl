@@ -93,7 +93,7 @@ version = "1.0.18"
 
 [[deps.LastHomework]]
 deps = ["LinearAlgebra", "OffsetArrays", "ProgressMeter", "RecipesBase", "SparseArrays"]
-git-tree-sha1 = "bff223f08cd05da1f78349f08f3106e7a1195c3e"
+git-tree-sha1 = "2e9b02155a023b22663536248fd2460785579b17"
 repo-rev = "main"
 repo-url = "https://github.com/singularitti/LastHomework.jl"
 uuid = "7c33b4bb-5f88-4700-8477-0120191a56c3"
