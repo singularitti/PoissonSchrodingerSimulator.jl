@@ -9,6 +9,12 @@ jobs:
         working-directory: tex
 
     steps:
+      - name: Install JuliaMono # See https://jasonraimondi.com/posts/install-google-fonts-in-github-workflow/
+        run: |
+          wget -O JuliaMono-ttf.zip https://github.com/cormullion/juliamono/releases/latest/download/JuliaMono-ttf.zip
+          unzip -d JuliaMono-ttf/ JuliaMono-ttf.zip
+          mv JuliaMono-ttf /usr/share/fonts/
+          fc-cache -fv
       - name: Checkout
         uses: actions/checkout@v3
       - uses: actions/cache@v3
