@@ -9,12 +9,6 @@ jobs:
         working-directory: tex
 
     steps:
-      - name: Install JuliaMono # See https://jasonraimondi.com/posts/install-google-fonts-in-github-workflow/
-        run: |
-          wget -O JuliaMono-ttf.zip https://github.com/cormullion/juliamono/releases/latest/download/JuliaMono-ttf.zip
-          unzip -d JuliaMono-ttf/ JuliaMono-ttf.zip
-          mv JuliaMono-ttf /usr/share/fonts/
-          fc-cache -fv
       - name: Checkout
         uses: actions/checkout@v3
       - uses: actions/cache@v3
@@ -27,10 +21,16 @@ jobs:
       - uses: wtfjoke/setup-tectonic@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install JuliaMono # See https://jasonraimondi.com/posts/install-google-fonts-in-github-workflow/
+        run: |
+          wget -O JuliaMono-ttf.zip https://github.com/cormullion/juliamono/releases/latest/download/JuliaMono-ttf.zip
+          unzip -d JuliaMono-ttf/ JuliaMono-ttf.zip
+          mv JuliaMono-ttf /usr/share/fonts/
+          fc-cache -fv
       - name: Run Tectonic
         run: tectonic -X build
       - name: Upload pdf
         uses: actions/upload-artifact@v3
         with:
-          name: main
-          path: main.pdf
+          name: default
+          path: default.pdf
