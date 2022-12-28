@@ -20,11 +20,10 @@ mutable struct EmptyLogger <: AbstractLogger
 end
 EmptyLogger() = EmptyLogger(false)
 mutable struct Logger <: AbstractLogger
-    maxiter::UInt64
     isconverged::Bool
     data::OffsetVector{Step}
 end
-Logger(maxiter) = Logger(maxiter, false, OffsetVector([], Origin(0)))
+Logger() = Logger(false, OffsetVector([], Origin(0)))
 
 function solve!(logger, A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxiter=2000)
     𝐱ₙ = 𝐱₀
