@@ -1,4 +1,4 @@
-using LinearAlgebra: norm, dot
+using LinearAlgebra: norm, ⋅
 using RecipesBase: @userplot, @recipe, @series
 
 export regionheatmap, residualplot, surfaceplot, conjugacyplot
@@ -98,9 +98,15 @@ end
 @userplot ConjugacyPlot
 @recipe function f(plot::ConjugacyPlot)
     A, history = plot.args
-    conjmatrix = parent([
-        dot(stepᵢ.p, A, stepⱼ.p) for stepᵢ in history.data, stepⱼ in history.data
-    ])  # See https://stackoverflow.com/a/48425828
+    nsteps = length(plot.args) == 3 ? plot.args[end] : length(history.data)
+    data = history.data[begin:nsteps]
+    conjmatrix = Matrix{Float64}(undef, length(data), length(data))
+    for (j, stepⱼ) in enumerate(data)
+        A𝐩ⱼ = A * stepⱼ.p
+        for (i, stepᵢ) in enumerate(data)
+            conjmatrix[i, j] = stepᵢ.p ⋅ A𝐩ⱼ
+        end
+    end
     size --> (800, 800)
     seriestype --> :heatmap
     yflip --> true  # Set the origin to the upper left corner, see https://github.com/MakieOrg/Makie.jl/issues/46
