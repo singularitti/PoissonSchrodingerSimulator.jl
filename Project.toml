@@ -15,6 +15,7 @@ ToggleableAsserts = "07ecc579-1b30-493c-b961-3180daf6e3ae"
 OffsetArrays = "1"
 ProgressMeter = "1"
 RecipesBase = "1"
+ToggleableAsserts = "0.1"
 julia = "1"
 
 [extras]
