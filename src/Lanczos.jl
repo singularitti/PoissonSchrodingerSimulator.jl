@@ -20,7 +20,7 @@ function lanczos(A::AbstractMatrix, 𝐯₁=rand(size(A, 1)); maxiter=30)
         𝐰ₙ₋₁ = 𝐰ₙ
         𝛃[n] = norm(𝐰ₙ₋₁)
         if iszero(𝛃[n])
-            error("")
+            gram_schmidt(V)
         else
             𝐯ₙ = 𝐰ₙ₋₁ / 𝛃[n]
             V[:, n] = 𝐯ₙ
@@ -53,5 +53,7 @@ function loop_lanczos(A::AbstractMatrix, n, 𝐯₁=rand(size(A, 1)); maxiter=30
     end
     return 𝐯₁
 end
+
+function gram_schmidt end
 
 end
