@@ -1,14 +1,16 @@
 using LinearAlgebra: Symmetric, issymmetric, det
 using SparseArrays: AbstractSparseMatrix, SparseMatrixCSC, spdiagm
 
+using ToggleableAsserts: @toggled_assert
+
 export DiscreteLaplacian
 
 struct DiscreteLaplacian <: AbstractSparseMatrix{Int64,Int64}
     parent::SparseMatrixCSC{Int64,Int64}
     function DiscreteLaplacian(parent::AbstractMatrix)
-        @assert issymmetric(parent)
-        @assert all(iszero(sum(parent; dims=2)))
-        @assert all(
+        @toggled_assert issymmetric(parent)
+        @toggled_assert all(iszero(sum(parent; dims=2)))
+        @toggled_assert all(
             det(leading_principal_minor(parent, k)) > zero(eltype(parent)) for
             k in axes(parent, 1)[begin:(end - 1)]
         )
