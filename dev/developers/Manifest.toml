@@ -92,8 +92,8 @@ uuid = "98e50ef6-434e-11e9-1051-2b60c6c9e899"
 version = "1.0.18"
 
 [[deps.LastHomework]]
-deps = ["LinearAlgebra", "OffsetArrays", "ProgressMeter", "RecipesBase", "SparseArrays"]
-git-tree-sha1 = "1acb2a076d9c0fae9de7f4b73d8fc99acae8d298"
+deps = ["LinearAlgebra", "OffsetArrays", "ProgressMeter", "RecipesBase", "SparseArrays", "ToggleableAsserts"]
+git-tree-sha1 = "c29e6be07ce284a0ffcf09aca8a875bde1496b54"
 repo-rev = "main"
 repo-url = "https://github.com/singularitti/LastHomework.jl"
 uuid = "7c33b4bb-5f88-4700-8477-0120191a56c3"
@@ -227,6 +227,11 @@ version = "1.0.0"
 deps = ["ArgTools", "SHA"]
 uuid = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
 version = "1.10.1"
+
+[[deps.ToggleableAsserts]]
+git-tree-sha1 = "7e70bd2062df35258220ec30f454be1056efb431"
+uuid = "07ecc579-1b30-493c-b961-3180daf6e3ae"
+version = "0.1.0"
 
 [[deps.Tokenize]]
 git-tree-sha1 = "90538bf898832b6ebd900fa40f223e695970e3a5"
