@@ -35,10 +35,10 @@ function solve!(logger, A, 𝐛, 𝐱₀=zeros(length(𝐛)); atol=eps(), maxite
             break
         end
         A𝐩ₙ = A * 𝐩ₙ  # Avoid duplicated computation
-        αₙ = 𝐫ₙ ⋅ 𝐫ₙ / 𝐩ₙ ⋅ A𝐩ₙ  # `⋅` means dot product between two vectors
+        αₙ = 𝐫ₙ ⋅ 𝐫ₙ / (𝐩ₙ ⋅ A𝐩ₙ)  # `⋅` means dot product between two vectors
         𝐱ₙ₊₁ = 𝐱ₙ + αₙ * 𝐩ₙ
         𝐫ₙ₊₁ = 𝐫ₙ - αₙ * A𝐩ₙ
-        βₙ = 𝐫ₙ₊₁ ⋅ 𝐫ₙ₊₁ / 𝐫ₙ ⋅ 𝐫ₙ
+        βₙ = 𝐫ₙ₊₁ ⋅ 𝐫ₙ₊₁ / (𝐫ₙ ⋅ 𝐫ₙ)
         𝐩ₙ₊₁ = 𝐫ₙ₊₁ + βₙ * 𝐩ₙ
         log!(logger, Step(n, αₙ, βₙ, 𝐱ₙ, 𝐫ₙ, 𝐩ₙ))
         𝐱ₙ, 𝐫ₙ, 𝐩ₙ = 𝐱ₙ₊₁, 𝐫ₙ₊₁, 𝐩ₙ₊₁  # Prepare for a new iteration

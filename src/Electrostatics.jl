@@ -37,13 +37,13 @@ function solve!(
         setvalues!(𝐩ₙ, BOUNDARY)
         setvalues!(𝐩ₙ, SQUARE_RESIDUAL)  # Set 𝐩ₙ and 𝐫₀ to zero in the square
         A𝐩ₙ = A * 𝐩ₙ  # Avoid running it multiple times
-        αₙ = 𝐫ₙ ⋅ 𝐫ₙ / 𝐩ₙ ⋅ A𝐩ₙ  # `⋅` means dot product between two vectors
+        αₙ = 𝐫ₙ ⋅ 𝐫ₙ / (𝐩ₙ ⋅ A𝐩ₙ)  # `⋅` means dot product between two vectors
         𝐱ₙ₊₁ = 𝐱ₙ + αₙ * 𝐩ₙ
         αₙA𝐩ₙ = αₙ * A𝐩ₙ
         setvalues!(αₙA𝐩ₙ, BOUNDARY)
         setvalues!(αₙA𝐩ₙ, SQUARE_RESIDUAL)  # Set αₙA𝐩ₙ to 0 in the square
         𝐫ₙ₊₁ = 𝐫ₙ - αₙA𝐩ₙ
-        βₙ = 𝐫ₙ₊₁ ⋅ 𝐫ₙ₊₁ / 𝐫ₙ ⋅ 𝐫ₙ
+        βₙ = 𝐫ₙ₊₁ ⋅ 𝐫ₙ₊₁ / (𝐫ₙ ⋅ 𝐫ₙ)
         𝐩ₙ₊₁ = 𝐫ₙ₊₁ + βₙ * 𝐩ₙ
         log!(logger, Step(n, αₙ, βₙ, 𝐱ₙ, 𝐫ₙ, 𝐩ₙ))
         𝐱ₙ, 𝐫ₙ, 𝐩ₙ = 𝐱ₙ₊₁, 𝐫ₙ₊₁, 𝐩ₙ₊₁  # Prepare for a new iteration
