@@ -4,7 +4,7 @@ using LinearAlgebra: SymTridiagonal, norm, normalize, eigen, ⋅
 using OffsetArrays: OffsetVector, Origin
 using ProgressMeter: @showprogress
 
-export lanczos, restart_lanczos, loop_lanczos
+export lanczos, restart_vector, redo_lanczos
 
 function lanczos(A::AbstractMatrix, 𝐯₁=rand(size(A, 1)); maxiter=30)
     𝛂 = Vector{Float64}(undef, maxiter)
@@ -36,7 +36,7 @@ end
 
 recover_eigvec(V, 𝐰) = normalize(V * 𝐰)
 
-function restart_lanczos(T, V)
+function restart_vector(T, V)
     vals, vecs = eigen(T)
     index = if all(vals .> 0)
         argmin(vals)  # Index of the smallest eigenvalue
@@ -47,10 +47,10 @@ function restart_lanczos(T, V)
     return recover_eigvec(V, 𝐰)
 end
 
-function loop_lanczos(A::AbstractMatrix, n, 𝐯₁=rand(size(A, 1)); maxiter=30)
+function redo_lanczos(A::AbstractMatrix, n, 𝐯₁=rand(size(A, 1)); maxiter=30)
     @showprogress for _ in 1:n
         T, V = lanczos(A, 𝐯₁; maxiter=maxiter)
-        𝐯₁ = restart_lanczos(T, V)
+        𝐯₁ = restart_vector(T, V)
     end
     return 𝐯₁
 end
