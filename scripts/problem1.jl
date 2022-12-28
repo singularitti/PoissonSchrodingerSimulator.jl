@@ -1,4 +1,7 @@
 using Plots
+using ToggleableAsserts
+
+ToggleableAsserts.toggle(false)
 
 using LastHomework
 using LastHomework.ConjugateGradient
