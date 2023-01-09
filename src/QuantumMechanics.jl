@@ -64,8 +64,8 @@ function lanczos(A::Hamiltonian, 𝐯₁=rand(size(A, 1)); maxiter=30)
 end
 
 probability(𝛙::AbstractVector) = abs2.(normalize(𝛙))
-function probability(𝛙::AbstractMatrix, xrange=1:size(𝛙, 1), yrange=1:size(𝛙, 2))
-    𝛙′ = normalize(𝛙)
+function probability(ψ::AbstractMatrix, xrange=1:size(ψ, 1), yrange=1:size(ψ, 2))
+    𝛙′ = normalize(ψ)
     return sum(abs2.(𝛙′[yrange, xrange]))  # Note the x and y order!
 end
 
