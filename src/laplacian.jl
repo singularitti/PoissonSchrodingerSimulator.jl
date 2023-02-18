@@ -25,8 +25,6 @@ function DiscreteLaplacian(N::Integer)
     return DiscreteLaplacian(Symmetric(A))
 end
 
-leading_principal_minor(A::AbstractMatrix, k) = A[begin:k, begin:k]
-
 Base.parent(S::DiscreteLaplacian) = S.parent
 
 Base.size(S::DiscreteLaplacian) = size(parent(S))
