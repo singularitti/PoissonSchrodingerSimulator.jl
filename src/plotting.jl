@@ -83,7 +83,8 @@ end
     ylims --> extrema(residuals)
     yscale --> :log10
     xguide --> raw"iteration step ($i$)"
-    yguide --> raw"residual $\Vert \mathbf{b} - \mathrm{A} \mathbf{x} \Vert$ (logarithmic scale)"
+    yguide -->
+    raw"residual $\Vert \mathbf{b} - \mathrm{A} \mathbf{x} \Vert$ (logarithmic scale)"
     guidefontsize --> 10
     tickfontsize --> 8
     legend --> :none
