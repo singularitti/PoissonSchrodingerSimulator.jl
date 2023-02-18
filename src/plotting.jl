@@ -1,8 +1,6 @@
 using LinearAlgebra: norm, ⋅
 using RecipesBase: @userplot, @recipe, @series
 
-export regionheatmap, residualplot, surfaceplot, conjugacyplot
-
 @recipe function f(laplacian::DiscreteLaplacian)
     size --> (800, 800)
     seriestype --> :heatmap
