@@ -24,6 +24,7 @@ function DiscreteLaplacian(N::Integer)
     )  # An upper triangular matrix
     return DiscreteLaplacian(Symmetric(A))
 end
+DiscreteLaplacian(::UndefInitializer, dims) = DiscreteLaplacian(Matrix{Int64}(undef, dims))
 
 Base.parent(S::DiscreteLaplacian) = S.parent
 
