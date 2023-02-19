@@ -35,3 +35,10 @@ Base.IndexStyle(::Type{DiscreteLaplacian}) = IndexLinear()
 Base.getindex(S::DiscreteLaplacian, i) = getindex(parent(S), i)
 
 Base.setindex!(S::DiscreteLaplacian, v, i) = setindex!(parent(S), v, i)
+
+Base.BroadcastStyle(::Type{DiscreteLaplacian}) = Broadcast.ArrayStyle{DiscreteLaplacian}()
+
+Base.similar(bc::Broadcast.Broadcasted{Broadcast.ArrayStyle{DiscreteLaplacian}}, ::Type) =
+    similar(DiscreteLaplacian, axes(bc))
+Base.similar(::DiscreteLaplacian, ::Type{S}, dims::Dims) where {S} =
+    DiscreteLaplacian(Matrix{S}(undef, dims))
