@@ -1,29 +1,29 @@
-# LastHomework
+# Lanczos
 
 |                                 **Documentation**                                  |                                                                                                 **Build Status**                                                                                                 |                                        **Others**                                         |
 | :--------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |
 | [![Stable][docs-stable-img]][docs-stable-url] [![Dev][docs-dev-img]][docs-dev-url] | [![Build Status][gha-img]][gha-url] [![Build Status][appveyor-img]][appveyor-url] [![Build Status][cirrus-img]][cirrus-url] [![pipeline status][gitlab-img]][gitlab-url] [![Coverage][codecov-img]][codecov-url] | [![GitHub license][license-img]][license-url] [![Code Style: Blue][style-img]][style-url] |
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
-[docs-stable-url]: https://singularitti.github.io/LastHomework.jl/stable
+[docs-stable-url]: https://singularitti.github.io/Lanczos.jl/stable
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
-[docs-dev-url]: https://singularitti.github.io/LastHomework.jl/dev
-[gha-img]: https://github.com/singularitti/LastHomework.jl/workflows/CI/badge.svg
-[gha-url]: https://github.com/singularitti/LastHomework.jl/actions
-[appveyor-img]: https://ci.appveyor.com/api/projects/status/github/singularitti/LastHomework.jl?svg=true
-[appveyor-url]: https://ci.appveyor.com/project/singularitti/LastHomework-jl
-[cirrus-img]: https://api.cirrus-ci.com/github/singularitti/LastHomework.jl.svg
-[cirrus-url]: https://cirrus-ci.com/github/singularitti/LastHomework.jl
-[gitlab-img]: https://gitlab.com/singularitti/LastHomework.jl/badges/main/pipeline.svg
-[gitlab-url]: https://gitlab.com/singularitti/LastHomework.jl/-/pipelines
-[codecov-img]: https://codecov.io/gh/singularitti/LastHomework.jl/branch/main/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/singularitti/LastHomework.jl
-[license-img]: https://img.shields.io/github/license/singularitti/LastHomework.jl
-[license-url]: https://github.com/singularitti/LastHomework.jl/blob/main/LICENSE
+[docs-dev-url]: https://singularitti.github.io/Lanczos.jl/dev
+[gha-img]: https://github.com/singularitti/Lanczos.jl/workflows/CI/badge.svg
+[gha-url]: https://github.com/singularitti/Lanczos.jl/actions
+[appveyor-img]: https://ci.appveyor.com/api/projects/status/github/singularitti/Lanczos.jl?svg=true
+[appveyor-url]: https://ci.appveyor.com/project/singularitti/Lanczos-jl
+[cirrus-img]: https://api.cirrus-ci.com/github/singularitti/Lanczos.jl.svg
+[cirrus-url]: https://cirrus-ci.com/github/singularitti/Lanczos.jl
+[gitlab-img]: https://gitlab.com/singularitti/Lanczos.jl/badges/main/pipeline.svg
+[gitlab-url]: https://gitlab.com/singularitti/Lanczos.jl/-/pipelines
+[codecov-img]: https://codecov.io/gh/singularitti/Lanczos.jl/branch/main/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/singularitti/Lanczos.jl
+[license-img]: https://img.shields.io/github/license/singularitti/Lanczos.jl
+[license-url]: https://github.com/singularitti/Lanczos.jl/blob/main/LICENSE
 [style-img]: https://img.shields.io/badge/code%20style-blue-4495d1.svg
 [style-url]: https://github.com/invenia/BlueStyle
 
-The code is [hosted on GitHub](https://github.com/singularitti/LastHomework.jl),
+The code is [hosted on GitHub](https://github.com/singularitti/Lanczos.jl),
 with some continuous integration services to test its validity.
 
 This repository is created and maintained by [@singularitti](https://github.com/singularitti).
@@ -35,13 +35,13 @@ The package can be installed with the Julia package manager.
 From the Julia REPL, type `]` to enter the Pkg REPL mode and run:
 
 ```
-pkg> add LastHomework
+pkg> add Lanczos
 ```
 
 Or, equivalently, via the [`Pkg` API](https://pkgdocs.julialang.org/v1/getting-started/):
 
 ```julia
-julia> import Pkg; Pkg.add("LastHomework")
+julia> import Pkg; Pkg.add("Lanczos")
 ```
 
 ## Documentation
@@ -62,5 +62,5 @@ Contributions are very welcome, as are feature requests and suggestions. Please 
 [issue][issues-url] if you encounter any problems. The [contributing](@ref) page has
 a few guidelines that should be followed when opening pull requests and contributing code.
 
-[discussions-url]: https://github.com/singularitti/LastHomework.jl/discussions
-[issues-url]: https://github.com/singularitti/LastHomework.jl/issues
+[discussions-url]: https://github.com/singularitti/Lanczos.jl/discussions
+[issues-url]: https://github.com/singularitti/Lanczos.jl/issues
