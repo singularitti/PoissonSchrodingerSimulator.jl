@@ -1,63 +1,69 @@
 ```@meta
-CurrentModule = LastHomework
+CurrentModule = Lanczos
 ```
 
-# LastHomework
+# Lanczos
 
-Documentation for [`LastHomework`](https://github.com/singularitti/LastHomework.jl).
+Documentation for [Lanczos](https://github.com/singularitti/Lanczos.jl).
 
 See the [Index](@ref main-index) for the complete list of documented functions
 and types.
 
-The code is [hosted on GitHub](https://github.com/singularitti/LastHomework.jl),
-with some continuous integration services to test its validity.
+The code, which is [hosted on GitHub](https://github.com/singularitti/Lanczos.jl), is tested
+using various continuous integration services for its validity.
 
-This repository is created and maintained by [@singularitti](https://github.com/singularitti).
-You are very welcome to contribute.
+This repository is created and maintained by
+[@singularitti](https://github.com/singularitti), and contributions are highly welcome.
+
+## Package features
+
+
 
 ## Installation
 
 The package can be installed with the Julia package manager.
-From the Julia REPL, type `]` to enter the Pkg REPL mode and run:
+From [the Julia REPL](https://docs.julialang.org/en/v1/stdlib/REPL/), type `]` to enter
+the [Pkg mode](https://docs.julialang.org/en/v1/stdlib/REPL/#Pkg-mode) and run:
 
-```julia
-pkg> add LastHomework
+```julia-repl
+pkg> add Lanczos
 ```
 
-Or, equivalently, via the `Pkg` API:
+Or, equivalently, via [`Pkg.jl`](https://pkgdocs.julialang.org/v1/):
 
 ```@repl
-import Pkg; Pkg.add("LastHomework")
+import Pkg; Pkg.add("Lanczos")
 ```
 
 ## Documentation
 
-- [**STABLE**](https://singularitti.github.io/LastHomework.jl/stable) — **documentation of the most recently tagged version.**
-- [**DEV**](https://singularitti.github.io/LastHomework.jl/dev) — _documentation of the in-development version._
+- [**STABLE**](https://singularitti.github.io/Lanczos.jl/stable) — **documentation of the most recently tagged version.**
+- [**DEV**](https://singularitti.github.io/Lanczos.jl/dev) — _documentation of the in-development version._
 
 ## Project status
 
-The package is tested against, and being developed for, Julia `1.6` and above on Linux,
-macOS, and Windows.
+The package is developed for and tested against Julia `v1.6` and above on Linux, macOS, and
+Windows.
 
 ## Questions and contributions
 
-Usage questions can be posted on
-[our discussion page](https://github.com/singularitti/LastHomework.jl/discussions).
+You can post usage questions on
+[our discussion page](https://github.com/singularitti/Lanczos.jl/discussions).
 
-Contributions are very welcome, as are feature requests and suggestions. Please open an
-[issue](https://github.com/singularitti/LastHomework.jl/issues)
-if you encounter any problems. The [contributing](@ref) page has
+We welcome contributions, feature requests, and suggestions. If you encounter any problems,
+please open an [issue](https://github.com/singularitti/Lanczos.jl/issues).
+The [Contributing](@ref) page has
 a few guidelines that should be followed when opening pull requests and contributing code.
 
 ## Manual outline
 
 ```@contents
 Pages = [
-    "installation.md",
+    "man/installation.md",
+    "man/troubleshooting.md",
     "developers/contributing.md",
-    "developers/style.md",
-    "troubleshooting.md",
+    "developers/style-guide.md",
+    "developers/design-principles.md",
 ]
 Depth = 3
 ```
@@ -65,11 +71,11 @@ Depth = 3
 ## Library outline
 
 ```@contents
-Pages = ["public.md"]
+Pages = ["lib/public.md", "lib/internals.md"]
 ```
 
 ### [Index](@id main-index)
 
 ```@index
-Pages = ["public.md"]
+Pages = ["lib/public.md"]
 ```

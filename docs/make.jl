@@ -1,16 +1,14 @@
-using LastHomework
+using Lanczos
 using Documenter
 
-DocMeta.setdocmeta!(LastHomework, :DocTestSetup, :(using LastHomework); recursive=true)
+DocMeta.setdocmeta!(Lanczos, :DocTestSetup, :(using Lanczos); recursive=true)
 
 makedocs(;
-    modules=[LastHomework],
+    modules=[Lanczos],
     authors="singularitti <singularitti@outlook.com> and contributors",
-    repo="https://github.com/singularitti/LastHomework.jl/blob/{commit}{path}#{line}",
-    sitename="LastHomework.jl",
+    sitename="Lanczos.jl",
     format=Documenter.HTML(;
-        prettyurls=get(ENV, "CI", "false") == "true",
-        canonical="https://singularitti.github.io/LastHomework.jl",
+        canonical="https://singularitti.github.io/Lanczos.jl",
         edit_link="main",
         assets=String[],
     ),
@@ -20,6 +18,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/singularitti/LastHomework.jl",
+    repo="github.com/singularitti/Lanczos.jl",
     devbranch="main",
 )
