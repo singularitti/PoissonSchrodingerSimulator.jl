@@ -7,11 +7,11 @@ Depth = 2
 
 This page collects some possible errors you may encounter along with tips on how to fix them.
 If you have some questions about how to use this code, you are welcome to
-[discuss with us](https://github.com/singularitti/Lanczos.jl/discussions).
+[discuss with us](https://github.com/singularitti/PoissonSchrodingerSimulator.jl/discussions).
 
 If you have additional tips, please either
-[report an issue](https://github.com/singularitti/Lanczos.jl/issues/new) or
-[submit a pull request](https://github.com/singularitti/Lanczos.jl/compare) with suggestions.
+[report an issue](https://github.com/singularitti/PoissonSchrodingerSimulator.jl/issues/new) or
+[submit a pull request](https://github.com/singularitti/PoissonSchrodingerSimulator.jl/compare) with suggestions.
 
 ## Cannot find the Julia executable
 

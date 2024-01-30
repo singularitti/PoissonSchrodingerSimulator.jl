@@ -1,15 +1,15 @@
 ```@meta
-CurrentModule = Lanczos
+CurrentModule = PoissonSchrodingerSimulator
 ```
 
-# Lanczos
+# PoissonSchrodingerSimulator
 
-Documentation for [Lanczos](https://github.com/singularitti/Lanczos.jl).
+Documentation for [PoissonSchrodingerSimulator](https://github.com/singularitti/PoissonSchrodingerSimulator.jl).
 
 See the [Index](@ref main-index) for the complete list of documented functions
 and types.
 
-The code, which is [hosted on GitHub](https://github.com/singularitti/Lanczos.jl), is tested
+The code, which is [hosted on GitHub](https://github.com/singularitti/PoissonSchrodingerSimulator.jl), is tested
 using various continuous integration services for its validity.
 
 This repository is created and maintained by
@@ -26,19 +26,19 @@ From [the Julia REPL](https://docs.julialang.org/en/v1/stdlib/REPL/), type `]` t
 the [Pkg mode](https://docs.julialang.org/en/v1/stdlib/REPL/#Pkg-mode) and run:
 
 ```julia-repl
-pkg> add Lanczos
+pkg> add PoissonSchrodingerSimulator
 ```
 
 Or, equivalently, via [`Pkg.jl`](https://pkgdocs.julialang.org/v1/):
 
 ```@repl
-import Pkg; Pkg.add("Lanczos")
+import Pkg; Pkg.add("PoissonSchrodingerSimulator")
 ```
 
 ## Documentation
 
-- [**STABLE**](https://singularitti.github.io/Lanczos.jl/stable) — **documentation of the most recently tagged version.**
-- [**DEV**](https://singularitti.github.io/Lanczos.jl/dev) — _documentation of the in-development version._
+- [**STABLE**](https://singularitti.github.io/PoissonSchrodingerSimulator.jl/stable) — **documentation of the most recently tagged version.**
+- [**DEV**](https://singularitti.github.io/PoissonSchrodingerSimulator.jl/dev) — _documentation of the in-development version._
 
 ## Project status
 
@@ -48,10 +48,10 @@ Windows.
 ## Questions and contributions
 
 You can post usage questions on
-[our discussion page](https://github.com/singularitti/Lanczos.jl/discussions).
+[our discussion page](https://github.com/singularitti/PoissonSchrodingerSimulator.jl/discussions).
 
 We welcome contributions, feature requests, and suggestions. If you encounter any problems,
-please open an [issue](https://github.com/singularitti/Lanczos.jl/issues).
+please open an [issue](https://github.com/singularitti/PoissonSchrodingerSimulator.jl/issues).
 The [Contributing](@ref) page has
 a few guidelines that should be followed when opening pull requests and contributing code.
 

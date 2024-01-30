@@ -6,7 +6,7 @@ Depth = 2
 ```
 
 Here are the installation instructions for package
-[Lanczos](https://github.com/singularitti/Lanczos.jl).
+[PoissonSchrodingerSimulator](https://github.com/singularitti/PoissonSchrodingerSimulator.jl).
 If you have trouble installing it, please refer to our [Troubleshooting](@ref) page
 for more information.
 
@@ -101,13 +101,13 @@ Now I am using macOS as a standard platform to explain the following steps:
 
    julia> Pkg.update()
 
-   julia> Pkg.add("Lanczos")
+   julia> Pkg.add("PoissonSchrodingerSimulator")
    ```
 
 3. Run
 
    ```julia-repl
-   julia> using Lanczos
+   julia> using PoissonSchrodingerSimulator
    ```
 
    and have fun!
@@ -115,12 +115,12 @@ Now I am using macOS as a standard platform to explain the following steps:
 4. Please keep the Julia session active while using it. Restarting the session may take some time.
 
 If you want to install the latest in-development (probably buggy)
-version of Lanczos, type
+version of PoissonSchrodingerSimulator, type
 
 ```@repl
 using Pkg
 Pkg.update()
-pkg"add https://github.com/singularitti/Lanczos.jl"
+pkg"add https://github.com/singularitti/PoissonSchrodingerSimulator.jl"
 ```
 
 in the second step above.
@@ -128,13 +128,13 @@ in the second step above.
 ## Update the package
 
 Please [watch](https://docs.github.com/en/account-and-profile/managing-subscriptions-and-notifications-on-github/setting-up-notifications/configuring-notifications#configuring-your-watch-settings-for-an-individual-repository)
-our [GitHub repository](https://github.com/singularitti/Lanczos.jl)
+our [GitHub repository](https://github.com/singularitti/PoissonSchrodingerSimulator.jl)
 for new releases.
-Once we release a new version, you can update Lanczos by typing
+Once we release a new version, you can update PoissonSchrodingerSimulator by typing
 
 ```@repl
 using Pkg
-Pkg.update("Lanczos")
+Pkg.update("PoissonSchrodingerSimulator")
 Pkg.gc()
 ```
 
@@ -150,10 +150,10 @@ In this case, you may want to uninstall and reinstall the package. Here is how t
    ```julia-repl
    julia> using Pkg
 
-   julia> Pkg.rm("Lanczos")
+   julia> Pkg.rm("PoissonSchrodingerSimulator")
 
    julia> Pkg.gc()
    ```
 
 2. Press `Ctrl+D` to quit the current session. Start a new Julia session and
-   reinstall Lanczos.
+   reinstall PoissonSchrodingerSimulator.

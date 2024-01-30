@@ -1,14 +1,14 @@
-using Lanczos
+using PoissonSchrodingerSimulator
 using Documenter
 
-DocMeta.setdocmeta!(Lanczos, :DocTestSetup, :(using Lanczos); recursive=true)
+DocMeta.setdocmeta!(PoissonSchrodingerSimulator, :DocTestSetup, :(using PoissonSchrodingerSimulator); recursive=true)
 
 makedocs(;
-    modules=[Lanczos],
+    modules=[PoissonSchrodingerSimulator],
     authors="singularitti <singularitti@outlook.com> and contributors",
-    sitename="Lanczos.jl",
+    sitename="PoissonSchrodingerSimulator.jl",
     format=Documenter.HTML(;
-        canonical="https://singularitti.github.io/Lanczos.jl",
+        canonical="https://singularitti.github.io/PoissonSchrodingerSimulator.jl",
         edit_link="main",
         assets=String[],
     ),
@@ -18,6 +18,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/singularitti/Lanczos.jl",
+    repo="github.com/singularitti/PoissonSchrodingerSimulator.jl",
     devbranch="main",
 )
