@@ -6,7 +6,7 @@ using SparseArrays: AbstractSparseMatrix, SparseMatrixCSC
 using ..PoissonSchrodingerSimulator:
     DiscreteLaplacian, Boundary, InternalSquare, validate, setvalues!
 
-import ..Lanczos: lanczos
+import Lanczos: lanczos
 
 export Hamiltonian, probability
 

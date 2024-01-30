@@ -1,6 +1,6 @@
 using Plots
 
-using PoissonSchrodingerSimulator.Lanczos
+using Lanczos
 using PoissonSchrodingerSimulator.QuantumMechanics
 
 include("problem1.jl")
