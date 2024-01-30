@@ -1,12 +1,12 @@
-# Lanczos
+# PoissonSchrodingerSimulator
 
-| **Documentation** | [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://singularitti.github.io/Lanczos.jl/stable/) [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://singularitti.github.io/Lanczos.jl/dev/)                                                                                                                                                                                                                                                                                                 |
+| **Documentation** | [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://singularitti.github.io/PoissonSchrodingerSimulator.jl/stable/) [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://singularitti.github.io/PoissonSchrodingerSimulator.jl/dev/)                                                                                                                                                                                                                                                                                                 |
 | :---------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Build Status**  | [![Build Status](https://github.com/singularitti/Lanczos.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/singularitti/Lanczos.jl/actions/workflows/CI.yml?query=branch%3Amain) [![Build Status](https://ci.appveyor.com/api/projects/status/github/singularitti/Lanczos.jl?svg=true)](https://ci.appveyor.com/project/singularitti/Lanczos-jl)[![Build Status](https://api.cirrus-ci.com/github/singularitti/Lanczos.jl.svg)](https://cirrus-ci.com/github/singularitti/Lanczos.jl) |
-|   **Coverage**    | [![Coverage](https://github.com/singularitti/Lanczos.jl/badges/main/coverage.svg)](https://github.com/singularitti/Lanczos.jl/commits/main) [![Coverage](https://codecov.io/gh/singularitti/Lanczos.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/singularitti/Lanczos.jl)                                                                                                                                                                                                                |
-|    **Others**     | [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle) [![License](https://img.shields.io/github/license/singularitti/Lanczos.jl)](https://github.com/singularitti/Lanczos.jl/blob/main/LICENSE)                                                                                                                                                                                                                                                   |
+| **Build Status**  | [![Build Status](https://github.com/singularitti/PoissonSchrodingerSimulator.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/singularitti/PoissonSchrodingerSimulator.jl/actions/workflows/CI.yml?query=branch%3Amain) [![Build Status](https://ci.appveyor.com/api/projects/status/github/singularitti/PoissonSchrodingerSimulator.jl?svg=true)](https://ci.appveyor.com/project/singularitti/PoissonSchrodingerSimulator-jl)[![Build Status](https://api.cirrus-ci.com/github/singularitti/PoissonSchrodingerSimulator.jl.svg)](https://cirrus-ci.com/github/singularitti/PoissonSchrodingerSimulator.jl) |
+|   **Coverage**    | [![Coverage](https://github.com/singularitti/PoissonSchrodingerSimulator.jl/badges/main/coverage.svg)](https://github.com/singularitti/PoissonSchrodingerSimulator.jl/commits/main) [![Coverage](https://codecov.io/gh/singularitti/PoissonSchrodingerSimulator.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/singularitti/PoissonSchrodingerSimulator.jl)                                                                                                                                                                                                                |
+|    **Others**     | [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle) [![License](https://img.shields.io/github/license/singularitti/PoissonSchrodingerSimulator.jl)](https://github.com/singularitti/PoissonSchrodingerSimulator.jl/blob/main/LICENSE)                                                                                                                                                                                                                                                   |
 
-The code, which is [hosted on GitHub](https://github.com/singularitti/Lanczos.jl), is tested
+The code, which is [hosted on GitHub](https://github.com/singularitti/PoissonSchrodingerSimulator.jl), is tested
 using various continuous integration services for its validity.
 
 This repository is created and maintained by
@@ -23,19 +23,19 @@ From [the Julia REPL](https://docs.julialang.org/en/v1/stdlib/REPL/), type `]` t
 the [Pkg mode](https://docs.julialang.org/en/v1/stdlib/REPL/#Pkg-mode) and run:
 
 ```julia-repl
-pkg> add Lanczos
+pkg> add PoissonSchrodingerSimulator
 ```
 
 Or, equivalently, via [`Pkg.jl`](https://pkgdocs.julialang.org/v1/):
 
 ```julia
-julia> import Pkg; Pkg.add("Lanczos")
+julia> import Pkg; Pkg.add("PoissonSchrodingerSimulator")
 ```
 
 ## Documentation
 
-- [**STABLE**](https://singularitti.github.io/Lanczos.jl/stable/) — **documentation of the most recently tagged version.**
-- [**DEV**](https://singularitti.github.io/Lanczos.jl/dev/) — _documentation of the in-development version._
+- [**STABLE**](https://singularitti.github.io/PoissonSchrodingerSimulator.jl/stable/) — **documentation of the most recently tagged version.**
+- [**DEV**](https://singularitti.github.io/PoissonSchrodingerSimulator.jl/dev/) — _documentation of the in-development version._
 
 ## Project status
 
@@ -45,9 +45,9 @@ Windows.
 ## Questions and contributions
 
 You can post usage questions on
-[our discussion page](https://github.com/singularitti/Lanczos.jl/discussions).
+[our discussion page](https://github.com/singularitti/PoissonSchrodingerSimulator.jl/discussions).
 
 We welcome contributions, feature requests, and suggestions. If you encounter any problems,
-please open an [issue](https://github.com/singularitti/Lanczos.jl/issues).
+please open an [issue](https://github.com/singularitti/PoissonSchrodingerSimulator.jl/issues).
 The [Contributing](@ref) page has
 a few guidelines that should be followed when opening pull requests and contributing code.
