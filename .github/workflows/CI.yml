@@ -80,6 +80,6 @@ jobs:
         shell: julia --project=docs --color=yes {0}
         run: |
           using Documenter: DocMeta, doctest
-          using Lanczos
-          DocMeta.setdocmeta!(Lanczos, :DocTestSetup, :(using Lanczos); recursive=true)
-          doctest(Lanczos)
+          using PoissonSchrodingerSimulator
+          DocMeta.setdocmeta!(PoissonSchrodingerSimulator, :DocTestSetup, :(using PoissonSchrodingerSimulator); recursive=true)
+          doctest(PoissonSchrodingerSimulator)
