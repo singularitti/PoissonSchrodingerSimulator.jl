@@ -5,6 +5,7 @@ version = "0.1.0"
 
 [deps]
 ConjugateGradient = "f400940f-8640-4bea-acd3-3d881d7c7dbd"
+Lanczos = "f316c00f-53a7-4523-9a56-059dd129aee3"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 OffsetArrays = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
 ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
