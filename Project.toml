@@ -1,4 +1,4 @@
-name = "Lanczos"
+name = "PoissonSchrodingerSimulator"
 uuid = "7c33b4bb-5f88-4700-8477-0120191a56c3"
 authors = ["singularitti <singularitti@outlook.com> and contributors"]
 version = "0.1.0"
