@@ -1,4 +1,4 @@
-module LastHomework
+module PoissonSchrodingerSimulator
 
 include("laplacian.jl")
 include("ConjugateGradient.jl")
