@@ -1,7 +1,6 @@
 module PoissonSchrodingerSimulator
 
 include("laplacian.jl")
-include("ConjugateGradient.jl")
 include("Lanczos.jl")
 include("regions.jl")
 include("Electrostatics.jl")

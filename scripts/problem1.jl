@@ -3,8 +3,8 @@ using ToggleableAsserts
 
 ToggleableAsserts.toggle(false)
 
+using ConjugateGradient
 using PoissonSchrodingerSimulator
-using PoissonSchrodingerSimulator.ConjugateGradient
 using PoissonSchrodingerSimulator.Electrostatics
 
 logger = Logger()

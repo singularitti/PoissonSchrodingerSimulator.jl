@@ -1,7 +1,7 @@
 using Plots
 
+using ConjugateGradient
 using PoissonSchrodingerSimulator
-using PoissonSchrodingerSimulator.ConjugateGradient
 using PoissonSchrodingerSimulator.Electrostatics: PointCharge
 
 maxiter = 500

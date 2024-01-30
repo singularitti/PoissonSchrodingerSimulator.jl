@@ -2,11 +2,12 @@ module Electrostatics
 
 using LinearAlgebra: norm, ⋅
 
+using ConjugateGradient: Step, setconverged!, log!
+
 using ..PoissonSchrodingerSimulator:
     DiscreteLaplacian, Boundary, InternalSquare, PointCharges, validate, setvalues!
-using ..ConjugateGradient: Step, setconverged!, log!
 
-import ..ConjugateGradient: solve!
+import ConjugateGradient: solve!
 
 function solve!(
     logger,
