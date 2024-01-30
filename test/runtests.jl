@@ -1,6 +1,6 @@
-using LastHomework
+using PoissonSchrodingerSimulator
 using Test
 
-@testset "LastHomework.jl" begin
-    include("ConjugateGradient.jl")
+@testset "PoissonSchrodingerSimulator.jl" begin
+    # Write your tests here.
 end
