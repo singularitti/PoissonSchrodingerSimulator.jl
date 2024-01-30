@@ -1,7 +1,7 @@
 using Plots
 
-using LastHomework.Lanczos
-using LastHomework.QuantumMechanics
+using PoissonSchrodingerSimulator.Lanczos
+using PoissonSchrodingerSimulator.QuantumMechanics
 
 include("problem1.jl")
 

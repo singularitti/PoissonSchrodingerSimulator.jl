@@ -1,6 +1,6 @@
 module Lanczos
 
-using LastHomework.Lanczos: lanczos
+using PoissonSchrodingerSimulator.Lanczos: lanczos
 using LinearAlgebra: ishermitian
 using Test: @testset, @test
 

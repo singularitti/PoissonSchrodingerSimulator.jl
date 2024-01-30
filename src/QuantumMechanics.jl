@@ -3,7 +3,8 @@ module QuantumMechanics
 using LinearAlgebra: SymTridiagonal, norm, normalize, diagind, ⋅
 using SparseArrays: AbstractSparseMatrix, SparseMatrixCSC
 
-using ..LastHomework: DiscreteLaplacian, Boundary, InternalSquare, validate, setvalues!
+using ..PoissonSchrodingerSimulator:
+    DiscreteLaplacian, Boundary, InternalSquare, validate, setvalues!
 
 import ..Lanczos: lanczos
 

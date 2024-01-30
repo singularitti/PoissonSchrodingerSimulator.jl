@@ -1,6 +1,7 @@
 module ConjugateGradient
 
-using LastHomework.ConjugateGradient: Logger, solve, solve!, isconverged, eachstep
+using PoissonSchrodingerSimulator.ConjugateGradient:
+    Logger, solve, solve!, isconverged, eachstep
 using LinearAlgebra: norm
 using Test: @testset, @test
 

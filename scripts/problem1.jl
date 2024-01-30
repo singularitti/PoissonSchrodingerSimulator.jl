@@ -3,9 +3,9 @@ using ToggleableAsserts
 
 ToggleableAsserts.toggle(false)
 
-using LastHomework
-using LastHomework.ConjugateGradient
-using LastHomework.Electrostatics
+using PoissonSchrodingerSimulator
+using PoissonSchrodingerSimulator.ConjugateGradient
+using PoissonSchrodingerSimulator.Electrostatics
 
 logger = Logger()
 L = 128

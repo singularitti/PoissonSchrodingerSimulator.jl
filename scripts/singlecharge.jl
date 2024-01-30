@@ -1,8 +1,8 @@
 using Plots
 
-using LastHomework
-using LastHomework.ConjugateGradient
-using LastHomework.Electrostatics: PointCharge
+using PoissonSchrodingerSimulator
+using PoissonSchrodingerSimulator.ConjugateGradient
+using PoissonSchrodingerSimulator.Electrostatics: PointCharge
 
 maxiter = 500
 logger = Logger(maxiter)

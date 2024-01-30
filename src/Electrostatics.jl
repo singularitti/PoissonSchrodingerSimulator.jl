@@ -2,7 +2,7 @@ module Electrostatics
 
 using LinearAlgebra: norm, ⋅
 
-using ..LastHomework:
+using ..PoissonSchrodingerSimulator:
     DiscreteLaplacian, Boundary, InternalSquare, PointCharges, validate, setvalues!
 using ..ConjugateGradient: Step, setconverged!, log!
 
