@@ -18,7 +18,7 @@ jobs:
           key: ${{ runner.os }}-tectonic-${{ hashFiles('**/*.tex') }}
           restore-keys: |
             ${{ runner.os }}-tectonic-
-      - uses: wtfjoke/setup-tectonic@v3
+      - uses: wtfjoke/setup-tectonic@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Install JuliaMono # See https://jasonraimondi.com/posts/install-google-fonts-in-github-workflow/
