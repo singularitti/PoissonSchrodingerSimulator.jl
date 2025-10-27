@@ -30,7 +30,7 @@ jobs:
       - name: Run Tectonic
         run: tectonic -X build
       - name: Upload pdf
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: PDF artifact
           path: tex/build/default/default.pdf
